@@ -1,0 +1,37 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Wordmark } from './brand/Wordmark';
+
+<Meta title="Introducción" />
+
+<Wordmark size="lg" withMark />
+
+# Design System
+
+Biblioteca de fundamentos, componentes y pantallas de la PWA de **Black Six**: Detailing, Towing y
+Personal Washing, para el **cliente** (móvil) y el **operador** (escritorio y móvil). Español por
+defecto, inglés disponible. Modo claro (lienzo blanco) y oscuro (lienzo #111111).
+
+## Cómo usar este Storybook
+
+- **Apariencia** (barra superior): Claro, Oscuro, Sistema o **Claro + Oscuro** (cada historia dos veces, lado a lado).
+- **Idioma**: Español o English. Todo el texto de los componentes cambia.
+- **Viewport**: Móvil 390×844, Tableta 834×1194, Escritorio 1440×900. Las pantallas se muestran dentro de un marco de teléfono.
+- Cada componente tiene una página de documentación con los 8 campos: propósito y anatomía, propiedades, estados, tokens, comportamiento adaptable, accesibilidad, contenido ES/EN y ejemplo de negocio.
+
+## Secciones
+
+| Sección | Qué contiene |
+| --- | --- |
+| Fundamentos | Colores, tipografía, espaciado, radios, elevación, movimiento, iconografía y marca |
+| Componentes | Acciones, navegación móvil, estructura, campos, selección, presentación de datos (fase 1) |
+| Black Six | Componentes propios del negocio: tarjetas de unidad, paquete, trabajo, resumen de reserva (fase 2) |
+| Pantallas | Flujos del cliente y del operador (fase 3) |
+
+## Principios
+
+1. **Un solo naranja.** #FF5000 marca la acción principal, la selección y lo activo. Los botones naranjas llevan siempre texto carbón #111111 (5,75:1).
+2. **Lo importante, en carbón.** Precios, horas y números de lote van en el color de texto principal.
+3. **Tres estados independientes.** Reserva, asignación y pago se muestran por separado, con texto e icono, nunca solo con color.
+4. **Accesible por defecto.** Todos los pares de color cumplen WCAG AA, el foco siempre es visible y el movimiento respeta “reducir movimiento”.
+
+Las reglas para quienes construyen están en `DESIGN.md`, en la raíz del repositorio. El logotipo es provisional hasta recibir el oficial.
