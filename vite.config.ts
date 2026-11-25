@@ -10,6 +10,8 @@ export default defineConfig({
   base: './',
   build: {
     outDir: 'dist-prototype',
-    rollupOptions: { input: { index: 'index.html', prototype: 'prototype.html' } },
+    rollupOptions: {
+      input: { index: 'index.html', detailing: 'detailing.html', towing: 'towing.html', 'personal-washing': 'personal-washing.html', prototype: 'prototype.html' },
+    },
   },
 })
