@@ -2,7 +2,7 @@ import { create } from 'storybook/theming/create';
 import { color, fontFamily, radius } from '../theme/tokens';
 
 const base = {
-  brandTitle: 'Black Six · Design System',
+  brandTitle: 'Black Seat · Design System',
   brandUrl: './',
   fontBase: fontFamily.sans,
   appBorderRadius: radius.md,

@@ -57,7 +57,7 @@ export interface CenterCardProps {
 const meta = { display: 'inline-flex', alignItems: 'center', gap: 1, color: bs.text.secondary, minWidth: 0 } as const;
 
 /**
- * A Black Six center as a photo card with rating, distance, drive time and a bookmark. The name is the one
+ * A Black Seat center as a photo card with rating, distance, drive time and a bookmark. The name is the one
  * link (stretched over the card), so the bookmark button is not nested inside another button.
  */
 export function CenterCard({ listing, saved, onToggleSaved, variant = 'card', selected = false, onOpen, photoRatio = '3:2', fromPrice }: CenterCardProps) {

@@ -54,7 +54,7 @@ function DocsCanvas({ children, flush }: { children: ReactNode; flush: boolean }
 }
 
 /** Global decorator: providers, theme/locale toolbars, side-by-side mode and the device frame. */
-export const withBlackSix: Decorator = (Story, context) => {
+export const withBlackSeat: Decorator = (Story, context) => {
   const globals: BsGlobals = { ...defaultGlobals, ...(context.globals as Partial<BsGlobals>) };
   const device = context.parameters.device as DeviceParameters | undefined;
   const story = device ? (

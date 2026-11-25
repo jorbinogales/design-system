@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import { visuallyHidden } from '../../../theme/a11y';
 import { InitialsAvatar } from '../../../components/data-display/InitialsAvatar/InitialsAvatar';
-import { BlackSixMark } from '../../../brand/BlackSixMark';
+import { BlackSeatMark } from '../../../brand/BlackSeatMark';
 import { useT } from '../../../i18n/locale';
 import { bs } from '../../../theme/theme';
 import type { Conversation } from '../data';
@@ -14,7 +14,7 @@ export function ConversationAvatar({ conversation, size = 'lg', showPresence = t
   const px = size === 'lg' ? 56 : 40;
   return (
     <Box sx={{ position: 'relative', width: px, height: px, flexShrink: 0 }}>
-      {conversation.kind === 'support' ? <BlackSixMark size={px} variant="inverse" /> : <InitialsAvatar name={conversation.name} size={size} />}
+      {conversation.kind === 'support' ? <BlackSeatMark size={px} variant="inverse" /> : <InitialsAvatar name={conversation.name} size={size} />}
       {showPresence && conversation.online && (
         <>
           <Box

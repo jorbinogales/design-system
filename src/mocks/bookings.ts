@@ -25,7 +25,7 @@ import type { AssignmentStatus, BookingStatus, PaymentStatus } from '../domain/s
 import { auctionName, getCenter, getPackage, getPaymentMethod, getYard, mockTodayIso } from './catalog';
 import { getCustomer, getProfessional, getVehicle } from './people';
 
-const SYSTEM: StatusActor = { name: 'Black Six', role: 'system' };
+const SYSTEM: StatusActor = { name: 'Black Seat', role: 'system' };
 const SUPERVISOR: StatusActor = { name: 'Natalia Cruz', role: 'admin' };
 
 interface Seed {

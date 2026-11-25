@@ -50,7 +50,7 @@ export const conversations: Conversation[] = [
   },
   {
     id: 'soporte',
-    name: 'Soporte Black Six',
+    name: 'Soporte Black Seat',
     kind: 'support',
     role: { es: 'Atención al cliente', en: 'Customer support' },
     online: true,
@@ -60,7 +60,7 @@ export const conversations: Conversation[] = [
   },
   {
     id: 'doral',
-    name: 'Black Six Doral',
+    name: 'Black Seat Doral',
     kind: 'center',
     role: { es: 'Centro de Detailing', en: 'Detailing center' },
     online: false,
@@ -71,7 +71,7 @@ export const conversations: Conversation[] = [
       code: 'BS-24117',
       unit: 'detailing',
       title: { es: 'Detailing Premium', en: 'Premium Detailing' },
-      detail: { es: 'Toyota RAV4 · Black Six Doral', en: 'Toyota RAV4 · Black Six Doral' },
+      detail: { es: 'Toyota RAV4 · Black Seat Doral', en: 'Toyota RAV4 · Black Seat Doral' },
     },
   },
   {
@@ -92,7 +92,7 @@ export const conversations: Conversation[] = [
   },
   {
     id: 'brickell',
-    name: 'Black Six Brickell',
+    name: 'Black Seat Brickell',
     kind: 'center',
     role: { es: 'Centro de Detailing', en: 'Detailing center' },
     online: false,

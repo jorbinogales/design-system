@@ -7,8 +7,8 @@ import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { BusinessUnitCard } from '../../../blacksix/BusinessUnitCard/BusinessUnitCard';
-import { NextAppointmentCard } from '../../../blacksix/NextAppointmentCard/NextAppointmentCard';
+import { BusinessUnitCard } from '../../../blackseat/BusinessUnitCard/BusinessUnitCard';
+import { NextAppointmentCard } from '../../../blackseat/NextAppointmentCard/NextAppointmentCard';
 import { IconButton } from '../../../components/actions/IconButton/IconButton';
 import { TextField } from '../../../components/fields/TextField/TextField';
 import { SkeletonGroup, SkeletonPhotoCard } from '../../../components/feedback/Skeleton/Skeleton';
@@ -43,7 +43,7 @@ const messages = {
     forYouList: 'Ofertas para ti',
     services: 'Servicios',
     centers: 'Centros cerca de ti',
-    centersList: 'Centros Black Six cercanos',
+    centersList: 'Centros Black Seat cercanos',
     loading: 'Cargando inicio',
   },
   en: {
@@ -60,7 +60,7 @@ const messages = {
     forYouList: 'Offers for you',
     services: 'Services',
     centers: 'Centers near you',
-    centersList: 'Nearby Black Six centers',
+    centersList: 'Nearby Black Seat centers',
     loading: 'Loading home',
   },
 };

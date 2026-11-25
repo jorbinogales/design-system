@@ -20,8 +20,8 @@ export const notificationItems: NotificationItem[] = [
     group: 'today',
     title: { es: 'Reserva confirmada', en: 'Booking confirmed' },
     body: {
-      es: 'Tu Detailing Premium del viernes 27 de noviembre a las 10:00 a. m. en Black Six Doral quedó confirmado. Referencia BS-24117.',
-      en: 'Your Premium Detailing on Friday, November 27 at 10:00 AM at Black Six Doral is confirmed. Reference BS-24117.',
+      es: 'Tu Detailing Premium del viernes 27 de noviembre a las 10:00 a. m. en Black Seat Doral quedó confirmado. Referencia BS-24117.',
+      en: 'Your Premium Detailing on Friday, November 27 at 10:00 AM at Black Seat Doral is confirmed. Reference BS-24117.',
     },
     time: { es: 'hace 12 min', en: '12 min ago' },
     unread: true,
@@ -68,8 +68,8 @@ export const notificationItems: NotificationItem[] = [
     group: 'yesterday',
     title: { es: 'Recordatorio de cita', en: 'Appointment reminder' },
     body: {
-      es: 'Te esperamos el viernes 27 a las 10:00 a. m. en Black Six Doral con tu RAV4. El jueves 26, por Acción de Gracias, estamos cerrados.',
-      en: 'We expect you on Friday the 27th at 10:00 AM at Black Six Doral with your RAV4. We are closed on Thursday the 26th for Thanksgiving.',
+      es: 'Te esperamos el viernes 27 a las 10:00 a. m. en Black Seat Doral con tu RAV4. El jueves 26, por Acción de Gracias, estamos cerrados.',
+      en: 'We expect you on Friday the 27th at 10:00 AM at Black Seat Doral with your RAV4. We are closed on Thursday the 26th for Thanksgiving.',
     },
     time: { es: 'ayer, 9:00 a. m.', en: 'Yesterday, 9:00 AM' },
     unread: false,

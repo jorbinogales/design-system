@@ -1,5 +1,5 @@
 /**
- * People mock: customers, their vehicles and addresses, and Black Six staff.
+ * People mock: customers, their vehicles and addresses, and Black Seat staff.
  * Names and addresses are invented; none is a real person's home address.
  */
 import type { Customer, CustomerAddress, Professional, Vehicle } from '../domain/booking';

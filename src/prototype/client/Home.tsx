@@ -4,8 +4,8 @@ import WorkspacePremiumOutlined from '@mui/icons-material/WorkspacePremiumOutlin
 import WorkspacePremiumRounded from '@mui/icons-material/WorkspacePremiumRounded';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { BusinessUnitCard } from '../../blacksix/BusinessUnitCard/BusinessUnitCard';
-import { NextAppointmentCard } from '../../blacksix/NextAppointmentCard/NextAppointmentCard';
+import { BusinessUnitCard } from '../../blackseat/BusinessUnitCard/BusinessUnitCard';
+import { NextAppointmentCard } from '../../blackseat/NextAppointmentCard/NextAppointmentCard';
 import { Button } from '../../components/actions/Button/Button';
 import { IconButton } from '../../components/actions/IconButton/IconButton';
 import { Price } from '../../components/data-display/Price/Price';
@@ -18,6 +18,7 @@ import { bs } from '../../theme/theme';
 import { layout, radius } from '../../theme/tokens';
 import { fromPrice, me, TODAY_ISO, vipPlans } from '../data';
 import { useProto } from '../store';
+import { posterType } from './shared';
 import { ClientNav } from './ClientNav';
 import { ScreenRoot } from './shared';
 
@@ -31,7 +32,7 @@ const messages = {
     seeAll: 'Ver todas',
     services: 'Nuestros servicios',
     servicesHint: 'Elige uno para ver precios, horarios y reservar.',
-    vipTitle: 'Black Six VIP',
+    vipTitle: 'Black Seat VIP',
     vipBody: 'Prioridad cuando la agenda está llena y 10 % en todos los servicios.',
     vipCta: 'Ver beneficios',
     vipActive: 'Eres VIP',
@@ -47,7 +48,7 @@ const messages = {
     seeAll: 'See all',
     services: 'Our services',
     servicesHint: 'Pick one to see prices, hours and book.',
-    vipTitle: 'Black Six VIP',
+    vipTitle: 'Black Seat VIP',
     vipBody: 'Priority when the schedule is full and 10% off every service.',
     vipCta: 'See benefits',
     vipActive: "You're VIP",
@@ -83,7 +84,7 @@ export function HomeScreen() {
         actions={<IconButton label={t.notifications} icon={<NotificationsNoneRounded />} variant="filled" badge />}
       >
         <SchemeScope scheme="dark">
-          <Typography variant="display" component="h1" sx={{ pt: 1, pb: 1, color: bs.text.primary, fontSize: '2.25rem', '@media (min-width:900px)': { fontSize: '2.25rem' } }}>
+          <Typography variant="display" component="h1" sx={{ ...posterType, pt: 1, pb: 1, color: bs.text.primary }}>
             {t.headline}
           </Typography>
         </SchemeScope>

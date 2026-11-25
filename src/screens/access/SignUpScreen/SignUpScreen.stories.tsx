@@ -18,5 +18,5 @@ export const ConError: Story = {
 };
 
 export const Cargando: Story = {
-  args: { defaultName: 'Andrea Salcedo', defaultEmail: 'andrea.salcedo@example.com', defaultPassword: 'BlackSix2025', defaultAccepted: true, loading: true },
+  args: { defaultName: 'Andrea Salcedo', defaultEmail: 'andrea.salcedo@example.com', defaultPassword: 'BlackSeat2025', defaultAccepted: true, loading: true },
 };

@@ -21,13 +21,13 @@ import { radius } from '../../theme/tokens';
 import { me, vipBenefits, vipPlans } from '../data';
 import { useProto } from '../store';
 import { ClientNav } from './ClientNav';
-import { IconBubble, ScreenBody, ScreenRoot } from './shared';
+import { IconBubble, posterType, ScreenBody, ScreenRoot } from './shared';
 
 const icons = { priority: BoltOutlined, discount: LocalOfferOutlined, bins: DeleteOutlineRounded, reschedule: EventRepeatOutlined };
 
 const messages = {
   es: {
-    title: 'Black Six VIP',
+    title: 'Black Seat VIP',
     lead: 'Para clientes que no quieren esperar.',
     plan: 'Plan',
     monthly: 'Mensual',
@@ -41,10 +41,10 @@ const messages = {
     active: 'Membresía activa',
     leave: 'Cancelar membresía',
     left: 'Membresía cancelada.',
-    terms: 'Cancela cuando quieras. Precio de ejemplo, pendiente de definir con Black Six.',
+    terms: 'Cancela cuando quieras. Precio de ejemplo, pendiente de definir con Black Seat.',
   },
   en: {
-    title: 'Black Six VIP',
+    title: 'Black Seat VIP',
     lead: "For customers who don't want to wait.",
     plan: 'Plan',
     monthly: 'Monthly',
@@ -58,7 +58,7 @@ const messages = {
     active: 'Active membership',
     leave: 'Cancel membership',
     left: 'Membership cancelled.',
-    terms: 'Cancel anytime. Sample price, to be defined with Black Six.',
+    terms: 'Cancel anytime. Sample price, to be defined with Black Seat.',
   },
 };
 
@@ -80,7 +80,7 @@ export function VipScreen() {
             <WorkspacePremiumRounded aria-hidden sx={{ color: bs.brand.primary, fontSize: 32 }} />
             {isVip && <Tag tone="brand" label={t.active} size="sm" />}
           </Box>
-          <Typography variant="h2" component="h2">
+          <Typography variant="h2" component="h2" sx={{ ...posterType, fontSize: '2.5rem', '@media (min-width:900px)': { fontSize: '2.5rem' } }}>
             {t.lead}
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>

@@ -44,7 +44,7 @@ const messages = {
 const asObject = (v: unknown): SlotObject => (v && typeof v === 'object' ? (v as SlotObject) : {});
 
 /**
- * Base text field: label above, soft gray fill, helper or error with icon. Every Black Six
+ * Base text field: label above, soft gray fill, helper or error with icon. Every Black Seat
  * field (email, phone, search, password, code, textarea) is a preset of this one.
  * Raw MUI `TextField` is themed to look the same, so Phase 2 can also use it directly.
  */

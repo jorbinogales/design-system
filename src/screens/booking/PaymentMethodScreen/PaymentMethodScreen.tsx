@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { PaymentPanel } from '../../../blacksix/PaymentPanel/PaymentPanel';
+import { PaymentPanel } from '../../../blackseat/PaymentPanel/PaymentPanel';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
 import { Price } from '../../../components/data-display/Price/Price';

@@ -21,7 +21,7 @@ export function SplashScreen() {
         <Typography variant="body2" sx={{ color: bs.text.secondary }}>
           {t.tagline}
         </Typography>
-        <Box component="ul" aria-label="Black Six" sx={{ m: 0, p: 0, listStyle: 'none', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 2, columnGap: 4 }}>
+        <Box component="ul" aria-label="Black Seat" sx={{ m: 0, p: 0, listStyle: 'none', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 2, columnGap: 4 }}>
           {t.units.map((u) => (
             <Typography key={u} component="li" variant="caption" sx={{ color: bs.text.primary, letterSpacing: '0.08em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 2 }}>
               <Box aria-hidden sx={{ width: 4, height: 4, borderRadius: '50%', backgroundColor: bs.brand.primary }} />

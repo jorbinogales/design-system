@@ -47,3 +47,17 @@ export function BlockTitle({ children, id }: { children: ReactNode; id?: string 
     </Typography>
   );
 }
+
+/**
+ * Poster headline taken from Black Seat's flyers: Archivo at its narrowest width, heavy, uppercase,
+ * tight leading. Same family as the DS (no new font), so it stays one type system.
+ */
+export const posterType = {
+  fontStretch: '62%',
+  fontWeight: 800,
+  textTransform: 'uppercase',
+  letterSpacing: '0',
+  lineHeight: 0.92,
+  fontSize: '3.25rem',
+  '@media (min-width:900px)': { fontSize: '3.25rem' },
+} as const;

@@ -196,7 +196,7 @@ function PinMark({ pin, selected, showLabel, interactive, onPress }: { pin: MapP
 
 /**
  * Stylized map placeholder, drawn in SVG with no map library: a deterministic street grid,
- * pins, a user-location dot, a route, a service-area blob and an ETA chip. Reads the Black Six tokens,
+ * pins, a user-location dot, a route, a service-area blob and an ETA chip. Reads the Black Seat tokens,
  * so light and dark come for free. Used by Explorar, Ubicación del centro, Cómo llegar, Seguimiento en vivo
  * and Agregar dirección; swap it for a real map later and keep the same props.
  */

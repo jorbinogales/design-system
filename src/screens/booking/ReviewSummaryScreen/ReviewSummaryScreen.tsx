@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { BookingSummary, type SummaryField } from '../../../blacksix/BookingSummary/BookingSummary';
+import { BookingSummary, type SummaryField } from '../../../blackseat/BookingSummary/BookingSummary';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
 import { AmountBreakdown } from '../../../components/data-display/AmountBreakdown/AmountBreakdown';

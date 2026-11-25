@@ -1,6 +1,6 @@
 import type { Locale } from '../i18n/locale';
 
-/** Black Six business units. Names are brand names and stay in English in both locales. */
+/** Black Seat business units. Names are brand names and stay in English in both locales. */
 export const businessUnits = ['detailing', 'towing', 'personal-washing'] as const;
 export type BusinessUnit = (typeof businessUnits)[number];
 

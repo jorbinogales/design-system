@@ -14,10 +14,10 @@ import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { PackageCard } from '../../../blacksix/PackageCard/PackageCard';
-import { ProfessionalCard } from '../../../blacksix/ProfessionalCard/ProfessionalCard';
-import { ServiceSheet } from '../../../blacksix/ServiceSheet/ServiceSheet';
-import { formatDateMedium } from '../../../blacksix/shared/format';
+import { PackageCard } from '../../../blackseat/PackageCard/PackageCard';
+import { ProfessionalCard } from '../../../blackseat/ProfessionalCard/ProfessionalCard';
+import { ServiceSheet } from '../../../blackseat/ServiceSheet/ServiceSheet';
+import { formatDateMedium } from '../../../blackseat/shared/format';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
 import { IconButton } from '../../../components/actions/IconButton/IconButton';
@@ -386,7 +386,7 @@ export interface ServiceDetailScreenProps {
 }
 
 /**
- * Detalle del servicio: Detailing at Black Six Doral. Photo hero (back, share, bookmark, Video demo, thumbnail strip with
+ * Detalle del servicio: Detailing at Black Seat Doral. Photo hero (back, share, bookmark, Video demo, thumbnail strip with
  * "+10"), unit tag, rating, name and address, then four tabs. "Elegir horario" is the only orange element.
  */
 export function ServiceDetailScreen({ initialTab = 'about' }: ServiceDetailScreenProps) {

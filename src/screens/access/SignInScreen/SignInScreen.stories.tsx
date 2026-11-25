@@ -23,5 +23,5 @@ export const CredencialesIncorrectas: Story = {
 };
 
 export const Cargando: Story = {
-  args: { defaultEmail: 'andrea.salcedo@example.com', defaultPassword: 'BlackSix2025', loading: true },
+  args: { defaultEmail: 'andrea.salcedo@example.com', defaultPassword: 'BlackSeat2025', loading: true },
 };

@@ -2,7 +2,7 @@ import SvgIcon, { type SvgIconProps } from '@mui/material/SvgIcon';
 import type { ReactNode } from 'react';
 
 /**
- * Black Six custom icon recipe: 24px grid, 1.75 stroke, round caps and joins, `currentColor`.
+ * Black Seat custom icon recipe: 24px grid, 1.75 stroke, round caps and joins, `currentColor`.
  * Every custom icon goes through this so the family stays consistent.
  */
 export function createStrokeIcon(paths: ReactNode, displayName: string) {

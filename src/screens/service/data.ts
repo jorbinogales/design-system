@@ -2,7 +2,7 @@ import type { GalleryItem, Localized } from '../../domain/booking';
 import type { BusinessUnit } from '../../domain/units';
 import { galleryItems } from '../../mocks/bookings';
 
-/** The service every screen of this flow shows: Detailing at Black Six Doral. */
+/** The service every screen of this flow shows: Detailing at Black Seat Doral. */
 export const serviceUnit: BusinessUnit = 'detailing';
 export const serviceCenterId = 'c-doral';
 

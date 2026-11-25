@@ -1,6 +1,6 @@
 /**
  * Prototype data — Carolina del Norte (Charlotte / Raleigh), USD.
- * Auction yards are real public addresses. Customers, customer addresses, the Black Six center
+ * Auction yards are real public addresses. Customers, customer addresses, the Black Seat center
  * and phone numbers (555-01xx) are invented. Prices and the VIP plan are placeholders to validate
  * with the business (see docs/prototype-notes.md).
  */
@@ -150,7 +150,7 @@ export const unitCopy: Record<BusinessUnit, { description: Localized; place: 'ce
 
 export const center: Center = {
   id: 'c-charlotte',
-  name: 'Black Six Charlotte',
+  name: 'Black Seat Charlotte',
   address: { line1: '3115 N Graham St', city: 'Charlotte', state: 'NC', zip: '28206', reference: 'Portón negro, bahía 2' },
   phone: '(704) 555-0142',
   hours: unitHours.detailing,
@@ -215,7 +215,7 @@ export const myAddresses: CustomerAddress[] = [
 
 /* ─────────────── Reservas ─────────────── */
 
-const SYSTEM: StatusActor = { name: 'Black Six', role: 'system' };
+const SYSTEM: StatusActor = { name: 'Black Seat', role: 'system' };
 const ELIO: StatusActor = { name: 'Elio Jiménez', role: 'admin' };
 
 export interface Seed {
@@ -247,8 +247,8 @@ function history(s: Seed): StatusChange[] {
   if (s.pay === 'paid' || s.pay === 'refunded') out.push({ id: `${s.id}-p1`, dimension: 'payment', status: 'paid', at: at(t0, 1), by: SYSTEM });
   if (s.pro && s.status !== 'cancelled') out.push({ id: `${s.id}-a1`, dimension: 'assignment', status: 'assigned' as AssignmentStatus, at: `${dayjs(s.date).subtract(1, 'day').format('YYYY-MM-DD')}T17:10`, by: ELIO });
   const start = `${s.date}T${s.time}`;
-  if (s.status === 'in_progress' || s.status === 'completed') out.push({ id: `${s.id}-b2`, dimension: 'booking', status: 'in_progress', at: at(start, 5), by: { name: getProfessional(s.pro)?.name ?? 'Black Six', role: 'operator' } });
-  if (s.status === 'completed') out.push({ id: `${s.id}-b3`, dimension: 'booking', status: 'completed', at: at(start, getPackage(s.pkg).durationMin), by: { name: getProfessional(s.pro)?.name ?? 'Black Six', role: 'operator' } });
+  if (s.status === 'in_progress' || s.status === 'completed') out.push({ id: `${s.id}-b2`, dimension: 'booking', status: 'in_progress', at: at(start, 5), by: { name: getProfessional(s.pro)?.name ?? 'Black Seat', role: 'operator' } });
+  if (s.status === 'completed') out.push({ id: `${s.id}-b3`, dimension: 'booking', status: 'completed', at: at(start, getPackage(s.pkg).durationMin), by: { name: getProfessional(s.pro)?.name ?? 'Black Seat', role: 'operator' } });
   if (s.status === 'cancelled') {
     const when = `${dayjs(s.date).subtract(1, 'day').format('YYYY-MM-DD')}T18:05`;
     out.push({ id: `${s.id}-b4`, dimension: 'booking', status: 'cancelled', at: when, by: cust });

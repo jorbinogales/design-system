@@ -1,5 +1,5 @@
 import type { Preview } from '@storybook/react-vite';
-import { withBlackSix } from '../src/storybook/decorators';
+import { withBlackSeat } from '../src/storybook/decorators';
 import { DocsContainer } from '../src/storybook/DocsContainer';
 import { SIDE_BY_SIDE } from '../src/storybook/globals';
 import { sbLight } from '../src/storybook/sbThemes';
@@ -34,7 +34,7 @@ const preview: Preview = {
     },
   },
   initialGlobals: { theme: 'light', locale: 'es' },
-  decorators: [withBlackSix],
+  decorators: [withBlackSeat],
   parameters: {
     layout: 'centered',
     controls: { expanded: true },
@@ -71,7 +71,7 @@ const preview: Preview = {
             'Tablas y bandejas',
             'Preferencias',
           ],
-          'Black Six',
+          'Black Seat',
           'Pantallas',
           ['Acceso', 'Inicio y exploración', 'Servicio', 'Reserva', 'Mis reservas', 'Mensajes', 'Notificaciones', 'Perfil'],
         ],

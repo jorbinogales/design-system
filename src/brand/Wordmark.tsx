@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import { bs } from '../theme/theme';
-import { BlackSixMark, type MarkVariant } from './BlackSixMark';
+import { BlackSeatMark, type MarkVariant } from './BlackSeatMark';
+import { wordmarkPath, wordmarkViewBox } from './logoPaths';
 
 export type WordmarkSize = 'sm' | 'md' | 'lg' | 'xl';
 
@@ -20,10 +21,8 @@ const scale: Record<WordmarkSize, { font: number; mark: number; gap: number }> =
 };
 
 /**
- * PROVISIONAL typographic wordmark until the official logo is supplied.
- * "BLACK" in Archivo Black-weight Expanded against "SIX" in Light Expanded: the name's
- * own contrast, carried by one family. Color follows `text.primary`, so it works on
- * light, dark and inverse surfaces.
+ * Official BLACKSEAT logo (vector, traced from the client's artwork). `size` sets the cap height
+ * from the scale's font size. Color follows `text.primary`, so it works on light, dark and inverse surfaces.
  */
 export function Wordmark({ size = 'md', withMark = false, orientation = 'horizontal', markVariant = 'orange' }: WordmarkProps) {
   const s = scale[size];
@@ -31,7 +30,7 @@ export function Wordmark({ size = 'md', withMark = false, orientation = 'horizon
   return (
     <Box
       role="img"
-      aria-label="Black Six"
+      aria-label="Black Seat"
       sx={{
         display: 'inline-flex',
         flexDirection: stacked ? 'column' : 'row',
@@ -40,26 +39,9 @@ export function Wordmark({ size = 'md', withMark = false, orientation = 'horizon
         color: bs.text.primary,
       }}
     >
-      {withMark && <BlackSixMark size={s.mark} variant={markVariant} />}
-      <Box
-        component="span"
-        aria-hidden
-        sx={{
-          fontSize: s.font,
-          lineHeight: 1,
-          fontStretch: '125%',
-          letterSpacing: '0.01em',
-          textTransform: 'uppercase',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        <Box component="span" sx={{ fontWeight: 900 }}>
-          Black
-        </Box>
-        <Box component="span" sx={{ fontWeight: 300 }}>
-          {' '}
-          Six
-        </Box>
+      {withMark && <BlackSeatMark size={s.mark} variant={markVariant} />}
+      <Box component="svg" viewBox={wordmarkViewBox} aria-hidden sx={{ height: Math.round(s.font * 0.8), width: 'auto', display: 'block', flexShrink: 0 }}>
+        <path d={wordmarkPath} fillRule="evenodd" fill="currentColor" />
       </Box>
     </Box>
   );

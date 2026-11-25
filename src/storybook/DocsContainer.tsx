@@ -11,7 +11,7 @@ function prefersDark() {
 
 /**
  * Docs pages follow the Apariencia and Idioma toolbars: the Storybook docs theme flips to
- * dark, and MDX pages get Black Six providers so they can render real components.
+ * dark, and MDX pages get Black Seat providers so they can render real components.
  */
 export function DocsContainer({ children, ...props }: PropsWithChildren<DocsContainerProps>) {
   const [globals, setGlobals] = useState<BsGlobals>(() => ({

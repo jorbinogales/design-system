@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { emptyAuctionPickup } from '../../../blacksix/AuctionPickupForm/AuctionPickupForm';
+import { emptyAuctionPickup } from '../../../blackseat/AuctionPickupForm/AuctionPickupForm';
 import { AuctionPickupScreen, invalidPickup } from './AuctionPickupScreen';
 
 const meta = {

@@ -14,9 +14,9 @@ export const Predeterminado: Story = {};
 
 export const ConError: Story = {
   name: 'Con error',
-  args: { defaultPassword: 'BlackSix2025', defaultConfirm: 'BlackSix2024', initialSubmitted: true },
+  args: { defaultPassword: 'BlackSeat2025', defaultConfirm: 'BlackSeat2024', initialSubmitted: true },
 };
 
 export const Cargando: Story = {
-  args: { defaultPassword: 'BlackSix2025', defaultConfirm: 'BlackSix2025', loading: true },
+  args: { defaultPassword: 'BlackSeat2025', defaultConfirm: 'BlackSeat2025', loading: true },
 };

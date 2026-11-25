@@ -1,6 +1,6 @@
 import type { Dayjs } from 'dayjs';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { emptyAuctionPickup, type AuctionPickupValue } from '../blacksix/AuctionPickupForm/AuctionPickupForm';
+import { emptyAuctionPickup, type AuctionPickupValue } from '../blackseat/AuctionPickupForm/AuctionPickupForm';
 import type { AppearanceMode } from '../components/preferences/AppearanceSelect/AppearanceSelect';
 import type { BookingDetail, PriceLine } from '../domain/booking';
 import type { BusinessUnit } from '../domain/units';

@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { AuctionPickupForm, validateAuctionPickup, type AuctionPickupErrors } from '../../blacksix/AuctionPickupForm/AuctionPickupForm';
+import { AuctionPickupForm, validateAuctionPickup, type AuctionPickupErrors } from '../../blackseat/AuctionPickupForm/AuctionPickupForm';
 import { BottomActionBar } from '../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../components/actions/Button/Button';
 import { useLocale, useT } from '../../i18n/locale';

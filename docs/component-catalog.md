@@ -45,7 +45,7 @@ Rules and conventions: `DESIGN.md`. Each phase appends its section here after in
 - `icons/<Name>Icon`: Detailing, Towing, PersonalWashing, ExteriorWash, Interior, Vacuum, EngineBay,
   Polish, Tires, TowTruck. `icons/unitIcon` → `unitIcon[unit]`. `createStrokeIcon(paths, name)` for new ones.
 - `brand/Wordmark` `{ size?: 'sm'|'md'|'lg'|'xl', withMark?, orientation?: 'horizontal'|'stacked', markVariant? }`.
-- `brand/BlackSixMark` `{ size?, variant?: 'orange'|'inverse'|'glyph', title? }`. Both provisional.
+- `brand/BlackSeatMark` `{ size?, variant?: 'orange'|'inverse'|'glyph', title? }`. Wordmark is the official traced logo; the mark is its B.
 
 ### Acciones — `components/actions/`
 - `Button/Button` `{ variant?: 'primary'|'secondary'|'quiet'|'destructive', size?: 'sm'|'md'|'lg' (default lg) }`
@@ -176,7 +176,7 @@ Rules and conventions: `DESIGN.md`. Each phase appends its section here after in
 - `RowMenu/RowMenu` `{ items: RowMenuItem[], label (required), size?: 'sm'|'md' }`; `RowMenuItem = { id, label, icon?, onClick, destructive?, disabled?, dividerBefore? }`.
 - `DataTable/todayAgendaExample.tsx` (story data, not a component): `agendaRows`, `filterAgenda`, `useAgendaColumns`, `useAgendaRowActions`, `AgendaMobileCard` (placeholder for the operator job card), `AgendaDetailDrawer`, `TodayAgenda`.
 
-## Phase 3A — Black Six components, domain types and mocks
+## Phase 3A — Black Seat components, domain types and mocks
 
 ### Domain — `domain/booking.ts`
 - Types: `Localized`, `ServiceCategory`, `ServicePackage`, `ServiceOffering`, `OpeningHours`, `Center`, `Customer`, `Vehicle`,
@@ -208,9 +208,9 @@ Rules and conventions: `DESIGN.md`. Each phase appends its section here after in
   - BS-24090: completed, with receipt PAY-9F4K2L.
   - BS-24071: cancelled and refunded.
 - Today's jobs include BS-24102 (Towing, IAA Miami North, lot 04217753, code 0093, unassigned).
-- Shared helpers: `blacksix/shared/format.ts` (dates, durations, hours, `addMinutes`, `auctionLabel`).
+- Shared helpers: `blackseat/shared/format.ts` (dates, durations, hours, `addMinutes`, `auctionLabel`).
 
-### Cliente components — `blacksix/<Name>/<Name>`
+### Cliente components — `blackseat/<Name>/<Name>`
 - `BusinessUnitCard` `{ unit, variant?: 'hero'|'compact', photoSrc?, fromPrice?, selected?, onSelect?(unit), href? }`.
 - `PackageCard` `{ pkg: ServicePackage, selected?, onSelect?(id), headingLevel? }` (selection tokens + check when selected).
 - `ServiceSheet` `{ service: ServiceOffering, photoSrc?, showPhoto? (true; false when the screen already has a hero), fromPrice, categoryLabels?, placeLabel?, onChooseTime?, action?: 'inline'|'none' }`
@@ -227,7 +227,7 @@ Rules and conventions: `DESIGN.md`. Each phase appends its section here after in
 - `StatusHistory` `{ changes: StatusChange[], audience?: 'customer'|'operator', order?: 'asc'|'desc', showUpcoming?, label? }`
   (`customer` = Track Order timeline).
 
-### Operator components — `blacksix/<Name>/<Name>`
+### Operator components — `blackseat/<Name>/<Name>`
 - `OperatorJobCard` `{ job: Job, assigneeName?, variant?: 'card'|'embedded', onAction?(action, job) }`. `embedded` for
   `DataTable.renderMobileCard`. Same file: `JobNextAction`, `JobAssignee`, `JobAuctionBlock`.
 - `DailyJobsTray` `{ jobs, day, onDayChange, today?, staff: {id,name}[], onOpenJob?, onAction?, activeJobId?, pageSize?, loading? }`; `filterJobs`.

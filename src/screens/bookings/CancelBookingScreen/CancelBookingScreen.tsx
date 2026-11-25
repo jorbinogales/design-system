@@ -3,7 +3,7 @@ import PaymentsOutlined from '@mui/icons-material/PaymentsOutlined';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { formatDateShort } from '../../../blacksix/shared/format';
+import { formatDateShort } from '../../../blackseat/shared/format';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
 import { formatSlotTime } from '../../../components/date-time/TimeSlot/TimeSlot';

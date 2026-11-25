@@ -7,7 +7,7 @@ import VolumeUpRounded from '@mui/icons-material/VolumeUpRounded';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { BlackSixMark } from '../../../brand/BlackSixMark';
+import { BlackSeatMark } from '../../../brand/BlackSeatMark';
 import { Tag } from '../../../components/data-display/Tag/Tag';
 import { initialsOf } from '../../../components/data-display/InitialsAvatar/InitialsAvatar';
 import { TowingIcon } from '../../../icons/TowingIcon';
@@ -75,7 +75,7 @@ export function VoiceCallScreen({ conversationId = 'mateo', initialSeconds = 72,
             m: '53px',
           }}
         >
-          {c.kind === 'support' ? <BlackSixMark size={148} variant="inverse" /> : initialsOf(c.name)}
+          {c.kind === 'support' ? <BlackSeatMark size={148} variant="inverse" /> : initialsOf(c.name)}
         </Box>
         <Box sx={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'center' }}>
           <Typography variant="h1" component="h1">

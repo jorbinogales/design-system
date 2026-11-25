@@ -7,7 +7,7 @@ import type { Offer } from '../../../domain/booking';
 import { unitMeta } from '../../../domain/units';
 import { useLocale, useT } from '../../../i18n/locale';
 import { unitIcon } from '../../../icons/unitIcon';
-import { blackSixDate } from './dates';
+import { blackSeatDate } from './dates';
 import { bs } from '../../../theme/theme';
 import { radius, transition } from '../../../theme/tokens';
 import { InverseSurface } from '../../../theme/SchemeScope';
@@ -55,7 +55,7 @@ export function OfferCard({ offer, onOpen, width = 300 }: { offer: Offer; onOpen
           {title}
         </Typography>
         <Typography variant="caption" sx={{ color: bs.text.secondary }}>
-          {t.until(blackSixDate(offer.validUntil, locale))}
+          {t.until(blackSeatDate(offer.validUntil, locale))}
         </Typography>
         <Box sx={{ mt: 'auto', display: 'inline-flex', alignItems: 'center', gap: 1.5, color: bs.text.primary }}>
           <Typography variant="label" component="span">

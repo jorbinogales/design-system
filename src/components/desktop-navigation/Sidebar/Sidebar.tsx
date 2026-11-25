@@ -20,7 +20,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import type { ReactNode } from 'react';
-import { BlackSixMark } from '../../../brand/BlackSixMark';
+import { BlackSeatMark } from '../../../brand/BlackSeatMark';
 import { Wordmark } from '../../../brand/Wordmark';
 import { useT } from '../../../i18n/locale';
 import { bs } from '../../../theme/theme';
@@ -140,7 +140,7 @@ export function Sidebar({ items, value, onChange, role, collapsed = false, onCol
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: collapsed ? 'center' : 'space-between', gap: 2, height: 64, px: collapsed ? 0 : 5, flexShrink: 0 }}>
-        {collapsed ? <BlackSixMark size={32} /> : <Wordmark size="sm" withMark />}
+        {collapsed ? <BlackSeatMark size={32} /> : <Wordmark size="sm" withMark />}
         {onCollapsedChange && !collapsed && <IconButton label={t.collapse} icon={<ChevronLeftRounded />} size="sm" tooltip onClick={() => onCollapsedChange(true)} aria-expanded />}
       </Box>
       <Box component="nav" aria-label={label ?? t.nav} sx={{ flex: 1, minHeight: 0, overflowY: 'auto', px: collapsed ? 2 : 3, py: 2 }}>

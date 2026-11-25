@@ -9,7 +9,7 @@ import { Price } from '../../../components/data-display/Price/Price';
 import { Tag } from '../../../components/data-display/Tag/Tag';
 import { Card } from '../../../components/layout/Card/Card';
 import { Media } from '../../../components/layout/Media/Media';
-import { formatDuration } from '../../../blacksix/shared/format';
+import { formatDuration } from '../../../blackseat/shared/format';
 import type { ServicePackage } from '../../../domain/booking';
 import { unitMeta } from '../../../domain/units';
 import { useLocale, useT } from '../../../i18n/locale';

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import { AuctionPickupForm, validateAuctionPickup, type AuctionPickupValue } from '../../../blacksix/AuctionPickupForm/AuctionPickupForm';
+import { AuctionPickupForm, validateAuctionPickup, type AuctionPickupValue } from '../../../blackseat/AuctionPickupForm/AuctionPickupForm';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
 import { InlineAlert } from '../../../components/feedback/InlineAlert/InlineAlert';

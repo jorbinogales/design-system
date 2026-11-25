@@ -20,7 +20,7 @@ const messages = {
     start: 'Comenzar',
     progress: (n: number, total: number) => `Paso ${n} de ${total}`,
     slides: [
-      { title: 'Encuentra tu centro Black Six en el mapa', body: 'Mira dónde estamos en el área de Miami y si llegamos a tu casa u oficina para el lavado a domicilio.' },
+      { title: 'Encuentra tu centro Black Seat en el mapa', body: 'Mira dónde estamos en el área de Miami y si llegamos a tu casa u oficina para el lavado a domicilio.' },
       { title: 'Detailing, Towing y Personal Washing en una sola app', body: 'Pule tu auto, recoge el que compraste en Copart o IAA, o pide un lavado donde estés.' },
       { title: 'Controla tus reservas de principio a fin', body: 'Confirma, reprograma y sigue cada servicio. Todo queda en un solo historial.' },
     ],
@@ -32,7 +32,7 @@ const messages = {
     start: 'Get started',
     progress: (n: number, total: number) => `Step ${n} of ${total}`,
     slides: [
-      { title: 'Find your Black Six center on the map', body: 'See where we are across Miami and whether we reach your home or office for at-home washing.' },
+      { title: 'Find your Black Seat center on the map', body: 'See where we are across Miami and whether we reach your home or office for at-home washing.' },
       { title: 'Detailing, Towing and Personal Washing in one app', body: 'Polish your car, pick up the one you bought at Copart or IAA, or book a wash wherever you are.' },
       { title: 'Stay in control of your bookings, start to finish', body: 'Confirm, reschedule and track every service. Everything lives in a single history.' },
     ],

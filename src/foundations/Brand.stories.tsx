@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { BlackSixMark } from '../brand/BlackSixMark';
+import { BlackSeatMark } from '../brand/BlackSeatMark';
 import { Wordmark } from '../brand/Wordmark';
 import { useT } from '../i18n/locale';
 import { InverseSurface, SchemeScope } from '../theme/SchemeScope';
@@ -12,7 +12,7 @@ import { FoundationPage, FoundationSection } from './foundationKit';
 const m = {
   es: {
     title: 'Marca',
-    intro: 'PROVISIONAL hasta recibir el logotipo oficial. Logotipo tipográfico: “BLACK” en Archivo de peso máximo y anchura expandida frente a “SIX” en peso ligero: el contraste está en el propio nombre. El símbolo es un seis geométrico dibujado con trazos (no depende de la fuente) sobre una loseta naranja con el carbón de los botones.',
+    intro: 'Logotipo oficial de Black Seat: BLACKSEAT en una sola palabra, sans geométrica de peso máximo, vectorizado desde el arte del cliente. El símbolo para espacios pequeños es la “B” del propio logotipo sobre una loseta naranja con el carbón de los botones; Black Seat aún no tiene un símbolo propio.',
     marks: 'Símbolo',
     wordmarks: 'Logotipo',
     surfaces: 'Sobre cada superficie',
@@ -23,7 +23,7 @@ const m = {
   },
   en: {
     title: 'Brand',
-    intro: 'PROVISIONAL until the official logo is supplied. Typographic wordmark: “BLACK” in Archivo at maximum weight and expanded width against “SIX” in a light weight: the contrast lives in the name itself. The symbol is a geometric six drawn with strokes (no font dependency) on an orange tile with the button charcoal.',
+    intro: 'Official Black Seat logo: BLACKSEAT as a single word in a heavy geometric sans, vectorized from the client\'s artwork. The symbol for tight spaces is the logo\'s own “B” on an orange tile with the button charcoal; Black Seat has no standalone symbol yet.',
     marks: 'Symbol',
     wordmarks: 'Wordmark',
     surfaces: 'On every surface',
@@ -42,16 +42,16 @@ function BrandPage() {
         <Box sx={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'flex-end' }}>
           {(['orange', 'inverse', 'glyph'] as const).map((v) => (
             <Box key={v} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-              <BlackSixMark size={72} variant={v} title="Black Six" />
+              <BlackSeatMark size={72} variant={v} title="Black Seat" />
               <Typography variant="caption" sx={{ color: bs.text.secondary }}>
                 {t.variants[v]}
               </Typography>
             </Box>
           ))}
           <Box sx={{ display: 'flex', gap: 3, alignItems: 'flex-end' }}>
-            <BlackSixMark size={24} />
-            <BlackSixMark size={32} />
-            <BlackSixMark size={48} />
+            <BlackSeatMark size={24} />
+            <BlackSeatMark size={32} />
+            <BlackSeatMark size={48} />
           </Box>
         </Box>
       </FoundationSection>

@@ -1,4 +1,4 @@
-// WCAG contrast check for Black Six tokens. Run: `node scripts/contrast.mjs`
+// WCAG contrast check for Black Seat tokens. Run: `node scripts/contrast.mjs`
 // (Node ≥ 23.6 strips TypeScript types, so tokens.ts is imported as-is.)
 // Exits with code 1 if any pair fails its threshold.
 import { color } from '../src/theme/tokens.ts';

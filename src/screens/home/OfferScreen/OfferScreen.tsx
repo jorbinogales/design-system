@@ -9,7 +9,7 @@ import { InverseSurface } from '../../../theme/SchemeScope';
 import { bs } from '../../../theme/theme';
 import { layout, radius } from '../../../theme/tokens';
 import { discountedPrice, forYouOffers, getOfferPackages, offerDeals } from '../data';
-import { blackSixDate } from '../shared/dates';
+import { blackSeatDate } from '../shared/dates';
 import { PackageListItem } from '../shared/PackageListItem';
 
 const messages = {
@@ -70,7 +70,7 @@ export function OfferScreen({ offerId = 'off-40' }: OfferScreenProps) {
               {offer.description[locale]}
             </Typography>
             <Typography variant="caption" sx={{ color: bs.text.secondary }}>
-              {t.until(blackSixDate(offer.validUntil, locale))}
+              {t.until(blackSeatDate(offer.validUntil, locale))}
             </Typography>
           </Box>
         </InverseSurface>

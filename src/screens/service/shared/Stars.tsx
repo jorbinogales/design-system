@@ -11,7 +11,7 @@ const messages = {
 };
 
 /**
- * MUI Rating with Black Six tokens: orange filled stars, strong-border empty stars. The value is also
+ * MUI Rating with Black Seat tokens: orange filled stars, strong-border empty stars. The value is also
  * announced (`getLabelText`) and callers show it as text, so the color is never the only cue.
  */
 export function Stars({ starSize = 20, sx, ...rest }: Omit<RatingProps, 'size'> & { starSize?: number }) {

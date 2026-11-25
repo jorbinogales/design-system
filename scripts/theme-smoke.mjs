@@ -1,4 +1,4 @@
-// Runtime smoke test: the theme builds, MUI generates a CSS variable for every Black Six
+// Runtime smoke test: the theme builds, MUI generates a CSS variable for every Black Seat
 // token, and the hand-built `bs` references match MUI's names. Run: `node scripts/theme-smoke.mjs`
 import { createServer } from 'vite';
 

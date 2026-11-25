@@ -17,7 +17,7 @@ export interface ButtonProps extends Omit<MuiButtonProps, 'variant' | 'size' | '
 const muiSize = { sm: 'small', md: 'medium', lg: 'large' } as const;
 
 /**
- * Black Six button. Orange buttons always carry charcoal text (#111111, 5.75:1).
+ * Black Seat button. Orange buttons always carry charcoal text (#111111, 5.75:1).
  * Inherits every MUI Button prop: `startIcon`, `endIcon`, `fullWidth`, `loading`, `href`, `disabled`.
  */
 export function Button({ variant = 'primary', size = 'lg', ...rest }: ButtonProps) {

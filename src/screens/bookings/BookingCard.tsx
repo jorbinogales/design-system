@@ -6,7 +6,7 @@ import StarRounded from '@mui/icons-material/StarRounded';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import type { ReactNode } from 'react';
-import { auctionLabel, formatDateShort } from '../../blacksix/shared/format';
+import { auctionLabel, formatDateShort } from '../../blackseat/shared/format';
 import { Button } from '../../components/actions/Button/Button';
 import { formatAddress } from '../../components/address/LocationCard/LocationCard';
 import { formatSlotTime } from '../../components/date-time/TimeSlot/TimeSlot';

@@ -19,7 +19,7 @@ import { useIdSet } from '../shared/useIdSet';
 
 const messages = {
   es: {
-    map: 'Mapa de centros Black Six cerca de Doral, FL, con la zona de cobertura de Personal Washing',
+    map: 'Mapa de centros Black Seat cerca de Doral, FL, con la zona de cobertura de Personal Washing',
     search: 'Buscar',
     placeholder: 'Buscar servicios o centros',
     filters: 'Filtros',
@@ -28,7 +28,7 @@ const messages = {
     cards: 'Centros en el mapa',
   },
   en: {
-    map: 'Map of Black Six centers near Doral, FL, with the Personal Washing coverage area',
+    map: 'Map of Black Seat centers near Doral, FL, with the Personal Washing coverage area',
     search: 'Search',
     placeholder: 'Search services or centers',
     filters: 'Filters',

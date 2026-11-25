@@ -13,5 +13,5 @@ export const Predeterminado: StoryObj<typeof meta> = { name: 'Predeterminado', r
 
 export const ConError: StoryObj<typeof meta> = {
   name: 'Con error',
-  render: () => <PasswordManagerScreen submitted initial={{ current: 'Blacksix2025', next: 'corta', confirm: 'otra' }} />,
+  render: () => <PasswordManagerScreen submitted initial={{ current: 'Blackseat2025', next: 'corta', confirm: 'otra' }} />,
 };

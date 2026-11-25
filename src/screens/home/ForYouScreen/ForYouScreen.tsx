@@ -8,8 +8,8 @@ import { forYouOffers } from '../data';
 import { OfferCard } from '../shared/OfferCard';
 
 const messages = {
-  es: { title: '#ParaTi', intro: 'Ofertas de Black Six elegidas según los servicios que más usas.', list: 'Ofertas para ti' },
-  en: { title: '#ForYou', intro: 'Black Six offers picked from the services you use most.', list: 'Offers for you' },
+  es: { title: '#ParaTi', intro: 'Ofertas de Black Seat elegidas según los servicios que más usas.', list: 'Ofertas para ti' },
+  en: { title: '#ForYou', intro: 'Black Seat offers picked from the services you use most.', list: 'Offers for you' },
 };
 
 /** Para ti (Inicio, "Ver todo" de #ParaTi): every offer as a full-width card. */

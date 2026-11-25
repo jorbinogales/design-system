@@ -3,7 +3,7 @@ import PaymentsOutlined from '@mui/icons-material/PaymentsOutlined';
 import PersonSearchOutlined from '@mui/icons-material/PersonSearchOutlined';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { formatDateLong } from '../../../blacksix/shared/format';
+import { formatDateLong } from '../../../blackseat/shared/format';
 import { Button } from '../../../components/actions/Button/Button';
 import { formatAddress } from '../../../components/address/LocationCard/LocationCard';
 import { formatSlotTime } from '../../../components/date-time/TimeSlot/TimeSlot';

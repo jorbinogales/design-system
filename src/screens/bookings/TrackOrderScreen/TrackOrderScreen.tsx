@@ -1,8 +1,8 @@
 import PlaceOutlined from '@mui/icons-material/PlaceOutlined';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { StatusHistory } from '../../../blacksix/StatusHistory/StatusHistory';
-import { formatDateLong, formatDuration } from '../../../blacksix/shared/format';
+import { StatusHistory } from '../../../blackseat/StatusHistory/StatusHistory';
+import { formatDateLong, formatDuration } from '../../../blackseat/shared/format';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
 import { formatAddress } from '../../../components/address/LocationCard/LocationCard';

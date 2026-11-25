@@ -1,6 +1,6 @@
-# Prototipo MVP Black Six — brief y referencias
+# Prototipo MVP Black Seat — brief y referencias
 
-PRD: [ChatPRD · Black Six — PRD del MVP](https://app.chatprd.ai/chat/3af4a79e-393c-4de5-9a6b-1a013c6f5030?doc=5b3d2e5e-5ac7-4b6f-ae1a-ec390a79b7e6)
+PRD: [ChatPRD · Black Seat — PRD del MVP](https://app.chatprd.ai/chat/3af4a79e-393c-4de5-9a6b-1a013c6f5030?doc=5b3d2e5e-5ac7-4b6f-ae1a-ec390a79b7e6)
 Fuente: reunión con Elio y Jesús (Granola, 24 nov 2026). Entrega: preview antes del lunes 30 nov.
 
 ## Brief de una página
@@ -8,7 +8,7 @@ Fuente: reunión con Elio y Jesús (Granola, 24 nov 2026). Entrega: preview ante
 | | |
 |---|---|
 | Qué | Prototipo navegable de baja fidelidad con datos de ejemplo, construido con los componentes reales del design system. |
-| Para quién | Cliente estadounidense en Carolina del Norte (móvil) y el equipo de Black Six, Elio y Jesús (escritorio). |
+| Para quién | Cliente estadounidense en Carolina del Norte (móvil) y el equipo de Black Seat, Elio y Jesús (escritorio). |
 | Acción principal | Cliente: reservar un servicio sin escribir por WhatsApp. Operador: ver y asignar los trabajos de hoy. |
 | Adjetivos | Preciso · confiable · rápido. |
 | Alcance | Inicio con 3 unidades + VIP · portal de unidad (paquetes, horario, quién atiende) · fecha y hora · dirección o recogida en subasta · pago y resumen · confirmación · mis reservas · VIP · operador: Hoy + asignación + detalle. |
@@ -24,7 +24,7 @@ Diferencia con los mocks del DS: en la reunión, Personal Washing es **pressure 
 ### Inicio del cliente
 - [Urban Company](https://mobbin.com/screens/cc99064d-d8ab-40f7-a377-7bd721256f49?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp) — tarjetas fotográficas a ancho completo con un solo CTA por servicio. **Adoptado:** 3 unidades apiladas a ancho completo, no carrusel; son solo 3 y cada una es una puerta.
 - [Angi](https://mobbin.com/screens/b2b7bce6-aaf1-4b0a-85fa-48e79f488f49?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp) — precio "from $160" sobre la foto. **Adoptado:** precio "desde" visible en cada unidad.
-- [Careem](https://mobbin.com/screens/ff4258d2-8b0e-430c-9bf7-c7b011542b24?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp) — cuadrícula de muchas categorías. **Descartado:** Black Six tiene 3 unidades; una cuadrícula las diluye.
+- [Careem](https://mobbin.com/screens/ff4258d2-8b0e-430c-9bf7-c7b011542b24?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp) — cuadrícula de muchas categorías. **Descartado:** Black Seat tiene 3 unidades; una cuadrícula las diluye.
 
 ### Portal de unidad y paquetes
 - [Klook](https://mobbin.com/screens/e2fcac0f-b85d-435e-b260-cbb25200ffef?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp) — paquetes como tarjetas con radio, borde de selección y barra inferior con total + Continuar. **Adoptado** (PackageCard + BottomActionBar).
@@ -52,7 +52,7 @@ Diferencia con los mocks del DS: en la reunión, Personal Washing es **pressure 
 - [Zocdoc](https://mobbin.com/screens/163db635-5f53-47b0-aa35-def409b9ee40?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp) — sugerir otro servicio tras confirmar. **Adoptado** de forma ligera (venta cruzada a VIP).
 
 ### VIP
-- [Superpower](https://mobbin.com/screens/4b39d6f4-1f18-4f41-a682-feb104cbe088?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp) — precio protagonista + lista de beneficios con icono + CTA negro. **Adoptado** (en Black Six el CTA es naranja: es la única acción).
+- [Superpower](https://mobbin.com/screens/4b39d6f4-1f18-4f41-a682-feb104cbe088?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp) — precio protagonista + lista de beneficios con icono + CTA negro. **Adoptado** (en Black Seat el CTA es naranja: es la única acción).
 - [Citi Bike](https://mobbin.com/screens/85aa776b-4962-4c26-935f-8ba19b80d59b?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp) — beneficio con título + una línea de detalle. **Adoptado.**
 - [Panera](https://mobbin.com/screens/09814cd7-8e39-4740-9574-ff733def15f0?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp) — mensual vs anual lado a lado. **Adoptado** con SegmentedControl.
 

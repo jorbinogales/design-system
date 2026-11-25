@@ -5,7 +5,7 @@ import type { StatusTone } from '../theme/tokens';
  * Three independent status dimensions (brief §5). A booking can be confirmed, awaiting
  * assignment and with payment pending at the same time, so never merge them into one field.
  * The exact list still needs business validation (see brief: does choosing a payment method
- * confirm the booking, or does Black Six charge inside the PWA?).
+ * confirm the booking, or does Black Seat charge inside the PWA?).
  */
 export const bookingStatuses = ['pending_confirmation', 'confirmed', 'in_progress', 'completed', 'cancelled'] as const;
 export const assignmentStatuses = ['unassigned', 'assigned'] as const;

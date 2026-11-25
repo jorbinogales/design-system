@@ -17,7 +17,7 @@ const messages = {
     title: 'Activa tu ubicación',
     subtitle: 'La usamos solo para mostrarte lo que tienes cerca.',
     benefits: [
-      { icon: StorefrontOutlined, text: 'El centro Black Six más cercano' },
+      { icon: StorefrontOutlined, text: 'El centro Black Seat más cercano' },
       { icon: ApartmentRounded, text: 'Si llegamos a tu casa u oficina para lavado a domicilio' },
       { icon: ScheduleRounded, text: 'Tiempos de llegada más precisos' },
     ],
@@ -31,7 +31,7 @@ const messages = {
     title: 'Turn on your location',
     subtitle: 'We only use it to show you what is nearby.',
     benefits: [
-      { icon: StorefrontOutlined, text: 'The closest Black Six center' },
+      { icon: StorefrontOutlined, text: 'The closest Black Seat center' },
       { icon: ApartmentRounded, text: 'Whether we reach your home or office for at-home washing' },
       { icon: ScheduleRounded, text: 'More accurate arrival times' },
     ],

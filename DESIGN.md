@@ -1,6 +1,6 @@
-# Black Six — DESIGN.md
+# Black Seat — DESIGN.md
 
-Contract for every agent working on the Black Six design system (PWA: Detailing, Towing, Personal
+Contract for every agent working on the Black Seat design system (PWA: Detailing, Towing, Personal
 Washing; cliente mobile-first + operador desktop/mobile; ES default / EN; light #FFFFFF / dark #111111).
 Read this whole file before writing code. Source of truth for the product: `docs/brief.md`.
 
@@ -65,12 +65,12 @@ If a token is genuinely missing, report it to the orchestrator; do not edit the 
 src/theme/        tokens, theme, AppProviders, augmentation, SchemeScope, a11y   (frozen after Phase 1)
 src/i18n/         locale.tsx (API fixed) · format.ts (intlLocale, formatMoney, formatNumber)
 src/domain/       status.ts · units.ts (+ later shared domain types)
-src/brand/        Wordmark, BlackSixMark (provisional)
+src/brand/        Wordmark (logo oficial vectorizado), BlackSeatMark (B del logo), logoPaths
 src/icons/        custom SvgIcons (one file each) + unitIcon map
 src/storybook/    DeviceFrame, decorators, DocsContainer, docSpec, Showcase, labels, sbThemes
 src/foundations/  Fundamentos stories
 src/components/<family>/<Component>/   generic components (Phase 1 + Phase 2)
-src/blacksix/<Component>/              brief §5 components (Phase 2)
+src/blackseat/<Component>/              brief §5 components (Phase 2)
 src/mocks/                             shared realistic data (Phase 2)
 src/screens/<flow>/<Screen>/           screen stories (Phase 3)
 ```
@@ -124,7 +124,7 @@ Domain labels come from `src/domain/*` (`getStatusLabel(dim, status, locale, lon
 
 ## 6. Story conventions
 
-- `title`: `'Componentes/<Familia>/<Nombre>'` (e.g. `Componentes/Acciones/Botón`), `Black Six/<Nombre>`,
+- `title`: `'Componentes/<Familia>/<Nombre>'` (e.g. `Componentes/Acciones/Botón`), `Black Seat/<Nombre>`,
   `Pantallas/<Flujo>/<Pantalla>`. Story `name` in Spanish ('Interactivo', 'Estados', 'Ejemplo de negocio').
 - Autodocs is on globally. First story = "Interactivo" with args when practical.
 - Copy inside stories: a `messages` object + small demo components using `useT` (hooks need components:

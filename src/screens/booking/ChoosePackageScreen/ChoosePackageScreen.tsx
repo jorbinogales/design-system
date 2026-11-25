@@ -4,7 +4,7 @@ import { BottomActionBar } from '../../../components/actions/BottomActionBar/Bot
 import { Button } from '../../../components/actions/Button/Button';
 import { Tag } from '../../../components/data-display/Tag/Tag';
 import { useLocale, useT } from '../../../i18n/locale';
-import { PackageCard } from '../../../blacksix/PackageCard/PackageCard';
+import { PackageCard } from '../../../blackseat/PackageCard/PackageCard';
 import { getPackagesForUnit } from '../../../mocks/catalog';
 import { getVehicle, vehicleName } from '../../../mocks/people';
 import { myVehicles } from '../data';

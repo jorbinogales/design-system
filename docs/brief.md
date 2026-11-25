@@ -4,7 +4,7 @@ Fuente de verdad del encargo. Las referencias visuales están en `ref/` (ver `re
 
 ## Encargo
 
-Crear un design system para Black Six (unidades: Detailing, Towing y Personal Washing) con
+Crear un design system para Black Seat (unidades: Detailing, Towing y Personal Washing) con
 modo claro (fondo blanco) y modo oscuro (fondo negro). El naranja provisional #FF681D se
 reemplaza por #FF5000. La previsualización se hace en Storybook: componentes, colores y
 pantallas. Las pantallas toman como referencia el kit de `ref/`.
@@ -52,7 +52,7 @@ pantallas. Las pantallas toman como referencia el kit de `ref/`.
 | Tablas y bandejas | Tabla, cabecera ordenable, fila, barra de filtros, búsqueda, paginación, menú por fila y detalle | Vista Hoy, filtro por unidad, responsable y estado. En móvil, la fila se transforma en una tarjeta de trabajo. |
 | Preferencias | Selector de idioma, selector de apariencia y menú de cuenta | Español / English. Apariencia clara, oscura o del sistema. |
 
-## 5. Componentes propios de Black Six
+## 5. Componentes propios de Black Seat
 
 Estos componentes son los que le dan identidad al producto y conectan los dos lados del negocio.
 
@@ -85,7 +85,7 @@ al mismo tiempo. Para representarlo, usaría tres propiedades independientes.
 | payment.status | Pendiente · Pagado · Fallido · Reembolsado, si aplica |
 
 Los estados exactos deben validarse con el negocio. En particular, falta definir si elegir un
-método de pago basta para confirmar la cita o si Black Six cobrará dentro de la PWA. Esa
+método de pago basta para confirmar la cita o si Black Seat cobrará dentro de la PWA. Esa
 decisión cambia el flujo y los mensajes que verá el cliente.
 
 ## 6. Qué documentar en cada componente
@@ -101,7 +101,7 @@ decisión cambia el flujo y los mensajes que verá el cliente.
 | Contenido ES/EN | Etiquetas y mensajes reales en ambos idiomas. Incluir casos largos como Pendiente de asignación y Awaiting assignment. |
 | Ejemplo de negocio | Una instancia con datos realistas de Detailing, Towing o Personal Washing. |
 
-## Tokens de color para Black Six
+## Tokens de color para Black Seat
 
 Naranja #FF5000, con negro #111111 y blanco #FFFFFF como base.
 

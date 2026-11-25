@@ -1,7 +1,7 @@
 # Referencias visuales
 
 Kit de referencia: "Car Wash App UI/UX Design" (Behance). Se usa solo como referencia de
-estructura y patrones; la marca, los colores y el contenido son de Black Six.
+estructura y patrones; la marca, los colores y el contenido son de Black Seat.
 
 | Archivo | Qué es |
 |---|---|
@@ -10,7 +10,7 @@ estructura y patrones; la marca, los colores y el contenido son de Black Six.
 | `02-grid-detail.png` | Cuadrícula de pantallas a buena resolución |
 | `03-color-ui-all-screens.png` | Todas las pantallas en color (1080×16462) |
 | `04-wireframes-all-screens.png` | Las mismas pantallas en wireframe de alta fidelidad |
-| `05-reference-palette.png` | Paleta y tipografía del kit (Inter, morado #6D48FF; se reemplaza por la paleta Black Six) |
+| `05-reference-palette.png` | Paleta y tipografía del kit (Inter, morado #6D48FF; se reemplaza por la paleta Black Seat) |
 | `contact-sheet-1..3.png` | Miniaturas numeradas de todas las pantallas recortadas |
 | `screens/sNN-*.png` | Una pantalla por archivo, ampliada ×2.5 y legible |
 

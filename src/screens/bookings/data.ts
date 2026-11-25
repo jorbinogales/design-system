@@ -79,7 +79,7 @@ export const reviewedRatings: Record<string, number> = { 'BS-24055': 5 };
 export const refundOf = (b: BookingDetail): { kind: 'refunded'; amount: number } | { kind: 'none' } =>
   b.payment.status === 'refunded' ? { kind: 'refunded', amount: b.total } : { kind: 'none' };
 
-const SYSTEM = { name: 'Black Six', role: 'system' } as const;
+const SYSTEM = { name: 'Black Seat', role: 'system' } as const;
 const towingBase = getBookingDetail('BS-24120');
 const towingHistoryExtra: StatusChange[] = [
   { id: 'BS-24120-b-confirmed', dimension: 'booking', status: 'confirmed', at: '2026-11-27T10:50', by: SYSTEM },

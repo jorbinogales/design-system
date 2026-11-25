@@ -5,10 +5,10 @@ import WorkspacePremiumOutlined from '@mui/icons-material/WorkspacePremiumOutlin
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { BookingSummary } from '../../blacksix/BookingSummary/BookingSummary';
-import { NextAppointmentCard } from '../../blacksix/NextAppointmentCard/NextAppointmentCard';
-import { PaymentPanel } from '../../blacksix/PaymentPanel/PaymentPanel';
-import { StatusHistory } from '../../blacksix/StatusHistory/StatusHistory';
+import { BookingSummary } from '../../blackseat/BookingSummary/BookingSummary';
+import { NextAppointmentCard } from '../../blackseat/NextAppointmentCard/NextAppointmentCard';
+import { PaymentPanel } from '../../blackseat/PaymentPanel/PaymentPanel';
+import { StatusHistory } from '../../blackseat/StatusHistory/StatusHistory';
 import { Button } from '../../components/actions/Button/Button';
 import { StatusBadge } from '../../components/data-display/StatusBadge/StatusBadge';
 import { useToast } from '../../components/feedback/Toast/Toast';

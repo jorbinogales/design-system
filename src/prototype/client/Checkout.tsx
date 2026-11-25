@@ -1,8 +1,8 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useMemo, useState } from 'react';
-import { BookingSummary, type SummaryField } from '../../blacksix/BookingSummary/BookingSummary';
-import { PaymentPanel } from '../../blacksix/PaymentPanel/PaymentPanel';
+import { BookingSummary, type SummaryField } from '../../blackseat/BookingSummary/BookingSummary';
+import { PaymentPanel } from '../../blackseat/PaymentPanel/PaymentPanel';
 import { BottomActionBar } from '../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../components/actions/Button/Button';
 import { formatMoney } from '../../i18n/format';
@@ -19,7 +19,7 @@ const messages = {
     payment: 'Método de pago',
     chargedNow: (a: string) => `Se cobran ${a} al confirmar.`,
     payLater: 'Hoy no pagas nada. La reserva queda con el pago pendiente.',
-    legal: 'Al confirmar aceptas las condiciones de servicio y la política de cancelación de Black Six.',
+    legal: 'Al confirmar aceptas las condiciones de servicio y la política de cancelación de Black Seat.',
     total: 'Total',
     dueToday: 'Pagas hoy',
     confirm: 'Confirmar reserva',
@@ -30,7 +30,7 @@ const messages = {
     payment: 'Payment method',
     chargedNow: (a: string) => `${a} is charged on confirmation.`,
     payLater: 'You pay nothing today. The booking stays payment pending.',
-    legal: "By confirming you accept Black Six's terms of service and cancellation policy.",
+    legal: "By confirming you accept Black Seat's terms of service and cancellation policy.",
     total: 'Total',
     dueToday: 'Due today',
     confirm: 'Confirm booking',
