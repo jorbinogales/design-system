@@ -65,3 +65,41 @@ Diferencia con los mocks del DS: en la reunión, Personal Washing es **pressure 
 ## Datos de Carolina del Norte
 
 Patios reales de subasta (direcciones públicas): IAA Charlotte (1710 Starita Rd, Charlotte 28206), Copart China Grove (1081 Recovery Rd, 28023), Copart Raleigh North (1900 Old Crews Rd, Knightdale 27545), IAA Raleigh (60 Sadisco Rd, Clayton 27520). Clientes, direcciones de clientes y teléfonos (555-01xx) son inventados.
+
+---
+
+# Revisión completa de la reunión (transcripción, 24 nov 2026)
+
+Lo que pide el negocio y todavía no está en el prototipo ni en el PRD:
+
+| # | Hallazgo en la transcripción | Estado | Acción |
+|---|---|---|---|
+| 1 | Leandro ofreció una app para **gestionar clientes, vendedores y las comisiones a repartir**. | Falta | Módulo de vendedores y comisiones (fase 2). Confirmar con Elio quiénes son los vendedores y cómo se calcula la comisión. |
+| 2 | Ya tenían una web: **se venció el hosting y el dominio**. | Falta | Recuperar o comprar dominio y hosting para la nueva web. |
+| 3 | Towing: el cliente "se prepara para el pago **o da una inicial antes de buscar el auto**". | Falta | Depósito/anticipo en Towing antes de la recogida. |
+| 4 | Towing: mostrar **con qué subastas trabajan, horario, días y si hacen domicilio**. | Parcial | Portal de Towing ya muestra horario y Copart/IAA; falta "días de trabajo" y entrega a domicilio explícita. |
+| 5 | **"Todo el mundo usa iPhone"**. | Riesgo | Probar la PWA en Safari iOS e incluir guía "Agregar a pantalla de inicio". App Store después (~$200). |
+| 6 | Colores: **"mayormente blanco y negro; naranja poco"**. Leandro recomendó una versión del logo con color. | Ajustar | La web y la app reducen el naranja a la acción principal. Proponer versión del logo con acento naranja. |
+| 7 | **Updates cada hora** del avance (referencia Albi) — "eso le gusta mucho al gringo". | Futuro | Subir prioridad: es el diferencial frente a competencia. |
+| 8 | **GPS/tracking** opcional ("lo activa el que quiera"), cuando haya empleados. | Futuro | Sin cambios. |
+| 9 | Jesús debe hacer **estudio de precios** de pressure cleaning; incluye alfombras; químicos y equipo pendientes. | Bloqueante de precios | Precios de Personal Washing son de ejemplo. |
+| 10 | Elio ofreció un **boceto en papel** de cómo imagina la app. | Pendiente | Pedirlo por el grupo. |
+| 11 | Quieren **"agarrar ranking"** y crecer contratando 2–3 personas. | Falta | Reseñas de clientes + perfil en Google; gestión de personal en el panel. |
+| 12 | Mercado: NC (Charlotte; mencionan Richmond y Greenport), luego SC, Virginia, Nashville, Atlanta. | OK | Zona de servicio en la web. |
+| 13 | Grupo de WhatsApp: **Alejandro, Jordi, Elio y Leandro** (el resumen de Granola puso a Jesús en lugar de Leandro). | Corrección | — |
+| 14 | El proyecto sirve como **portafolio para clientes americanos**; posible LLC con Elio como representante. | Comercial | Fuera del producto. |
+
+# Landing pública (web del proyecto)
+
+**Brief.** Web de una página, bilingüe, que presente Black Seat como una marca con tres unidades y lleve a reservar en la app. Público: cliente americano en Carolina del Norte. Acción principal: Reservar. Tono del flyer: póster en blanco y negro, titulares condensados en mayúsculas, naranja solo en la acción.
+
+**Secciones:** cabecera · hero · índice de unidades · Detailing · Towing · Personal Washing · cómo funciona · VIP · zona de servicio · preguntas frecuentes · cierre y footer.
+
+| Sección | Referencias Mobbin | Decisión |
+|---|---|---|
+| Hero | [Freshman](https://mobbin.com/sites/sections/efd2c199-fe77-4b3a-971a-0ec6bdeb686b?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp), [Webflow/Shift](https://mobbin.com/sites/sections/f031eb65-6ef5-49bc-9e49-b6f591d58125?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp) | Titular gigante en mayúsculas sobre negro, como Freshman y el flyer; un solo CTA naranja. |
+| Índice de unidades | [metic. lista](https://mobbin.com/sites/sections/257ac093-d995-4565-8574-f0b9ff580b04?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp), [YLLW](https://mobbin.com/sites/sections/4992ac8d-926b-404b-8042-8f1ff17fd7a4?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp), [Fiasco](https://mobbin.com/sites/sections/814e0a13-81d8-4d89-95f1-33b72ef0d9d3?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp) | Filas tipo metic: nombre grande, una línea, "desde", flecha. Titulares condensados como YLLW. |
+| Cómo funciona | [Escape Cafe](https://mobbin.com/sites/sections/68d54554-65f5-4fd2-a974-c30e7c9eaffc?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp), [Titan](https://mobbin.com/sites/sections/0d103afa-c85e-4568-a98a-0a1e7cbd5e8f?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp) | Tres columnas con título condensado y regla superior (Escape Cafe). |
+| VIP | [MasterClass](https://mobbin.com/sites/sections/34f6ea6b-ceac-49d3-98c7-2d0cd7574a00?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp), [Superpower](https://mobbin.com/sites/sections/6116ce47-e74a-4afc-a67f-fa7496e8579f?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp) | Banda negra: título + CTA a la izquierda, beneficios con icono a la derecha (MasterClass); precio protagonista (Superpower). |
+| FAQ | [DICE](https://mobbin.com/sites/sections/39efc6da-f1f5-4a4f-abd1-8f1009712c2e?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp), [Mixpanel](https://mobbin.com/sites/sections/67d59fad-c6e5-43b0-814b-469bcf735e79?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp) | Acordeón sobrio de una columna. |
+| Footer | [Cosmos](https://mobbin.com/sites/sections/277145c1-b152-4185-ba3a-5568988cc33a?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp), [Chronicle](https://mobbin.com/sites/sections/62013f0b-73f1-4c27-83fc-c8bf21aa687c?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp), [Luma](https://mobbin.com/sites/sections/5b439406-fe96-4064-8312-5a744023659e?utm_source=claude&utm_medium=ai-assistant&utm_source_platform=mcp) | Logotipo BLACKSEAT gigante de borde a borde (Cosmos), columnas de enlaces (Chronicle). |
