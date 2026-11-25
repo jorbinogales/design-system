@@ -9,11 +9,10 @@ import { useLocale, useT } from '../../i18n/locale';
 import { unitIcon } from '../../icons/unitIcon';
 import { Button } from '../../components/actions/Button/Button';
 import { formatSlotTime } from '../../components/date-time/TimeSlot/TimeSlot';
-import { StatusBadge } from '../../components/data-display/StatusBadge/StatusBadge';
 import { Card } from '../../components/layout/Card/Card';
 import { bs } from '../../theme/theme';
 import { radius } from '../../theme/tokens';
-import { dayNumber, formatDateLong, monthShort } from '../shared/format';
+import { dayNumber, formatDateLong, monthShort, weekdayShort } from '../shared/format';
 
 export interface NextAppointmentCardProps {
   booking: BookingDetail;
@@ -27,7 +26,8 @@ const messages = {
 };
 
 /**
- * The customer's next appointment: service, date, time and status with a "Ver reserva" action.
+ * The customer's next appointment in two columns: a large date with the booking id under it, and
+ * service, date, time, place and a full-width "Ver reserva" action. Statuses live in the booking detail.
  * The booking id (BS-24117) is the same one the confirmation and the history use.
  */
 export function NextAppointmentCard({ booking, onView, href }: NextAppointmentCardProps) {
@@ -35,70 +35,82 @@ export function NextAppointmentCard({ booking, onView, href }: NextAppointmentCa
   const locale = useLocale();
   const Icon = unitIcon[booking.unit];
   const service = `${unitMeta[booking.unit].name} · ${booking.package.name[locale]}`;
-  const needsAssignment = booking.assignment.status === 'unassigned' && booking.status !== 'cancelled' && booking.status !== 'completed';
-  const needsPayment = booking.payment.status === 'pending' || booking.payment.status === 'failed';
   const place = booking.auction ? `${t.where.auction}: ${booking.address?.city ?? ''}` : booking.center ? booking.center.name : t.where.home;
 
   return (
     <Card component="article">
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-        <Box sx={{ display: 'flex', gap: 4, alignItems: 'flex-start' }}>
+      <Box sx={{ display: 'grid', gridTemplateColumns: 'minmax(96px, 30%) minmax(0, 1fr)', columnGap: 4, alignItems: 'stretch' }}>
+        {/* Left column: the date, large, and the booking id under it */}
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           <Box
             aria-hidden
-            sx={{ width: 60, flexShrink: 0, textAlign: 'center', py: 2, borderRadius: `${radius.md}px`, backgroundColor: bs.surface.subtle, border: `1px solid ${bs.border.subtle}` }}
+            sx={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              py: 3,
+              borderRadius: `${radius.md}px`,
+              backgroundColor: bs.surface.subtle,
+              border: `1px solid ${bs.border.subtle}`,
+            }}
           >
-            <Typography variant="caption" component="div" sx={{ color: bs.text.secondary, textTransform: 'uppercase' }}>
+            <Typography variant="label" component="div" sx={{ color: bs.text.secondary, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               {monthShort(booking.date, locale)}
             </Typography>
-            <Typography variant="h2" component="div" sx={{ lineHeight: 1.1, fontVariantNumeric: 'tabular-nums' }}>
+            <Typography component="div" sx={{ fontSize: '3rem', fontWeight: 800, lineHeight: 1, fontStretch: '108%', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums', my: 0.5 }}>
               {dayNumber(booking.date)}
             </Typography>
-          </Box>
-          <Box sx={{ minWidth: 0, flex: 1 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <Icon aria-hidden sx={{ fontSize: 20, flexShrink: 0 }} />
-              <Typography variant="h4" component="h3">
-                {service}
-              </Typography>
-            </Box>
-            <Typography variant="body2" sx={{ color: bs.text.secondary, mt: 0.5 }}>
-              {formatDateLong(booking.date, locale)}
+            <Typography variant="caption" component="div" sx={{ color: bs.text.secondary, textTransform: 'capitalize' }}>
+              {weekdayShort(booking.date, locale)}
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mt: 1.5 }}>
-              <ScheduleOutlined aria-hidden sx={{ fontSize: 18, color: bs.text.secondary }} />
-              <Typography variant="label" sx={{ fontVariantNumeric: 'tabular-nums' }}>
-                {formatSlotTime(booking.time, locale)}
-              </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5, mt: 1 }}>
-              <PlaceOutlined aria-hidden sx={{ fontSize: 18, mt: '1px', color: bs.text.secondary }} />
-              <Typography variant="body2" sx={{ color: bs.text.secondary }}>
-                {place}
-              </Typography>
-            </Box>
           </Box>
-        </Box>
-
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          <StatusBadge dimension="booking" status={booking.status} />
-          {needsAssignment && <StatusBadge dimension="assignment" status="unassigned" long variant="outline" size="sm" />}
-          {needsPayment && <StatusBadge dimension="payment" status={booking.payment.status} variant="outline" size="sm" />}
-        </Box>
-
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 3, flexWrap: 'wrap' }}>
-          <Typography variant="caption" sx={{ color: bs.text.secondary, fontVariantNumeric: 'tabular-nums' }}>
-            {t.code} <Box component="span" sx={{ color: bs.text.primary, fontWeight: 600 }}>{booking.id}</Box>
+          <Typography variant="caption" component="p" sx={{ color: bs.text.secondary, fontVariantNumeric: 'tabular-nums', textAlign: 'center' }}>
+            {t.code}{' '}
+            <Box component="span" sx={{ color: bs.text.primary, fontWeight: 600, whiteSpace: 'nowrap' }}>
+              {booking.id}
+            </Box>
           </Typography>
-          <Button
-            variant="secondary"
-            size="md"
-            href={href}
-            onClick={onView ? () => onView(booking.id) : undefined}
-            endIcon={<ArrowForwardRounded />}
-            aria-label={t.viewFor(booking.id, service)}
-          >
-            {t.view}
-          </Button>
+        </Box>
+
+        {/* Right column: service, date, time, place and the full-width action */}
+        <Box sx={{ minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+            <Icon aria-hidden sx={{ fontSize: 20, flexShrink: 0, mt: '2px' }} />
+            <Typography variant="h4" component="h3">
+              {service}
+            </Typography>
+          </Box>
+          <Typography variant="body2" sx={{ color: bs.text.secondary, mt: 0.5 }}>
+            {formatDateLong(booking.date, locale)}
+          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mt: 1.5 }}>
+            <ScheduleOutlined aria-hidden sx={{ fontSize: 18, color: bs.text.secondary }} />
+            <Typography variant="label" sx={{ fontVariantNumeric: 'tabular-nums' }}>
+              {formatSlotTime(booking.time, locale)}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5, mt: 1 }}>
+            <PlaceOutlined aria-hidden sx={{ fontSize: 18, mt: '1px', color: bs.text.secondary }} />
+            <Typography variant="body2" sx={{ color: bs.text.secondary }}>
+              {place}
+            </Typography>
+          </Box>
+          <Box sx={{ mt: 'auto', pt: 4 }}>
+            <Button
+              variant="secondary"
+              size="md"
+              fullWidth
+              href={href}
+              onClick={onView ? () => onView(booking.id) : undefined}
+              endIcon={<ArrowForwardRounded />}
+              aria-label={t.viewFor(booking.id, service)}
+              sx={{ whiteSpace: 'nowrap' }}
+            >
+              {t.view}
+            </Button>
+          </Box>
         </Box>
       </Box>
     </Card>

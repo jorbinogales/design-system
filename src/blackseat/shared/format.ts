@@ -18,6 +18,7 @@ export function formatDateMedium(iso: string, locale: Locale): string {
 }
 
 export const monthShort = (iso: string, locale: Locale) => new Intl.DateTimeFormat(intlLocale[locale], { month: 'short', timeZone: 'UTC' }).format(utc(iso)).replace(/\./g, '');
+export const weekdayShort = (iso: string, locale: Locale) => new Intl.DateTimeFormat(intlLocale[locale], { weekday: 'short', timeZone: 'UTC' }).format(utc(iso)).replace(/\./g, '');
 export const dayNumber = (iso: string) => String(utc(iso).getUTCDate());
 
 /** "2026-11-25T14:05" → "Nov 25 · 2:05 PM". */
