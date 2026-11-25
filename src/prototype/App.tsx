@@ -197,7 +197,7 @@ function Stage() {
   if (surface === 'o') {
     return (
       <Box sx={{ flex: 1, minHeight: 0 }}>
-        <ToastProvider>
+        <ToastProvider offsetBottom={phone ? 88 : 0}>
           <OperatorToday />
         </ToastProvider>
       </Box>

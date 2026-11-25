@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import type { Dayjs } from 'dayjs';
 import { useMemo, useState } from 'react';
 import { AssignmentPanel } from '../../blacksix/AssignmentPanel/AssignmentPanel';
@@ -9,6 +10,7 @@ import { AppShell } from '../../components/desktop-navigation/AppShell/AppShell'
 import { PageHeader } from '../../components/desktop-navigation/PageHeader/PageHeader';
 import { Sidebar } from '../../components/desktop-navigation/Sidebar/Sidebar';
 import { UserMenu } from '../../components/desktop-navigation/UserMenu/UserMenu';
+import { BottomNav } from '../../components/navigation/BottomNav/BottomNav';
 import { useToast } from '../../components/feedback/Toast/Toast';
 import { Card } from '../../components/layout/Card/Card';
 import { ResponsiveDetail } from '../../components/overlays/ResponsiveDetail/ResponsiveDetail';
@@ -67,6 +69,11 @@ export function OperatorToday() {
   const toast = useToast();
   const { bookings, setBookings, locale: lang, setLocale, appearance, setAppearance } = useProto();
   const [nav, setNav] = useState('today');
+  // Phone: no sidebar, bottom nav. Tablet/small laptop: icon rail. Wide: full sidebar (user can collapse it).
+  const phone = useMediaQuery('(max-width:599.95px)');
+  const wide = useMediaQuery('(min-width:1200px)');
+  const [collapsedPref, setCollapsed] = useState(false);
+  const collapsed = !wide || collapsedPref;
   const [day, setDay] = useState<Dayjs>(TODAY);
   const [openId, setOpenId] = useState<string | null>(null);
   const [assignId, setAssignId] = useState<string | null>(null);
@@ -105,67 +112,77 @@ export function OperatorToday() {
     else toast.show({ message: t.soon, severity: 'info' });
   };
 
-  return (
-    <AppShell
-      width="full"
-      height="100%"
-      sidebar={
-        <Sidebar
-          value={nav}
-          onChange={setNav}
+  const sidebar = phone ? null : (
+    <Sidebar
+      value={nav}
+      onChange={setNav}
+      role="admin"
+      collapsed={collapsed}
+      onCollapsedChange={wide ? setCollapsed : undefined}
+      footer={
+        <UserMenu
+          name="Elio Jiménez"
           role="admin"
-          footer={
-            <UserMenu
-              name="Elio Márquez"
-              role="admin"
-              language={lang}
-              onLanguageChange={setLocale}
-              appearance={appearance}
-              onAppearanceChange={setAppearance}
-              onProfile={() => toast.show({ message: t.soon, severity: 'info' })}
-              onLogout={() => toast.show({ message: t.soon, severity: 'info' })}
-            />
-          }
+          compact={collapsed}
+          language={lang}
+          onLanguageChange={setLocale}
+          appearance={appearance}
+          onAppearanceChange={setAppearance}
+          onProfile={() => toast.show({ message: t.soon, severity: 'info' })}
+          onLogout={() => toast.show({ message: t.soon, severity: 'info' })}
         />
       }
-    >
-      <PageHeader title={t.title} description={t.date(todays.length)} />
-      <Box component="section" aria-label={t.total} sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, minmax(0, 1fr))', md: 'repeat(4, minmax(0, 1fr))' }, gap: 3, mb: 6 }}>
-        <Stat label={t.total} value={String(live.length)} />
-        <Stat label={t.unassigned} value={String(live.filter((b) => b.assignment.status === 'unassigned').length)} tone="brand" />
-        <Stat label={t.inProgress} value={String(live.filter((b) => b.status === 'in_progress').length)} />
-        <Stat label={t.pending} value={formatMoney(live.filter((b) => b.payment.status === 'pending').reduce((s, b) => s + b.total, 0), locale)} />
-      </Box>
-      <DailyJobsTray jobs={jobs} day={day} onDayChange={setDay} today={TODAY} staff={staff} onOpenJob={(j) => setOpenId(j.id)} onAction={onJob} activeJobId={openId} />
+    />
+  );
 
-      {opened && (
-        <ResponsiveDetail
-          open
-          title={opened.customer.name}
-          subtitle={opened.id}
-          onClose={() => setOpenId(null)}
-          actions={<OrderActionButtons order={opened} role="admin" onAction={onOrder} />}
+  return (
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ flex: 1, minHeight: 0 }}>
+        <AppShell
+          width="full"
+          height="100%"
+          sidebar={sidebar}
         >
-          <OrderDetail order={opened} role="admin" actions="none" />
-        </ResponsiveDetail>
-      )}
+          <PageHeader title={t.title} description={t.date(todays.length)} />
+          <Box component="section" aria-label={t.total} sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, minmax(0, 1fr))', md: 'repeat(4, minmax(0, 1fr))' }, gap: 3, mb: 6 }}>
+            <Stat label={t.total} value={String(live.length)} />
+            <Stat label={t.unassigned} value={String(live.filter((b) => b.assignment.status === 'unassigned').length)} tone="brand" />
+            <Stat label={t.inProgress} value={String(live.filter((b) => b.status === 'in_progress').length)} />
+            <Stat label={t.pending} value={formatMoney(live.filter((b) => b.payment.status === 'pending').reduce((s, b) => s + b.total, 0), locale)} />
+          </Box>
+          <DailyJobsTray jobs={jobs} day={day} onDayChange={setDay} today={TODAY} staff={staff} onOpenJob={(j) => setOpenId(j.id)} onAction={onJob} activeJobId={openId} />
 
-      <AssignmentPanel
-        open={Boolean(assigning)}
-        onClose={() => setAssignId(null)}
-        job={assigning}
-        professionals={professionals}
-        jobs={jobs}
-        value={pick}
-        onChange={setPick}
-        onConfirm={(id) => {
-          if (!assignId) return;
-          const pro = getProfessional(id);
-          patch(assignId, (b) => ({ ...b, assignment: { status: 'assigned', professionalId: id }, assignee: pro }));
-          setAssignId(null);
-          if (pro) toast.show({ message: t.assigned(pro.name), severity: 'success' });
-        }}
-      />
-    </AppShell>
+          {opened && (
+            <ResponsiveDetail
+              open
+              title={opened.customer.name}
+              subtitle={opened.id}
+              onClose={() => setOpenId(null)}
+              actions={<OrderActionButtons order={opened} role="admin" onAction={onOrder} />}
+            >
+              <OrderDetail order={opened} role="admin" actions="none" />
+            </ResponsiveDetail>
+          )}
+
+          <AssignmentPanel
+            open={Boolean(assigning)}
+            onClose={() => setAssignId(null)}
+            job={assigning}
+            professionals={professionals}
+            jobs={jobs}
+            value={pick}
+            onChange={setPick}
+            onConfirm={(id) => {
+              if (!assignId) return;
+              const pro = getProfessional(id);
+              patch(assignId, (b) => ({ ...b, assignment: { status: 'assigned', professionalId: id }, assignee: pro }));
+              setAssignId(null);
+              if (pro) toast.show({ message: t.assigned(pro.name), severity: 'success' });
+            }}
+          />
+        </AppShell>
+      </Box>
+      {phone && <BottomNav side="operator" value="today" onChange={() => toast.show({ message: t.soon, severity: 'info' })} position="static" />}
+    </Box>
   );
 }

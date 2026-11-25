@@ -171,7 +171,7 @@ export const getPaymentMethod = (id: string) => paymentMethods.find((m) => m.id 
 /* ─────────────── Personas ─────────────── */
 
 export const professionals: Professional[] = [
-  { id: 'pro-elio', name: 'Elio Márquez', role: { es: 'Líder · Detailing y Towing', en: 'Lead · Detailing and Towing' }, roleKind: 'detailer', units: ['detailing', 'towing'], centerId: 'c-charlotte', rating: 4.9 },
+  { id: 'pro-elio', name: 'Elio Jiménez', role: { es: 'Líder · Detailing y Towing', en: 'Lead · Detailing and Towing' }, roleKind: 'detailer', units: ['detailing', 'towing'], centerId: 'c-charlotte', rating: 4.9 },
   { id: 'pro-jesus', name: 'Jesús Rondón', role: { es: 'Líder · Personal Washing', en: 'Lead · Personal Washing' }, roleKind: 'washer', units: ['personal-washing'], centerId: 'c-charlotte', rating: 4.9 },
   { id: 'pro-luis', name: 'Luis Herrera', role: { es: 'Detailer', en: 'Detailer' }, roleKind: 'detailer', units: ['detailing'], centerId: 'c-charlotte', rating: 4.8 },
   { id: 'pro-mateo', name: 'Mateo Salazar', role: { es: 'Conductor de grúa', en: 'Tow driver' }, roleKind: 'tow-driver', units: ['towing'], centerId: 'c-charlotte', rating: 4.8 },
@@ -216,7 +216,7 @@ export const myAddresses: CustomerAddress[] = [
 /* ─────────────── Reservas ─────────────── */
 
 const SYSTEM: StatusActor = { name: 'Black Six', role: 'system' };
-const ELIO: StatusActor = { name: 'Elio Márquez', role: 'admin' };
+const ELIO: StatusActor = { name: 'Elio Jiménez', role: 'admin' };
 
 export interface Seed {
   id: string;
