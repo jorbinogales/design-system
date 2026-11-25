@@ -22,8 +22,8 @@ export const unitMeta: Record<BusinessUnit, { name: string; summary: Record<Loca
   'personal-washing': {
     name: 'Personal Washing',
     summary: {
-      es: 'Lavado a mano donde estés: casa, oficina o estacionamiento.',
-      en: 'Hand wash wherever you are: home, office or parking lot.',
+      es: 'Pressure washing, botes de basura y alfombras en tu casa.',
+      en: 'Pressure washing, trash bins and carpets at your home.',
     },
   },
 };

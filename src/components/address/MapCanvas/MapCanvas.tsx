@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import type { SvgIconProps } from '@mui/material/SvgIcon';
 import { keyframes } from '@mui/material/styles';
 import type { ComponentType, ReactNode } from 'react';
-import { useMemo } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import { TowTruckIcon } from '../../../icons/TowTruckIcon';
 import { bs } from '../../../theme/theme';
 import { radius as radii, transition, typeScale } from '../../../theme/tokens';
@@ -70,7 +70,13 @@ function rng(seed: number) {
   };
 }
 
-const streetNames = ['NW 87th Ave', 'Biscayne Blvd', 'SW 8th St', 'Collins Ave', 'NE 2nd Ave', 'Flagler St', 'Brickell Ave', 'Ponce de Leon Blvd'];
+const defaultStreetNames = ['NW 87th Ave', 'Biscayne Blvd', 'SW 8th St', 'Collins Ave', 'NE 2nd Ave', 'Flagler St', 'Brickell Ave', 'Ponce de Leon Blvd'];
+
+/**
+ * Street names the drawn map labels. Defaults to the Miami mock; wrap a tree in this provider to draw
+ * another market (the prototype uses Charlotte streets).
+ */
+export const MapStreetNamesContext = createContext<string[]>(defaultStreetNames);
 
 interface Road {
   at: number;
@@ -195,11 +201,13 @@ function PinMark({ pin, selected, showLabel, interactive, onPress }: { pin: MapP
  * and Agregar dirección; swap it for a real map later and keep the same props.
  */
 export function MapCanvas({ label, pins = [], route, userLocation, serviceArea, eta, selectedPinId = null, onPinSelect, pinLabels = 'selected', ratio = 4 / 3, seed = 7, rounded = true, children }: MapCanvasProps) {
+  const streets = useContext(MapStreetNamesContext);
   const H = Math.round(W / ratio);
   const interactive = Boolean(onPinSelect);
 
   const scene = useMemo(() => {
     const random = rng(seed);
+    const streetNames = streets;
     const angle = -(9 + random() * 10);
     const horizontals = roadsAlong(random, -H * 0.7, H * 1.7, 38, 34);
     const verticals = roadsAlong(random, -W * 0.7, W * 1.7, 46, 44);
@@ -216,7 +224,7 @@ export function MapCanvas({ label, pins = [], route, userLocation, serviceArea, 
     const labelled = horizontals.filter((r) => r.major && r.at > H * 0.1 && r.at < H * 0.9).slice(0, 2).map((r, k) => ({ y: r.at - 4, x: W * (0.12 + 0.34 * k) + random() * 20, name: streetNames[Math.floor(random() * streetNames.length)] }));
     const blob = serviceArea ? blobPath((serviceArea.x * W) / 100, (serviceArea.y * H) / 100, (serviceArea.radius * W) / 100, random) : null;
     return { angle, horizontals, verticals, parkCells, labelled, blob };
-  }, [seed, H, serviceArea]);
+  }, [seed, H, serviceArea, streets]);
 
   const px = (p: MapPoint) => `${((p[0] * W) / 100).toFixed(1)},${((p[1] * H) / 100).toFixed(1)}`;
   const lo = route?.[Math.floor((route.length - 1) / 2)];

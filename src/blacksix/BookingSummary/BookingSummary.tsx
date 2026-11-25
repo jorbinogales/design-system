@@ -134,11 +134,13 @@ export function BookingSummary({ booking, onEdit, hideAmounts = false }: Booking
             </Typography>
           </Row>
         )}
-        <Row label={t.vehicle} {...edit('vehicle', t.vehicle)}>
-          <Typography variant="body2">
-            {v.year} {v.make} {v.model} · {v.color[locale]} · {v.plate}
-          </Typography>
-        </Row>
+        {booking.vehicleId && (
+          <Row label={t.vehicle} {...edit('vehicle', t.vehicle)}>
+            <Typography variant="body2">
+              {v.year} {v.make} {v.model} · {v.color[locale]} · {v.plate}
+            </Typography>
+          </Row>
+        )}
         <Row label={t.assignee} editLabel="">
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
             <InitialsAvatar name={booking.assignee?.name} size="sm" />

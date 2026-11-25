@@ -198,7 +198,9 @@ export function OrderDetail({ order, role, onAction, actions = 'inline' }: Order
             {t.call}
           </Button>
         </Box>
-        <KeyValue layout="stacked" label={t.vehicle} value={`${order.vehicle.year} ${order.vehicle.make} ${order.vehicle.model} · ${order.vehicle.color[locale]} · ${order.vehicle.plate}`} />
+        {order.vehicleId && (
+          <KeyValue layout="stacked" label={t.vehicle} value={`${order.vehicle.year} ${order.vehicle.make} ${order.vehicle.model} · ${order.vehicle.color[locale]} · ${order.vehicle.plate}`} />
+        )}
       </Section>
 
       {loc && (

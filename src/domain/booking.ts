@@ -182,6 +182,7 @@ export interface Booking {
   unit: BusinessUnit;
   packageId: string;
   customerId: string;
+  /** Empty string for services that are not about a vehicle (home pressure washing, bins, carpets). */
   vehicleId: string;
   /** "YYYY-MM-DD". */
   date: string;

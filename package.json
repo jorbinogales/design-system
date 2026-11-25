@@ -6,7 +6,9 @@
   "scripts": {
     "typecheck": "tsc -b",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "prototype": "vite --open /prototype.html",
+    "build:prototype": "vite build"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
