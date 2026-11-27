@@ -35,7 +35,7 @@ function Demo({ initial = emptyAuctionPickup, validateNow = false }: { initial?:
 }
 
 const meta = {
-  title: 'Black Six/Formulario de recogida en subasta',
+  title: 'Black Seat/Formulario de recogida en subasta',
   component: AuctionPickupForm,
   parameters: {
     docs: {

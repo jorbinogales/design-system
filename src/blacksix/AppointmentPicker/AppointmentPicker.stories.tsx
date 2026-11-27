@@ -53,7 +53,7 @@ function Demo({ unit = 'detailing', simulate = false, calendar = false, initial 
 }
 
 const meta = {
-  title: 'Black Six/Selector de cita',
+  title: 'Black Seat/Selector de cita',
   component: AppointmentPicker,
   parameters: {
     docs: {

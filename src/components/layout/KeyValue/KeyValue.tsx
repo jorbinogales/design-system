@@ -13,19 +13,28 @@ export interface KeyValueProps {
   density?: Density;
   /** Monospaced-feel figures for codes, plates and times. */
   tabular?: boolean;
+  /** Small icon before the label. */
+  icon?: ReactNode;
 }
 
 /** Description list (`<dl>`) container for KeyValue rows. */
-export function KeyValueList({ children, gap = 3 }: { children: ReactNode; gap?: number }) {
+export function KeyValueList({ children, gap = 3, aligned = false }: { children: ReactNode; gap?: number; /** One shared label column; values right-aligned in the other (inline rows only). */ aligned?: boolean }) {
   return (
-    <Box component="dl" sx={{ m: 0, display: 'flex', flexDirection: 'column', gap }}>
+    <Box
+      component="dl"
+      sx={
+        aligned
+          ? { m: 0, display: 'grid', gridTemplateColumns: 'max-content minmax(0, 1fr)', columnGap: 4, rowGap: gap, alignItems: 'baseline', '& > div': { display: 'contents' } }
+          : { m: 0, display: 'flex', flexDirection: 'column', gap }
+      }
+    >
       {children}
     </Box>
   );
 }
 
 /** Label–value pair (`<dt>`/`<dd>`). Use inside `KeyValueList`. */
-export function KeyValue({ label, value, layout = 'inline', emphasis = false, density = 'comfortable', tabular = false }: KeyValueProps) {
+export function KeyValue({ label, value, layout = 'inline', emphasis = false, density = 'comfortable', tabular = false, icon }: KeyValueProps) {
   const size = density === 'compact' ? typeScale.body2 : typeScale.body1;
   const stacked = layout === 'stacked';
   return (
@@ -38,7 +47,8 @@ export function KeyValue({ label, value, layout = 'inline', emphasis = false, de
         gap: stacked ? 0.5 : 4,
       }}
     >
-      <Box component="dt" sx={{ ...(stacked ? typeScale.caption : size), color: bs.text.secondary, ...(emphasis && !stacked && { color: bs.text.primary, fontWeight: 600 }), flexShrink: 0 }}>
+      <Box component="dt" sx={{ ...(stacked ? typeScale.caption : size), color: bs.text.secondary, ...(emphasis && !stacked && { color: bs.text.primary, fontWeight: 600 }), flexShrink: 0, ...(icon && { display: 'flex', alignItems: 'center', gap: 2, alignSelf: 'center', '& svg': { fontSize: 20 } }) }}>
+        {icon}
         {label}
       </Box>
       <Box

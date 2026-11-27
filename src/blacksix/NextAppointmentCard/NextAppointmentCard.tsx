@@ -9,7 +9,6 @@ import { useLocale, useT } from '../../i18n/locale';
 import { unitIcon } from '../../icons/unitIcon';
 import { Button } from '../../components/actions/Button/Button';
 import { formatSlotTime } from '../../components/date-time/TimeSlot/TimeSlot';
-import { StatusBadge } from '../../components/data-display/StatusBadge/StatusBadge';
 import { Card } from '../../components/layout/Card/Card';
 import { bs } from '../../theme/theme';
 import { radius } from '../../theme/tokens';
@@ -35,8 +34,6 @@ export function NextAppointmentCard({ booking, onView, href }: NextAppointmentCa
   const locale = useLocale();
   const Icon = unitIcon[booking.unit];
   const service = `${unitMeta[booking.unit].name} · ${booking.package.name[locale]}`;
-  const needsAssignment = booking.assignment.status === 'unassigned' && booking.status !== 'cancelled' && booking.status !== 'completed';
-  const needsPayment = booking.payment.status === 'pending' || booking.payment.status === 'failed';
   const place = booking.auction ? `${t.where.auction}: ${booking.address?.city ?? ''}` : booking.center ? booking.center.name : t.where.home;
 
   return (
@@ -77,12 +74,6 @@ export function NextAppointmentCard({ booking, onView, href }: NextAppointmentCa
               </Typography>
             </Box>
           </Box>
-        </Box>
-
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          <StatusBadge dimension="booking" status={booking.status} />
-          {needsAssignment && <StatusBadge dimension="assignment" status="unassigned" long variant="outline" size="sm" />}
-          {needsPayment && <StatusBadge dimension="payment" status={booking.payment.status} variant="outline" size="sm" />}
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 3, flexWrap: 'wrap' }}>

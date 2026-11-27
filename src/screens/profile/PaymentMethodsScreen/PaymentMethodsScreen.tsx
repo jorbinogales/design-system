@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import { useState } from 'react';
+import { useNav } from '../../../app/nav';
 import { InlineAlert } from '../../../components/feedback/InlineAlert/InlineAlert';
 import { ToastProvider, useToast } from '../../../components/feedback/Toast/Toast';
 import { TopBar } from '../../../components/navigation/TopBar/TopBar';
@@ -16,7 +17,7 @@ const messages = {
     title: 'Métodos de pago',
     legend: 'Método predeterminado',
     add: 'Agregar tarjeta',
-    note: 'Los datos de tu tarjeta los procesa nuestro proveedor de pagos. Black Six solo guarda los últimos cuatro dígitos.',
+    note: 'Los datos de tu tarjeta los procesa nuestro proveedor de pagos. Black Seat solo guarda los últimos cuatro dígitos.',
     setDefault: (name: string) => `${name} es ahora tu método predeterminado`,
     addInfo: 'Te llevaremos al formulario seguro de nuestro proveedor de pagos.',
   },
@@ -24,7 +25,7 @@ const messages = {
     title: 'Payment methods',
     legend: 'Default method',
     add: 'Add card',
-    note: 'Your card details are processed by our payment provider. Black Six only keeps the last four digits.',
+    note: 'Your card details are processed by our payment provider. Black Seat only keeps the last four digits.',
     setDefault: (name: string) => `${name} is now your default method`,
     addInfo: 'We will take you to our payment provider’s secure form.',
   },
@@ -32,6 +33,7 @@ const messages = {
 
 function Content() {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const toast = useToast();
   const options = useMethodOptions(true);
@@ -39,7 +41,7 @@ function Content() {
 
   return (
     <ScreenRoot>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
       <ScreenBody gap={5}>
         <Box sx={{ border: `1px solid ${bs.border.subtle}`, borderRadius: `${radius.lg}px`, backgroundColor: bs.surface.raised, px: 4, py: 3 }}>
           <RadioGroup
@@ -53,7 +55,7 @@ function Content() {
             }}
           />
         </Box>
-        <AddRow label={t.add} onClick={() => toast.show({ message: t.addInfo, severity: 'info' })} />
+        <AddRow label={t.add} onClick={() => nav.go('add-card')} />
         <InlineAlert severity="info">{t.note}</InlineAlert>
       </ScreenBody>
     </ScreenRoot>

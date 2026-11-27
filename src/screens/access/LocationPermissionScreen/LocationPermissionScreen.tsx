@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Button } from '../../../components/actions/Button/Button';
 import { InlineAlert } from '../../../components/feedback/InlineAlert/InlineAlert';
 import { ToastProvider, useToast } from '../../../components/feedback/Toast/Toast';
+import { useNav } from '../../../app/nav';
 import { useT } from '../../../i18n/locale';
 import { bs } from '../../../theme/theme';
 import { AuthHeading, HeroIcon, ScreenBody, ScreenRoot } from '../shared/AccessParts';
@@ -17,12 +18,13 @@ const messages = {
     title: 'Activa tu ubicación',
     subtitle: 'La usamos solo para mostrarte lo que tienes cerca.',
     benefits: [
-      { icon: StorefrontOutlined, text: 'El centro Black Six más cercano' },
+      { icon: StorefrontOutlined, text: 'El centro Black Seat más cercano' },
       { icon: ApartmentRounded, text: 'Si llegamos a tu casa u oficina para lavado a domicilio' },
       { icon: ScheduleRounded, text: 'Tiempos de llegada más precisos' },
     ],
     allow: 'Permitir ubicación',
     manual: 'Ingresar manualmente',
+    skip: 'Omitir',
     deniedTitle: 'La ubicación está desactivada',
     denied: 'Puedes activarla en los ajustes de tu teléfono o ingresar tu dirección a mano.',
     granted: 'Ubicación activada.',
@@ -31,12 +33,13 @@ const messages = {
     title: 'Turn on your location',
     subtitle: 'We only use it to show you what is nearby.',
     benefits: [
-      { icon: StorefrontOutlined, text: 'The closest Black Six center' },
+      { icon: StorefrontOutlined, text: 'The closest Black Seat center' },
       { icon: ApartmentRounded, text: 'Whether we reach your home or office for at-home washing' },
       { icon: ScheduleRounded, text: 'More accurate arrival times' },
     ],
     allow: 'Allow location',
     manual: 'Enter it manually',
+    skip: 'Skip',
     deniedTitle: 'Location is turned off',
     denied: 'You can turn it on in your phone settings or enter your address by hand.',
     granted: 'Location turned on.',
@@ -52,6 +55,7 @@ export interface LocationPermissionScreenProps {
 function Content({ denied = false, onManual }: LocationPermissionScreenProps) {
   const t = useT(messages);
   const toast = useToast();
+  const nav = useNav();
   const [locating, setLocating] = useState(false);
   const timer = useRef<number | undefined>(undefined);
   useEffect(() => () => window.clearTimeout(timer.current), []);
@@ -61,6 +65,7 @@ function Content({ denied = false, onManual }: LocationPermissionScreenProps) {
     timer.current = window.setTimeout(() => {
       setLocating(false);
       toast.show({ message: t.granted, severity: 'success' });
+      nav.go('notification-permission');
     }, 1200);
   };
 
@@ -92,8 +97,11 @@ function Content({ denied = false, onManual }: LocationPermissionScreenProps) {
               {t.allow}
             </Button>
           )}
-          <Button variant={denied ? 'primary' : 'quiet'} fullWidth onClick={onManual}>
+          <Button variant={denied ? 'primary' : 'quiet'} fullWidth onClick={onManual ?? (() => nav.go('enter-location'))}>
             {t.manual}
+          </Button>
+          <Button variant="quiet" fullWidth onClick={() => nav.go('notification-permission')}>
+            {t.skip}
           </Button>
         </Box>
       </ScreenBody>

@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useNav } from '../../../app/nav';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
 import { TextField } from '../../../components/fields/TextField/TextField';
@@ -49,6 +50,7 @@ export interface AddMoneyScreenProps {
 /** Agregar dinero (s75): quick-amount chips and an amount field validated between $10 and $1,000. */
 export function AddMoneyScreen({ initialAmount = '' }: AddMoneyScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const [amount, setAmount] = useState(initialAmount);
 
@@ -65,7 +67,7 @@ export function AddMoneyScreen({ initialAmount = '' }: AddMoneyScreenProps) {
 
   return (
     <ScreenRoot>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
       <ScreenBody gap={6} sx={{ flex: 1 }}>
         <Typography variant="body1" sx={{ color: bs.text.secondary }}>
           {t.intro}
@@ -95,7 +97,7 @@ export function AddMoneyScreen({ initialAmount = '' }: AddMoneyScreenProps) {
         </Box>
       </ScreenBody>
       <BottomActionBar>
-        <Button fullWidth disabled={!valid}>
+        <Button fullWidth disabled={!valid} onClick={() => nav.go('top-up-wallet', { amount: String(num) })}>
           {t.next_cta}
         </Button>
       </BottomActionBar>

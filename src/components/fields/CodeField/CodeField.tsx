@@ -92,7 +92,8 @@ function OtpField({ label, value, onChange, length = 4, helperText, error, requi
     if (!digits) return;
     const next = (value.slice(0, i) + digits).slice(0, length);
     onChange(next);
-    focus(next.length);
+    // Defer: onFocus bounces focus back while `value` is still the pre-update closure.
+    requestAnimationFrame(() => focus(next.length));
   };
 
   const onKeyDown = (i: number, e: KeyboardEvent<HTMLInputElement>) => {

@@ -7,6 +7,7 @@ import { Link } from '../../../components/actions/Link/Link';
 import { EmailField } from '../../../components/fields/EmailField/EmailField';
 import { PasswordField } from '../../../components/fields/PasswordField/PasswordField';
 import { InlineAlert } from '../../../components/feedback/InlineAlert/InlineAlert';
+import { useNav } from '../../../app/nav';
 import { useT } from '../../../i18n/locale';
 import { bs } from '../../../theme/theme';
 import { AuthHeading, isEmail, ScreenBody, ScreenRoot, SocialSignIn } from '../shared/AccessParts';
@@ -58,6 +59,7 @@ export interface SignInScreenProps {
 /** Sign in: email + password, recovery link, Apple and Google. Validates locally on submit. */
 export function SignInScreen({ defaultEmail = '', defaultPassword = '', initialSubmitted = false, credentialsError = false, loading = false, onForgotPassword, onCreateAccount }: SignInScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const [email, setEmail] = useState(defaultEmail);
   const [password, setPassword] = useState(defaultPassword);
   const [submitted, setSubmitted] = useState(initialSubmitted);
@@ -73,7 +75,10 @@ export function SignInScreen({ defaultEmail = '', defaultPassword = '', initialS
     setSubmitted(true);
     if (!isEmail(email) || !password) return;
     setBusy(true);
-    timer.current = window.setTimeout(() => setBusy(false), 1200);
+    timer.current = window.setTimeout(() => {
+      setBusy(false);
+      nav.reset('home');
+    }, 1200);
   };
 
   return (
@@ -91,7 +96,7 @@ export function SignInScreen({ defaultEmail = '', defaultPassword = '', initialS
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
             <PasswordField label={t.password} value={password} onChange={(e) => setPassword(e.target.value)} error={passwordError} />
             <Box sx={{ alignSelf: 'flex-end' }}>
-              <Link variant="standalone" size="sm" onClick={onForgotPassword}>
+              <Link variant="standalone" size="sm" onClick={onForgotPassword ?? (() => nav.go('verify-code', { next: 'new-password' }))}>
                 {t.forgot}
               </Link>
             </Box>
@@ -100,10 +105,10 @@ export function SignInScreen({ defaultEmail = '', defaultPassword = '', initialS
             {t.submit}
           </Button>
         </Box>
-        <SocialSignIn verb={t.verb} />
+        <SocialSignIn verb={t.verb} onSelect={() => nav.reset('home')} />
         <Typography variant="body2" sx={{ textAlign: 'center', color: bs.text.secondary, mt: 'auto' }}>
           {t.noAccount}{' '}
-          <Link size="sm" onClick={onCreateAccount}>
+          <Link size="sm" onClick={onCreateAccount ?? (() => nav.go('sign-up'))}>
             {t.create}
           </Link>
         </Typography>

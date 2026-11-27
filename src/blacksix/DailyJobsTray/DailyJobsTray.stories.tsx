@@ -78,7 +78,7 @@ function MobileTray({ jobs = todayJobs, day = mockToday }: { jobs?: Job[]; day?:
 }
 
 const meta = {
-  title: 'Black Six/Bandeja de pedidos del día',
+  title: 'Black Seat/Bandeja de pedidos del día',
   component: DailyJobsTray,
   parameters: {
     layout: 'fullscreen',

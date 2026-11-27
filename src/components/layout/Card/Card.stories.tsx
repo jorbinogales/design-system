@@ -127,7 +127,7 @@ const meta = {
     docs: {
       description: {
         component: componentDocs({
-          purpose: 'Superficie base para agrupar contenido. Las tarjetas propias de Black Six (paquete, profesional, trabajo) se construyen sobre esta.',
+          purpose: 'Superficie base para agrupar contenido. Las tarjetas propias de Black Seat (paquete, profesional, trabajo) se construyen sobre esta.',
           anatomy: ['**Superficie** con radio de 16 px', '**Contenido** libre', '**Área interactiva** completa (opcional: `href` u `onClick`)', '**Estado seleccionado** (opcional)'],
           props: [
             '`variant`: `outlined` (por defecto) · `elevated` · `filled`. `density`: `comfortable` 16 px · `compact` 12 px. `flush` sin relleno para imágenes de borde a borde.',

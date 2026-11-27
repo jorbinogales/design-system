@@ -9,6 +9,7 @@ import { Price } from '../../../components/data-display/Price/Price';
 import { Tag } from '../../../components/data-display/Tag/Tag';
 import { Card } from '../../../components/layout/Card/Card';
 import { Media } from '../../../components/layout/Media/Media';
+import { packagePhoto } from '../../../mocks/photos';
 import { formatDuration } from '../../../blacksix/shared/format';
 import type { ServicePackage } from '../../../domain/booking';
 import { unitMeta } from '../../../domain/units';
@@ -43,7 +44,7 @@ export function PackageListItem({ pkg, discountPercent, discountedAmount, onOpen
   return (
     <Card component="article">
       <Box sx={{ display: 'grid', gridTemplateColumns: onToggleSaved ? '84px minmax(0, 1fr) auto' : '84px minmax(0, 1fr)', columnGap: 4, alignItems: 'start' }}>
-        <Media alt={t.alt(name)} ratio="1:1" radius="md" unit={pkg.unit} />
+        <Media src={packagePhoto[pkg.id]} alt={t.alt(name)} ratio="1:1" radius="md" unit={pkg.unit} />
         <Box sx={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', justifyContent: 'space-between' }}>
             <ButtonBase

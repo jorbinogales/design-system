@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import { useState } from 'react';
+import { useNav } from '../../../app/nav';
 import { AddressForm, emptyAddressForm, type AddressFormValue } from '../../../components/address/AddressForm/AddressForm';
 import { MapCanvas } from '../../../components/address/MapCanvas/MapCanvas';
 import { ToastProvider, useToast } from '../../../components/feedback/Toast/Toast';
@@ -21,11 +22,12 @@ export interface AddAddressScreenProps {
 
 function Content({ initial = emptyAddressForm, zipError }: AddAddressScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const toast = useToast();
   const [value, setValue] = useState<AddressFormValue>(initial);
   return (
     <ScreenRoot>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', gap: 5, px: `${layout.gutter.mobile}px`, pt: 3, pb: `calc(24px + ${layout.safeAreaBottom})` }}>
         <MapCanvas
           label={t.map}
@@ -35,7 +37,10 @@ function Content({ initial = emptyAddressForm, zipError }: AddAddressScreenProps
           pinLabels="none"
           seed={11}
         />
-        <AddressForm value={value} onChange={setValue} errors={zipError ? { zip: t.zip } : undefined} submitLabel={t.save} onSubmit={() => toast.show({ message: t.saved, severity: 'success' })} />
+        <AddressForm value={value} onChange={setValue} errors={zipError ? { zip: t.zip } : undefined} submitLabel={t.save} onSubmit={() => {
+            toast.show({ message: t.saved, severity: 'success' });
+            nav.back();
+          }} />
       </Box>
     </ScreenRoot>
   );

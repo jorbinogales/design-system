@@ -12,8 +12,6 @@ import { formatAddress } from '../../components/address/LocationCard/LocationCar
 import { formatSlotTime } from '../../components/date-time/TimeSlot/TimeSlot';
 import { InitialsAvatar } from '../../components/data-display/InitialsAvatar/InitialsAvatar';
 import { Price } from '../../components/data-display/Price/Price';
-import { StatusBadge } from '../../components/data-display/StatusBadge/StatusBadge';
-import { Tag } from '../../components/data-display/Tag/Tag';
 import { InlineAlert } from '../../components/feedback/InlineAlert/InlineAlert';
 import { Card } from '../../components/layout/Card/Card';
 import type { BookingDetail } from '../../domain/booking';
@@ -98,7 +96,6 @@ export function BookingCard({ booking: b, tab, rating, onTrack, onCancel, onRevi
   const title = `${unitMeta[b.unit].name} ${b.package.name[locale]}`;
   const where = b.center ? `${b.center.name} · ${formatAddress(b.center.address)}` : b.address ? formatAddress(b.address) : '';
   const refund = refundOf(b);
-  const showPayment = tab === 'active' || (tab === 'cancelled' && b.payment.status === 'refunded');
 
   return (
     <Card component="article">
@@ -136,12 +133,6 @@ export function BookingCard({ booking: b, tab, rating, onTrack, onCancel, onRevi
           )}
         </Box>
 
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          <StatusBadge dimension="booking" status={b.status} />
-          {tab === 'active' && <StatusBadge dimension="assignment" status={b.assignment.status} />}
-          {showPayment && <StatusBadge dimension="payment" status={b.payment.status} />}
-        </Box>
-
         {tab === 'active' && b.assignee && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5 }}>
             <InitialsAvatar name={b.assignee.name} size="sm" />
@@ -176,7 +167,10 @@ export function BookingCard({ booking: b, tab, rating, onTrack, onCancel, onRevi
             <>
               <Box sx={{ flex: 1, minWidth: 140 }}>
                 {rating ? (
-                  <Tag tone="success" icon={<StarRounded fontSize="small" />} label={t.reviewed(rating)} />
+                  <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: bs.text.secondary }}>
+                    <StarRounded aria-hidden fontSize="small" />
+                    {t.reviewed(rating)}
+                  </Typography>
                 ) : (
                   <Button variant="secondary" size="md" fullWidth onClick={onReview}>
                     {t.review}

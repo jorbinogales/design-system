@@ -1,4 +1,3 @@
-import ArrowForwardRounded from '@mui/icons-material/ArrowForwardRounded';
 import BookmarkBorderRounded from '@mui/icons-material/BookmarkBorderRounded';
 import BookmarkRounded from '@mui/icons-material/BookmarkRounded';
 import CallOutlined from '@mui/icons-material/CallOutlined';
@@ -13,7 +12,7 @@ import StarRounded from '@mui/icons-material/StarRounded';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { PackageCard } from '../../../blacksix/PackageCard/PackageCard';
 import { ProfessionalCard } from '../../../blacksix/ProfessionalCard/ProfessionalCard';
 import { ServiceSheet } from '../../../blacksix/ServiceSheet/ServiceSheet';
@@ -31,20 +30,24 @@ import { BackButton } from '../../../components/navigation/BackButton/BackButton
 import { TabPanel, Tabs } from '../../../components/navigation/Tabs/Tabs';
 import { NoResultsState } from '../../../components/screen-states/StatePresets/StatePresets';
 import { FilterChipGroup } from '../../../components/selection/FilterChip/FilterChip';
-import { unitMeta } from '../../../domain/units';
+import { Select } from '../../../components/selection/Select/Select';
+import type { Center } from '../../../domain/booking';
+import { unitMeta, type BusinessUnit } from '../../../domain/units';
 import { intlLocale } from '../../../i18n/format';
+import { useNav } from '../../../app/nav';
 import { useLocale, useT } from '../../../i18n/locale';
 import { unitIcon } from '../../../icons/unitIcon';
 import { reviews } from '../../../mocks/bookings';
-import { getCategoryName, getCenter, getPackage, getServiceOffering } from '../../../mocks/catalog';
+import { centers, getPackage, getServiceOffering, getUnit } from '../../../mocks/catalog';
 import { professionalsForUnit } from '../../../mocks/people';
 import { InverseSurface } from '../../../theme/SchemeScope';
 import { bs } from '../../../theme/theme';
 import { layout, radius, transition } from '../../../theme/tokens';
-import { recentSince, reviewMeta, serviceCenterId, servicePhotos, serviceRating, serviceUnit, stripCount } from '../data';
+import { unitPhoto } from '../../../mocks/photos';
+import { recentSince, reviewMeta, servicePhotos, serviceRating, serviceUnit, stripCount } from '../data';
 import { Stars } from '../shared/Stars';
 
-export type ServiceTab = 'about' | 'services' | 'gallery' | 'reviews';
+export type ServiceTab = 'about' | 'services' | 'reviews';
 
 const messages = {
   es: {
@@ -62,7 +65,9 @@ const messages = {
     tabServices: 'Servicios',
     tabGallery: 'Galería',
     tabReviews: 'Reseñas',
-    where: (c: string, a: string) => `En ${c}, ${a}`,
+    center: 'Centro',
+    centerChoose: 'Elige el centro donde recibir el servicio',
+    seeReviews: 'Ver reseñas',
     team: 'Equipo del centro',
     contact: 'Contacto',
     chat: 'Chat',
@@ -70,7 +75,7 @@ const messages = {
     chooseTime: 'Elegir horario',
     from: 'Desde',
     packagesIntro: 'Elige un paquete. Puedes cambiarlo antes de confirmar.',
-    packagesList: 'Paquetes de Detailing',
+    packagesList: (u: string) => `Paquetes de ${u}`,
     gallery: 'Galería',
     seeAll: 'Ver todo',
     galleryList: 'Fotos del centro',
@@ -105,7 +110,9 @@ const messages = {
     tabServices: 'Services',
     tabGallery: 'Gallery',
     tabReviews: 'Reviews',
-    where: (c: string, a: string) => `At ${c}, ${a}`,
+    center: 'Center',
+    centerChoose: 'Pick the center where you get the service',
+    seeReviews: 'See reviews',
     team: 'Center team',
     contact: 'Contact',
     chat: 'Chat',
@@ -113,7 +120,7 @@ const messages = {
     chooseTime: 'Choose a time',
     from: 'From',
     packagesIntro: 'Pick a package. You can change it before confirming.',
-    packagesList: 'Detailing packages',
+    packagesList: (u: string) => `${u} packages`,
     gallery: 'Gallery',
     seeAll: 'See all',
     galleryList: 'Center photos',
@@ -135,22 +142,21 @@ const messages = {
   },
 };
 
-const center = getCenter(serviceCenterId)!;
-const offering = getServiceOffering(serviceUnit);
 const gutter = `${layout.gutter.mobile}px`;
 
 // ─── Hero ──────────────────────────────────────────────────────────────
 
-function Hero({ onOpenGallery }: { onOpenGallery: () => void }) {
+function Hero({ unit, center, onOpenGallery }: { unit: BusinessUnit; center: Center; onOpenGallery: () => void }) {
   const t = useT(messages);
+  const nav = useNav();
   const [saved, setSaved] = useState(false);
   const strip = servicePhotos.slice(0, stripCount);
   const more = servicePhotos.length - stripCount;
   return (
     <Box sx={{ position: 'relative' }}>
-      <Media alt={`${unitMeta[serviceUnit].name} · ${center.name}`} ratio="4:3" radius="none" unit={serviceUnit} />
+      <Media src={unitPhoto[unit]} alt={`${unitMeta[unit].name} · ${center.name}`} ratio="4:3" radius="none" unit={unit} />
       <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, pt: `calc(${layout.safeAreaTop} + 8px)`, px: gutter, display: 'flex', alignItems: 'center', gap: 3 }}>
-        <BackButton variant="raised" label={t.back} onClick={() => undefined} sx={{ mr: 'auto' }} />
+        <BackButton variant="raised" label={t.back} sx={{ mr: 'auto' }} />
         <IconButton variant="raised" label={t.share} icon={<ShareOutlined />} />
         <IconButton
           variant="raised"
@@ -162,6 +168,7 @@ function Hero({ onOpenGallery }: { onOpenGallery: () => void }) {
       </Box>
       <InverseSurface sx={{ position: 'absolute', left: '50%', top: '44%', transform: 'translate(-50%, -50%)', borderRadius: `${radius.pill}px`, boxShadow: bs.elevation.e2 }}>
         <ButtonBase
+          onClick={() => nav.go('demo-video')}
           sx={{ display: 'inline-flex', alignItems: 'center', gap: 2, height: 44, pl: 2, pr: 4, borderRadius: `${radius.pill}px`, color: bs.text.primary, '&.Mui-focusVisible': { outline: `2px solid ${bs.focus.ring}`, outlineOffset: 2 } }}
         >
           <Box aria-hidden sx={{ display: 'grid', placeItems: 'center', width: 32, height: 32, borderRadius: '50%', backgroundColor: bs.text.primary, color: bs.surface.inverse }}>
@@ -181,7 +188,7 @@ function Hero({ onOpenGallery }: { onOpenGallery: () => void }) {
           const last = i === strip.length - 1;
           return (
             <ButtonBase key={p.id} onClick={onOpenGallery} aria-label={last ? t.plusMore(more) : t.openPhoto(p.caption.es)} sx={{ display: 'block', borderRadius: `${radius.sm}px`, '&.Mui-focusVisible': { outline: `2px solid ${bs.focus.ring}`, outlineOffset: 1 } }}>
-              <Media alt="" ratio="1:1" radius="sm" unit={p.unit}>
+              <Media src={p.src} alt="" ratio="1:1" radius="sm" unit={p.unit}>
                 {last && (
                   <Box sx={{ height: '100%', display: 'grid', placeItems: 'center', backgroundColor: bs.scrim, color: 'common.white' }}>
                     <Typography variant="label" component="span" sx={{ fontVariantNumeric: 'tabular-nums' }}>
@@ -200,32 +207,33 @@ function Hero({ onOpenGallery }: { onOpenGallery: () => void }) {
 
 // ─── Tab panels ────────────────────────────────────────────────────────
 
-function AboutPanel() {
+function AboutPanel({ unit, center }: { unit: BusinessUnit; center: Center }) {
   const t = useT(messages);
-  const locale = useLocale();
-  const team = professionalsForUnit(serviceUnit).filter((p) => p.centerId === serviceCenterId);
-  const address = `${center.address.line1}, ${center.address.city}, ${center.address.state} ${center.address.zip}`;
+  const nav = useNav();
+  const offering = getServiceOffering(unit);
+  const team = professionalsForUnit(unit).filter((p) => p.centerId === center.id);
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 7, px: gutter, pt: 5 }}>
       {/* The hero above already shows the service image, so the sheet skips its own photo. */}
       <ServiceSheet
         service={offering}
         showPhoto={false}
-        fromPrice={89}
+        fromPrice={getUnit(unit).fromPrice}
         action="none"
-        categoryLabels={offering.categories.map((c) => getCategoryName(c, locale))}
-        placeLabel={t.where(center.name, address)}
+        intro={false}
       />
-      <Box component="section" sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        <SectionHeader title={t.team} headingLevel="h3" />
-        {team.map((p) => (
-          <ProfessionalCard key={p.id} professional={p} unit={serviceUnit} baseLabel={center.name} />
-        ))}
-      </Box>
+      {team.length > 0 && (
+        <Box component="section" sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <SectionHeader title={t.team} headingLevel="h3" />
+          {team.map((p) => (
+            <ProfessionalCard key={p.id} professional={p} unit={unit} baseLabel={center.name} />
+          ))}
+        </Box>
+      )}
       <Box component="section" sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         <SectionHeader title={t.contact} headingLevel="h3" />
         <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 3 }}>
-          <Button variant="secondary" size="md" startIcon={<ChatBubbleOutlineRounded />} fullWidth>
+          <Button variant="secondary" size="md" startIcon={<ChatBubbleOutlineRounded />} fullWidth onClick={() => nav.go('chat')}>
             {t.chat}
           </Button>
           <Button variant="secondary" size="md" startIcon={<CallOutlined />} fullWidth href={`tel:${center.phone.replace(/\D/g, '')}`}>
@@ -237,14 +245,15 @@ function AboutPanel() {
   );
 }
 
-function ServicesPanel({ selected, onSelect }: { selected: string | null; onSelect: (id: string) => void }) {
+function ServicesPanel({ unit, selected, onSelect }: { unit: BusinessUnit; selected: string | null; onSelect: (id: string) => void }) {
   const t = useT(messages);
+  const offering = getServiceOffering(unit);
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, px: gutter, pt: 5 }}>
       <Typography variant="body2" sx={{ color: bs.text.secondary }}>
         {t.packagesIntro}
       </Typography>
-      <Box component="ul" role="radiogroup" aria-label={t.packagesList} sx={{ listStyle: 'none', m: 0, p: 0, display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <Box component="ul" role="radiogroup" aria-label={t.packagesList(unitMeta[unit].name)} sx={{ listStyle: 'none', m: 0, p: 0, display: 'flex', flexDirection: 'column', gap: 3 }}>
         {offering.packageIds.map((id) => (
           <Box component="li" key={id}>
             <PackageCard pkg={getPackage(id)!} selected={selected === id} onSelect={onSelect} />
@@ -255,31 +264,9 @@ function ServicesPanel({ selected, onSelect }: { selected: string | null; onSele
   );
 }
 
-function GalleryPanel({ onOpenGallery }: { onOpenGallery: () => void }) {
-  const t = useT(messages);
-  const locale = useLocale();
-  const shown = servicePhotos.slice(0, 8);
-  return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, px: gutter, pt: 5 }}>
-      <SectionHeader title={t.gallery} actionLabel={t.photos(servicePhotos.length)} onAction={onOpenGallery} headingLevel="h3" />
-      <Box component="ul" aria-label={t.galleryList} sx={{ listStyle: 'none', m: 0, p: 0, columnCount: 2, columnGap: '12px' }}>
-        {shown.map((p) => (
-          <Box component="li" key={p.id} sx={{ breakInside: 'avoid', mb: 3 }}>
-            <ButtonBase onClick={onOpenGallery} aria-label={t.openPhoto(p.caption[locale])} sx={{ display: 'block', width: '100%', borderRadius: `${radius.md}px`, '&.Mui-focusVisible': { outline: `2px solid ${bs.focus.ring}`, outlineOffset: 2 } }}>
-              <Media alt={p.caption[locale]} ratio={p.ratio} radius="md" unit={p.unit} />
-            </ButtonBase>
-          </Box>
-        ))}
-      </Box>
-      <Button variant="secondary" size="md" fullWidth endIcon={<ArrowForwardRounded />} onClick={onOpenGallery}>
-        {t.seeAll}
-      </Button>
-    </Box>
-  );
-}
-
 function ReviewsPanel() {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const [query, setQuery] = useState('');
   const [filters, setFilters] = useState<string[]>([]);
@@ -321,7 +308,7 @@ function ReviewsPanel() {
         </Box>
       </Box>
 
-      <Button variant="secondary" size="md" startIcon={<EditOutlined />} fullWidth>
+      <Button variant="secondary" size="md" startIcon={<EditOutlined />} fullWidth onClick={() => nav.go('write-review')}>
         {t.write}
       </Button>
 
@@ -383,48 +370,69 @@ function ReviewsPanel() {
 
 export interface ServiceDetailScreenProps {
   initialTab?: ServiceTab;
+  /** Business unit whose portal is shown (info, packages, prices, hours). Defaults to Detailing. */
+  unit?: BusinessUnit;
+  /** Center preselected in the selector. Defaults to the first center that offers the unit. */
+  centerId?: string;
 }
 
 /**
- * Detalle del servicio: Detailing at Black Six Doral. Photo hero (back, share, bookmark, Video demo, thumbnail strip with
- * "+10"), unit tag, rating, name and address, then four tabs. "Elegir horario" is the only orange element.
+ * Detalle del servicio: service name, tappable rating, center selector (sedes) with its address, then four tabs. Photo hero (back,
+ * share, bookmark, Video demo, thumbnail strip with "+10"). "Elegir horario" is the only orange element.
  */
-export function ServiceDetailScreen({ initialTab = 'about' }: ServiceDetailScreenProps) {
+export function ServiceDetailScreen({ initialTab = 'about', unit = serviceUnit, centerId }: ServiceDetailScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const [tab, setTab] = useState<ServiceTab>(initialTab);
   const [pkgId, setPkgId] = useState<string | null>(initialTab === 'services' ? 'det-premium' : null);
-  const Icon = unitIcon[serviceUnit];
+  const unitCenters = centers.filter((c) => c.units.includes(unit));
+  const [selectedCenter, setSelectedCenter] = useState((unitCenters.find((c) => c.id === centerId) ?? unitCenters[0]).id);
+  const center = unitCenters.find((c) => c.id === selectedCenter)!;
+  const tabsRef = useRef<HTMLDivElement>(null);
   const nf = new Intl.NumberFormat(intlLocale[locale], { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   const chosen = pkgId ? getPackage(pkgId) : undefined;
   const idPrefix = 'service-detail';
+  // Towing starts with the auction data (yard, pickup code, lot); the other units start by choosing a package.
+  const showReviews = () => {
+    setTab('reviews');
+    tabsRef.current?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  };
+  const book = () => (unit === 'towing' ? nav.go('auction-pickup', { unit }) : nav.go('select-vehicle', chosen ? { unit, centerId: center.id, packageId: chosen.id } : { unit, centerId: center.id }));
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100%' }}>
-      <Hero onOpenGallery={() => setTab('gallery')} />
+      <Hero unit={unit} center={center} onOpenGallery={() => nav.go('photo-viewer')} />
 
       <Box sx={{ px: gutter, pt: 5, display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 3 }}>
-          <Tag icon={<Icon />} label={unitMeta[serviceUnit].name} />
-          <Typography variant="body2" component="p" sx={{ display: 'inline-flex', alignItems: 'center', gap: 1, color: bs.text.secondary }}>
-            <StarRounded aria-hidden sx={{ fontSize: 18, color: bs.brand.primary }} />
+        <ButtonBase
+          onClick={showReviews}
+          aria-label={`${t.seeReviews}: ${t.reviewsCount(nf.format(serviceRating.value), serviceRating.count)}`}
+          sx={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: 1, minHeight: 44, color: bs.text.secondary, borderRadius: `${radius.sm}px`, '&.Mui-focusVisible': { outline: `2px solid ${bs.focus.ring}`, outlineOffset: 2 } }}
+        >
+          <StarRounded aria-hidden sx={{ fontSize: 18, color: bs.brand.primary }} />
+          <Typography variant="body2" component="span" sx={{ textDecoration: 'underline' }}>
             {t.reviewsCount(nf.format(serviceRating.value), serviceRating.count)}
           </Typography>
-        </Box>
+        </ButtonBase>
         <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 3 }}>
           <Box sx={{ minWidth: 0 }}>
             <Typography variant="h1" component="h1">
-              {unitMeta[serviceUnit].name} · {center.name}
+              {unitMeta[unit].name}
             </Typography>
             <Typography variant="body2" sx={{ color: bs.text.secondary, mt: 1, overflowWrap: 'anywhere' }}>
               {center.address.line1}, {center.address.city}, {center.address.state} {center.address.zip}
             </Typography>
           </Box>
-          <IconButton variant="outlined" size="lg" label={t.directions} icon={<NearMeOutlined />} sx={{ flexShrink: 0, transition: transition('background-color') }} />
+          <IconButton variant="outlined" size="lg" label={t.directions} icon={<NearMeOutlined />} onClick={() => nav.go('center-location')} sx={{ flexShrink: 0, transition: transition('background-color') }} />
         </Box>
       </Box>
 
-      <Box sx={{ mt: 4 }}>
+      <Box sx={{ px: gutter, pt: 4 }}>
+        <Select label={t.center} placeholder={t.centerChoose} value={center.id} onChange={setSelectedCenter} options={unitCenters.map((c) => ({ value: c.id, label: c.name }))} />
+      </Box>
+
+      <Box ref={tabsRef} sx={{ mt: 4, scrollMarginTop: 8 }}>
         <Tabs
           idPrefix={idPrefix}
           label={t.tabs}
@@ -434,7 +442,6 @@ export function ServiceDetailScreen({ initialTab = 'about' }: ServiceDetailScree
           items={[
             { value: 'about', label: t.tabAbout },
             { value: 'services', label: t.tabServices },
-            { value: 'gallery', label: t.tabGallery },
             { value: 'reviews', label: t.tabReviews },
           ]}
         />
@@ -442,21 +449,18 @@ export function ServiceDetailScreen({ initialTab = 'about' }: ServiceDetailScree
 
       <Box sx={{ flex: 1, pb: 8 }}>
         <TabPanel idPrefix={idPrefix} value="about" current={tab}>
-          <AboutPanel />
+          <AboutPanel unit={unit} center={center} />
         </TabPanel>
         <TabPanel idPrefix={idPrefix} value="services" current={tab}>
-          <ServicesPanel selected={pkgId} onSelect={setPkgId} />
-        </TabPanel>
-        <TabPanel idPrefix={idPrefix} value="gallery" current={tab}>
-          <GalleryPanel onOpenGallery={() => undefined} />
+          <ServicesPanel unit={unit} selected={pkgId} onSelect={setPkgId} />
         </TabPanel>
         <TabPanel idPrefix={idPrefix} value="reviews" current={tab}>
           <ReviewsPanel />
         </TabPanel>
       </Box>
 
-      <BottomActionBar summary={<Price amount={chosen ? chosen.price : 89} from={!chosen || Boolean(chosen.priceFrom)} size="lg" />}>
-        <Button variant="primary" size="lg">
+      <BottomActionBar summary={<Price amount={chosen ? chosen.price : getUnit(unit).fromPrice} from={!chosen || Boolean(chosen.priceFrom)} size="lg" />}>
+        <Button variant="primary" size="lg" onClick={book}>
           {t.chooseTime}
         </Button>
       </BottomActionBar>

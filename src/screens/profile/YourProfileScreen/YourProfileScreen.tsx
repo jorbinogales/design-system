@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
+import { useNav } from '../../../app/nav';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
 import { InitialsAvatar } from '../../../components/data-display/InitialsAvatar/InitialsAvatar';
@@ -19,6 +20,7 @@ const messages = {
     namePlaceholder: 'Nombre y apellido',
     hint: 'Usaremos este correo y teléfono para confirmaciones y avisos de tus servicios.',
     update: 'Actualizar',
+    password: 'Cambiar contraseña',
     saved: 'Perfil actualizado',
     errName: 'Escribe tu nombre y apellido.',
     errEmail: 'Escribe un correo válido, por ejemplo nombre@correo.com.',
@@ -30,6 +32,7 @@ const messages = {
     namePlaceholder: 'First and last name',
     hint: 'We use this email and phone for confirmations and updates about your services.',
     update: 'Update',
+    password: 'Change password',
     saved: 'Profile updated',
     errName: 'Enter your first and last name.',
     errEmail: 'Enter a valid email, for example name@email.com.',
@@ -51,6 +54,7 @@ export interface YourProfileScreenProps {
 
 function Content({ initial, submitted: startSubmitted = false }: YourProfileScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const toast = useToast();
   const formId = useId();
   const base = useRef<Values>({ name: user.name, phone: user.phone, email: user.email });
@@ -83,7 +87,7 @@ function Content({ initial, submitted: startSubmitted = false }: YourProfileScre
 
   return (
     <ScreenRoot>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
       <ScreenBody gap={6} sx={{ flex: 1 }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', pt: 2 }}>
           <InitialsAvatar name={values.name || user.name} size="xl" />
@@ -93,6 +97,9 @@ function Content({ initial, submitted: startSubmitted = false }: YourProfileScre
           <PhoneField value={values.phone} onChange={set('phone')} error={show('phone')} helperText={t.hint} required />
           <EmailField value={values.email} onChange={set('email')} error={show('email')} required />
         </Box>
+        <Button variant="quiet" fullWidth onClick={() => nav.go('password-manager')}>
+          {t.password}
+        </Button>
       </ScreenBody>
       <BottomActionBar>
         <Button type="submit" form={formId} fullWidth loading={saving} disabled={!dirty && !submitted}>

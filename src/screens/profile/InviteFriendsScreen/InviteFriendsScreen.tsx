@@ -3,6 +3,7 @@ import ShareOutlined from '@mui/icons-material/ShareOutlined';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useNav } from '../../../app/nav';
 import { Button } from '../../../components/actions/Button/Button';
 import { IdentifierBlock } from '../../../components/data-display/IdentifierBlock/IdentifierBlock';
 import { InitialsAvatar } from '../../../components/data-display/InitialsAvatar/InitialsAvatar';
@@ -17,7 +18,7 @@ import { layout } from '../../../theme/tokens';
 import { inviteCode, inviteContacts, inviteReward } from '../data';
 import { ScreenRoot } from '../ui';
 
-const link = `https://blacksixmiami.com/i/${inviteCode}`;
+const link = `https://blackseatmiami.com/i/${inviteCode}`;
 
 const messages = {
   es: {
@@ -26,7 +27,7 @@ const messages = {
     body: (v: string) => `Tu amigo recibe ${v} en su primera reserva. Tú recibes ${v} en tu wallet cuando la complete.`,
     code: 'Tu código de invitación',
     share: 'Compartir enlace',
-    shareText: (v: string) => `Reserva Detailing, Towing o Personal Washing con Black Six y recibe ${v} en tu primera reserva.`,
+    shareText: (v: string) => `Reserva Detailing, Towing o Personal Washing con Black Seat y recibe ${v} en tu primera reserva.`,
     copied: 'Enlace copiado',
     contacts: 'Tus contactos',
     invite: 'Invitar',
@@ -40,7 +41,7 @@ const messages = {
     body: (v: string) => `Your friend gets ${v} on their first booking. You get ${v} in your wallet when they complete it.`,
     code: 'Your invite code',
     share: 'Share link',
-    shareText: (v: string) => `Book Detailing, Towing or Personal Washing with Black Six and get ${v} on your first booking.`,
+    shareText: (v: string) => `Book Detailing, Towing or Personal Washing with Black Seat and get ${v} on your first booking.`,
     copied: 'Link copied',
     contacts: 'Your contacts',
     invite: 'Invite',
@@ -52,6 +53,7 @@ const messages = {
 
 function Content() {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const toast = useToast();
   const [sent, setSent] = useState<string[]>(['c3']);
@@ -60,7 +62,7 @@ function Content() {
   const share = async () => {
     try {
       if (typeof navigator.share === 'function') {
-        await navigator.share({ title: 'Black Six', text: t.shareText(reward), url: link });
+        await navigator.share({ title: 'Black Seat', text: t.shareText(reward), url: link });
         return;
       }
       await navigator.clipboard.writeText(link);
@@ -72,7 +74,7 @@ function Content() {
 
   return (
     <ScreenRoot>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, px: `${layout.gutter.mobile}px`, pt: 3, pb: 6 }}>
           <Box>

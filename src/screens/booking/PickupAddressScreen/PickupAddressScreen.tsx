@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useNav } from '../../../app/nav';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
 import { MapCanvas } from '../../../components/address/MapCanvas/MapCanvas';
@@ -41,6 +42,8 @@ export interface PickupAddressScreenProps {
 export function PickupAddressScreen({ initialId = 'adr-andrea-home' }: PickupAddressScreenProps) {
   const t = useT(messages);
   const locale = useLocale();
+  const nav = useNav();
+  const params = nav.route.params ?? {};
   const [selected, setSelected] = useState<string | null>(initialId);
   return (
     <ScreenRoot>
@@ -81,10 +84,10 @@ export function PickupAddressScreen({ initialId = 'adr-andrea-home' }: PickupAdd
             }))}
           />
         </Card>
-        <AddRow label={t.add} />
+        <AddRow label={t.add} onClick={() => nav.go('add-address', params)} />
       </ScreenBody>
       <BottomActionBar>
-        <Button fullWidth disabled={!selected}>
+        <Button fullWidth disabled={!selected} onClick={() => selected && nav.go('payment-method', { ...params, addressId: selected })}>
           {t.next}
         </Button>
       </BottomActionBar>

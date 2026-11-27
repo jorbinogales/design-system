@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import { Tag } from '../../../components/data-display/Tag/Tag';
 import { TopBar } from '../../../components/navigation/TopBar/TopBar';
 import { unitMeta } from '../../../domain/units';
+import { useNav } from '../../../app/nav';
 import { useLocale, useT } from '../../../i18n/locale';
 import { unitIcon } from '../../../icons/unitIcon';
 import { InverseSurface } from '../../../theme/SchemeScope';
@@ -39,6 +40,7 @@ export interface OfferScreenProps {
 /** Oferta (ej. 40 %): the offer summary and its packages with discounted prices next to the original. */
 export function OfferScreen({ offerId = 'off-40' }: OfferScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const offer = forYouOffers.find((o) => o.id === offerId) ?? forYouOffers[0];
   const percent = offerDeals[offer.id]?.percent ?? 0;
@@ -47,7 +49,7 @@ export function OfferScreen({ offerId = 'off-40' }: OfferScreenProps) {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100%' }}>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
       <Box sx={{ flex: 1, px: gutter, pt: 4, pb: 8, display: 'flex', flexDirection: 'column', gap: 6 }}>
         <InverseSurface sx={{ position: 'relative', overflow: 'hidden', borderRadius: `${radius.lg}px`, border: `1px solid ${bs.border.subtle}` }}>
           <Box aria-hidden sx={{ position: 'absolute', right: -22, bottom: -26, color: bs.border.strong, opacity: 0.5 }}>
@@ -82,7 +84,7 @@ export function OfferScreen({ offerId = 'off-40' }: OfferScreenProps) {
           <Box component="ul" aria-label={t.list} sx={{ listStyle: 'none', m: 0, p: 0, display: 'flex', flexDirection: 'column', gap: 3 }}>
             {getOfferPackages(offer.id).map((p) => (
               <Box component="li" key={p.id}>
-                <PackageListItem pkg={p} discountPercent={percent} discountedAmount={discountedPrice(p.price, percent)} onOpen={() => undefined} />
+                <PackageListItem pkg={p} discountPercent={percent} discountedAmount={discountedPrice(p.price, percent)} onOpen={() => nav.go('service-detail', { unit: p.unit })} />
               </Box>
             ))}
           </Box>

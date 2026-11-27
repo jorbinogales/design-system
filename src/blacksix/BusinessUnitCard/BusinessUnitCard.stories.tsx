@@ -9,13 +9,13 @@ import { Showcase, Specimen } from '../../storybook/Showcase';
 import { BusinessUnitCard } from './BusinessUnitCard';
 
 const meta = {
-  title: 'Black Six/Tarjeta de unidad de negocio',
+  title: 'Black Seat/Tarjeta de unidad de negocio',
   component: BusinessUnitCard,
   parameters: {
     docs: {
       description: {
         component: componentDocs({
-          purpose: 'Presenta una de las tres unidades de Black Six (Detailing, Towing, Personal Washing) en Inicio y en el selector de servicio. El nombre siempre es texto: la unidad se distingue sin depender de la foto ni del color.',
+          purpose: 'Presenta una de las tres unidades de Black Seat (Detailing, Towing, Personal Washing) en Inicio y en el selector de servicio. El nombre siempre es texto: la unidad se distingue sin depender de la foto ni del color.',
           anatomy: ['**Fotografía** con respaldo de unidad (`Media`)', '**Etiqueta de lugar** sobre la foto: En nuestros centros · Recogida en subasta · A domicilio', '**Icono y nombre** de la unidad', '**Descripción breve**', '**Precio “Desde”** (opcional)', '**Acción “Explorar”** (opcional, solo cuando la tarjeta es interactiva)'],
           props: ['`variant="hero"` (Inicio): foto 3:2 arriba y texto debajo. `variant="compact"`: miniatura de 76 px a la izquierda, descripción en dos líneas.', 'Pasa `onSelect` o `href` para volverla interactiva; con `selected` usa los tokens de selección.', '`photoSrc` solo admite activos locales; sin foto se dibuja el respaldo con el icono de la unidad.'],
           states: ['Reposo', 'Hover (solo puntero): borde fuerte', 'Foco visible: anillo de foco', 'Presionado: escala 0.99', 'Seleccionado: fondo y borde de selección', 'Sin foto: respaldo con icono'],

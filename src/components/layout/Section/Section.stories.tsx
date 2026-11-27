@@ -61,7 +61,7 @@ const meta = {
           responsive: ['Ocupa el ancho del contenedor; el contenido decide su rejilla.'],
           a11y: ['`<section aria-labelledby>` apunta al título: los lectores de pantalla lo listan como región.', 'Título `h2` por defecto (`headingLevel` para ajustar la jerarquía).'],
           content: [['Servicios · Ver todo', 'Services · See all']],
-          example: 'La historia reproduce la sección Servicios del Inicio con los iconos de categoría de Black Six.',
+          example: 'La historia reproduce la sección Servicios del Inicio con los iconos de categoría de Black Seat.',
         }),
       },
     },

@@ -6,6 +6,7 @@ import PlaceOutlined from '@mui/icons-material/PlaceOutlined';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState, type ReactNode } from 'react';
+import { useNav } from '../../../app/nav';
 import { Button } from '../../../components/actions/Button/Button';
 import { formatAddress } from '../../../components/address/LocationCard/LocationCard';
 import { Tag } from '../../../components/data-display/Tag/Tag';
@@ -68,11 +69,12 @@ export interface AddressesScreenProps {
 
 function Content({ state = 'default' }: AddressesScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const toast = useToast();
   const [items, setItems] = useState<SavedAddress[]>(state === 'empty' ? [] : savedAddresses);
   const [pending, setPending] = useState<SavedAddress | null>(null);
-  const addNew = () => toast.show({ message: t.add, severity: 'info' });
+  const addNew = () => nav.go('add-address');
 
   const remove = () => {
     if (!pending) return;
@@ -154,7 +156,7 @@ function Content({ state = 'default' }: AddressesScreenProps) {
 
   return (
     <ScreenRoot>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
       <ScreenBody gap={4} sx={{ flex: 1 }}>
         {body}
       </ScreenBody>

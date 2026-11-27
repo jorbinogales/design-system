@@ -1,5 +1,5 @@
 /**
- * Black Six design tokens (source of truth).
+ * Black Seat design tokens (source of truth).
  *
  * The first block of every color scheme is the brand brief's table, verbatim:
  * orange #FF5000, charcoal #111111 and white #FFFFFF as the base.

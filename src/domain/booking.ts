@@ -4,7 +4,7 @@ import type { AssignmentStatus, BookingStatus, PaymentStatus, StatusByDimension,
 import type { BusinessUnit } from './units';
 
 /**
- * Shared business types for Black Six (single company, three units). The three status dimensions
+ * Shared business types for Black Seat (single company, three units). The three status dimensions
  * are independent fields: `booking.status`, `booking.assignment.status`, `booking.payment.status`.
  * Identifiers (lot, pickup code, booking id, ZIP) are always strings so leading zeros survive.
  */
@@ -57,7 +57,7 @@ export interface ServiceOffering {
   place: 'center' | 'customer-address' | 'auction-yard';
 }
 
-/** A Black Six center (detailing bays, tow-truck base). */
+/** A Black Seat center (detailing bays, tow-truck base). */
 export interface Center {
   id: string;
   name: string;
@@ -95,7 +95,7 @@ export interface CustomerAddress extends AddressData {
 
 export type StaffRoleName = 'detailer' | 'washer' | 'tow-driver' | 'supervisor';
 
-/** Black Six staff member who can be assigned to a job. */
+/** Black Seat staff member who can be assigned to a job. */
 export interface Professional {
   id: string;
   name: string;

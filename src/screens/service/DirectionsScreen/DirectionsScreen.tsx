@@ -10,6 +10,7 @@ import { BottomActionBar } from '../../../components/actions/BottomActionBar/Bot
 import { Button } from '../../../components/actions/Button/Button';
 import { TopBar } from '../../../components/navigation/TopBar/TopBar';
 import { intlLocale } from '../../../i18n/format';
+import { useNav } from '../../../app/nav';
 import { useLocale, useT } from '../../../i18n/locale';
 import { getCenter } from '../../../mocks/catalog';
 import { InverseSurface } from '../../../theme/SchemeScope';
@@ -52,6 +53,7 @@ const messages = {
 /** Cómo llegar: route and ETA on the map, next maneuver and "Iniciar". */
 export function DirectionsScreen({ defaultStarted = false }: { defaultStarted?: boolean }) {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const [started, setStarted] = useState(defaultStarted);
   const center = getCenter(serviceCenterId)!;
@@ -60,7 +62,7 @@ export function DirectionsScreen({ defaultStarted = false }: { defaultStarted?: 
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100%' }}>
-      <TopBar title={t.title} subtitle={center.name} onBack={() => undefined} />
+      <TopBar title={t.title} subtitle={center.name} onBack={nav.back} />
       <MapCanvas
         label={t.map(center.name)}
         ratio={390 / 500}
@@ -127,7 +129,7 @@ export function DirectionsScreen({ defaultStarted = false }: { defaultStarted?: 
         )}
       </Box>
       <BottomActionBar>
-        <Button variant={started ? 'secondary' : 'primary'} size="lg" fullWidth onClick={() => setStarted((s) => !s)}>
+        <Button variant={started ? 'secondary' : 'primary'} size="lg" fullWidth onClick={() => (started ? nav.go('arrived') : setStarted(true))}>
           {started ? t.stop : t.start}
         </Button>
       </BottomActionBar>

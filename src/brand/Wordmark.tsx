@@ -1,66 +1,24 @@
 import Box from '@mui/material/Box';
 import { bs } from '../theme/theme';
-import { BlackSixMark, type MarkVariant } from './BlackSixMark';
 
 export type WordmarkSize = 'sm' | 'md' | 'lg' | 'xl';
 
 export interface WordmarkProps {
   size?: WordmarkSize;
-  /** Show the logo mark before (horizontal) or above (stacked) the name. */
+  /** No-op: the official logo is the wordmark alone; kept so existing call sites compile. */
   withMark?: boolean;
   orientation?: 'horizontal' | 'stacked';
-  markVariant?: MarkVariant;
+  /** Fill color; defaults to `text.primary`. */
+  color?: string;
 }
 
-const scale: Record<WordmarkSize, { font: number; mark: number; gap: number }> = {
-  sm: { font: 15, mark: 24, gap: 8 },
-  md: { font: 20, mark: 32, gap: 10 },
-  lg: { font: 28, mark: 44, gap: 12 },
-  xl: { font: 40, mark: 72, gap: 20 },
-};
+const height: Record<WordmarkSize, number> = { sm: 16, md: 20, lg: 28, xl: 34 };
 
-/**
- * PROVISIONAL typographic wordmark until the official logo is supplied.
- * "BLACK" in Archivo Black-weight Expanded against "SIX" in Light Expanded: the name's
- * own contrast, carried by one family. Color follows `text.primary`, so it works on
- * light, dark and inverse surfaces.
- */
-export function Wordmark({ size = 'md', withMark = false, orientation = 'horizontal', markVariant = 'orange' }: WordmarkProps) {
-  const s = scale[size];
-  const stacked = orientation === 'stacked';
+/** Official BLACKSEAT wordmark (vector). Color follows `text.primary`, so it works on light, dark and inverse surfaces. */
+export function Wordmark({ size = 'md', color = bs.text.primary }: WordmarkProps) {
   return (
-    <Box
-      role="img"
-      aria-label="Black Six"
-      sx={{
-        display: 'inline-flex',
-        flexDirection: stacked ? 'column' : 'row',
-        alignItems: 'center',
-        gap: `${s.gap}px`,
-        color: bs.text.primary,
-      }}
-    >
-      {withMark && <BlackSixMark size={s.mark} variant={markVariant} />}
-      <Box
-        component="span"
-        aria-hidden
-        sx={{
-          fontSize: s.font,
-          lineHeight: 1,
-          fontStretch: '125%',
-          letterSpacing: '0.01em',
-          textTransform: 'uppercase',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        <Box component="span" sx={{ fontWeight: 900 }}>
-          Black
-        </Box>
-        <Box component="span" sx={{ fontWeight: 300 }}>
-          {' '}
-          Six
-        </Box>
-      </Box>
+    <Box component="svg" role="img" aria-label="Black Seat" viewBox="0 0 1050 152" sx={{ height: height[size], width: 'auto', display: 'block', color, flexShrink: 0 }}>
+      <path fillRule="evenodd" fill="currentColor" d="M648.7 150.5C639.5 148.7 627.2 144.2 620.8 140.1L616.1 137.1L622 126.1C625.2 120 628.1 114.2 628.5 113.1C629.8 108.9 631.4 108.7 638.7 112C658.3 121 682.4 121.4 688.4 112.9C692.6 106.8 687.8 99.4 677.9 96.7C642.8 87 638.9 85.5 630.7 78C621.1 69.2 616.3 54.4 618.9 41.8C620.8 32.3 625.5 23.7 631.8 17.9C648.1 3 674.5 -1.4 702 6.1C710.1 8.4 722.9 14.6 723.7 16.6C724.1 17.6 712.2 42.1 710.5 43.8C710.3 44 706.9 42.7 702.9 41C680.9 31.3 656 34.5 656 46.9C656 49.4 659.5 53.7 663 55.5C664.5 56.3 672.8 58.7 681.3 60.9C689.9 63.1 699.9 66.4 703.7 68.2C711.8 72.1 720.6 80.5 723.8 87.2C731.2 103.1 727.6 124 715.3 136.7C709.9 142.2 703 146.2 693.5 149.2C685.3 151.9 659.8 152.6 648.7 150.5ZM415.1 149.1C381.5 140.6 358.3 108.8 360.3 74C362.2 41.9 384.2 14.9 415.5 6.4C436 0.9 461 5.5 479 18.1C482.3 20.4 485 22.6 485 22.9C485 23.3 483.2 26.6 481 30.4C478.8 34.1 477 37.4 477 37.5C477 38.5 469.6 50 469 50C468.6 50 465.9 48.5 463.1 46.6C448.1 36.4 428.2 35.2 415 43.5C409.7 46.9 403.1 54.5 400.2 60.8C397.8 65.9 397.5 67.7 397.5 77.5C397.5 87.9 397.7 88.9 400.7 95.1C411.9 117.8 439.7 123.8 462.6 108.5C466.3 106 469.4 104.1 469.5 104.2C470.2 105 482 125 483.5 128L485.3 131.4L481.1 135.1C476.1 139.5 462.8 146.3 454.5 148.6C445.2 151.2 424.4 151.4 415.1 149.1ZM2 77.5L2 7L39 7C80.1 7 86.4 7.7 97.2 13.1C109 19.1 115 28.1 115.8 40.9C116 45.1 115.7 50.3 115.1 52.6C113.5 58.5 108.5 65.5 103.4 68.9L98.8 71.9L104 74.5C110.2 77.7 116 83.5 119.1 89.8C121.2 94 121.5 95.9 121.5 107C121.5 118.9 121.4 119.7 118.6 124.7C112.6 135.6 103.1 142.5 89.4 146C82.3 147.8 78.3 148 41.8 148L2 148L2 77.5ZM132 77.5L132 7L150.5 7L169 7L169 61.5L169 116L194.5 116L220 116L220 132L220 148L176 148L132 148L132 77.5ZM226 147.3C226 146.7 231.3 131.9 239 111C246.8 90 274.9 13.1 275.7 10.5L276.7 7.5L298 7.5L319.3 7.5L326.7 27.5C330.8 38.5 339.9 63.2 347 82.5C354 101.8 362.3 124.1 365.4 132.2C368.5 140.3 371 147.2 371 147.5C371 147.8 362.7 148 352.5 148C330.9 148 333.4 149.5 327.4 132.7L323.6 122L298.1 122.2L272.5 122.5L268.2 134.5C265.9 141 263.4 146.8 262.7 147.2C261.2 148.2 226 148.3 226 147.3ZM492.5 146.8C492.2 146.1 492.1 114.5 492.2 76.5L492.5 7.5L510.2 7.2L528 7L528 34.6C528 50.3 528.4 62 528.9 61.8C529.4 61.6 535.3 55 542 47C548.8 39 555.8 30.7 557.6 28.6C559.5 26.5 564.3 20.7 568.3 15.9L575.5 7.1L596.2 7C607.7 7 617 7.2 617 7.4C617 7.9 581.9 48.1 574.6 56C567.7 63.5 560 72.6 560 73.3C560 74.1 561.7 76.2 582.5 102.5C590.2 112.3 597.4 121.4 598.5 122.9C599.5 124.3 604 130 608.4 135.5C612.8 141 616.8 146.1 617.3 146.8C618 147.7 613.7 148 596.2 148L574.2 148L562.3 132.8C555.8 124.4 547.3 113.5 543.5 108.5C533.6 95.7 534.4 96.2 530.9 99.6L528 102.4L528 125.2L528 148L510.5 148C497.4 148 492.8 147.7 492.5 146.8ZM737 77.5L737 7L781.8 7.2L826.5 7.5L826.8 23.2L827.1 39L800 39L773 39L773 49.8L773 60.7L794.8 60.8L816.5 60.8L816.8 75.9L817.1 91L795 91L773 91L773 103.5L773 116L798 116L823 116L823 132L823 148L780 148L737 148L737 77.5ZM828 146.8C828 146.1 831.9 135.2 836.6 122.5C841.3 109.8 848.1 91.4 851.6 81.5C855.2 71.6 859.6 59.5 861.5 54.5C863.3 49.5 867.4 38.5 870.5 30C873.6 21.5 876.7 12.9 877.5 11L878.8 7.5L898.6 7.2C909.5 7.1 918.7 7.3 919.2 7.8C919.9 8.5 926.4 25.9 940.2 64C950.1 91.6 958 113.1 964.4 130.5C967.5 138.8 970 146.1 970 146.8C970 148.7 936.2 148.5 933.5 146.6C932.2 145.7 929.9 140.7 927.5 133.6L923.6 122L898.9 122L874.2 122L871.6 128.8C870.2 132.5 868.2 137.9 867.1 140.9C866 143.9 864.5 146.7 863.8 147.2C863.1 147.6 854.7 148 845.2 148C832.1 148 828 147.7 828 146.8ZM977.8 123.2C977.6 109.6 977.5 91.5 977.4 83C977.4 74.5 977.3 61.1 977.2 53.2L977 39L962 39L947 39L947 23L947 7L998.2 7.2L1049.5 7.5L1049.8 23.2L1050.1 39L1032 39L1014 39L1014 93.5L1014 148L996 148L978 148L977.8 123.2ZM76.5 115.6C82.3 113.1 84.5 109.7 84.5 102.8C84.5 98.2 84.1 96.7 82 94.5C77.5 89.7 73.9 88.9 56 88.7L39.5 88.5L39.2 101.9C39.1 109.3 39.2 116 39.5 116.8C40.3 119 70.9 118 76.5 115.6ZM313 92.1C313 89.5 298.1 48 297.5 49C296 51.5 283.1 91.3 283.6 92.1C284.3 93.3 313 93.3 313 92.1ZM912.3 92.2C912.8 91.5 899 48.7 898.5 49.2C898 49.7 885 90.8 885 91.9C885 93.2 911.6 93.5 912.3 92.2ZM71.4 58.6C78.5 55.7 81.4 46.5 77 41.2C73.5 37 69.2 36 53.5 36L39 36L39 48L39 60L53.5 60C63.6 60 69.1 59.6 71.4 58.6Z" />
     </Box>
   );
 }

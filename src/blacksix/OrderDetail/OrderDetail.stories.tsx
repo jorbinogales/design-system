@@ -36,7 +36,7 @@ function PanelDemo({ id }: { id: string }) {
 }
 
 const meta = {
-  title: 'Black Six/Detalle de orden',
+  title: 'Black Seat/Detalle de orden',
   component: OrderDetail,
   parameters: {
     docs: {

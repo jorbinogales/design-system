@@ -9,6 +9,7 @@ import { formatSlotTime } from '../../../components/date-time/TimeSlot/TimeSlot'
 import { KeyValue, KeyValueList } from '../../../components/layout/KeyValue/KeyValue';
 import { TopBar } from '../../../components/navigation/TopBar/TopBar';
 import { intlLocale } from '../../../i18n/format';
+import { useNav } from '../../../app/nav';
 import { useLocale, useT } from '../../../i18n/locale';
 import { getCenter } from '../../../mocks/catalog';
 import { bs } from '../../../theme/theme';
@@ -44,6 +45,7 @@ const messages = {
 /** Ubicación del centro: map with the center pin, its address card and "Cómo llegar". */
 export function CenterLocationScreen({ onDirections }: { onDirections?: () => void }) {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const [selected, setSelected] = useState<string | null>(serviceCenterId);
   const center = getCenter(serviceCenterId)!;
@@ -52,7 +54,7 @@ export function CenterLocationScreen({ onDirections }: { onDirections?: () => vo
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100%' }}>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
       <MapCanvas
         label={t.map(center.name)}
         ratio={390 / 430}
@@ -72,7 +74,7 @@ export function CenterLocationScreen({ onDirections }: { onDirections?: () => vo
         </KeyValueList>
       </Box>
       <BottomActionBar>
-        <Button variant="primary" size="lg" fullWidth startIcon={<NearMeOutlined />} onClick={onDirections}>
+        <Button variant="primary" size="lg" fullWidth startIcon={<NearMeOutlined />} onClick={onDirections ?? (() => nav.go('directions'))}>
           {t.directions}
         </Button>
       </BottomActionBar>

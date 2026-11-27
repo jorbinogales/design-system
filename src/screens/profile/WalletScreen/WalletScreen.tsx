@@ -3,6 +3,7 @@ import AccountBalanceWalletOutlined from '@mui/icons-material/AccountBalanceWall
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import type { ReactNode } from 'react';
+import { useNav } from '../../../app/nav';
 import { Button } from '../../../components/actions/Button/Button';
 import { Price } from '../../../components/data-display/Price/Price';
 import { SkeletonGroup, SkeletonListRow } from '../../../components/feedback/Skeleton/Skeleton';
@@ -103,6 +104,7 @@ function TxRow({ tx, last }: { tx: WalletTx; last: boolean }) {
 /** Wallet (s73): black balance card with "Agregar dinero" and transactions grouped by day. Signs and text carry meaning, not color. */
 export function WalletScreen({ state = 'default' }: WalletScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const balance = state === 'empty' ? 0 : walletBalance;
 
@@ -141,7 +143,7 @@ export function WalletScreen({ state = 'default' }: WalletScreenProps) {
 
   return (
     <ScreenRoot>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
       <ScreenBody gap={6} sx={{ flex: 1 }}>
         <InverseSurface sx={{ borderRadius: `${radius.lg}px`, p: 5, display: 'flex', flexDirection: 'column', gap: 5 }}>
           <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 3 }}>
@@ -157,7 +159,7 @@ export function WalletScreen({ state = 'default' }: WalletScreenProps) {
               <AccountBalanceWalletOutlined />
             </Box>
           </Box>
-          <Button fullWidth startIcon={<AddRounded />}>
+          <Button fullWidth startIcon={<AddRounded />} onClick={() => nav.go('add-money')}>
             {t.add}
           </Button>
         </InverseSurface>

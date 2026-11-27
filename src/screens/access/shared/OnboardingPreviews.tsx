@@ -5,6 +5,7 @@ import { MapCanvas } from '../../../components/address/MapCanvas/MapCanvas';
 import { Button } from '../../../components/actions/Button/Button';
 import { Tag } from '../../../components/data-display/Tag/Tag';
 import { Media, MediaRating } from '../../../components/layout/Media/Media';
+import { centerPhoto, unitPhoto } from '../../../mocks/photos';
 import { unitMeta, businessUnits } from '../../../domain/units';
 import { formatMoney } from '../../../i18n/format';
 import { useLocale, useT } from '../../../i18n/locale';
@@ -16,9 +17,9 @@ import { centerPins } from '../data';
 
 const messages = {
   es: {
-    mapLabel: 'Mapa con los centros Black Six del área de Miami y la zona de cobertura',
+    mapLabel: 'Mapa con los centros Black Seat del área de Miami y la zona de cobertura',
     search: 'Buscar centros y servicios',
-    center: 'Black Six Doral',
+    center: 'Black Seat Doral',
     centerMeta: '2,1 mi · Abierto hasta 7 p. m.',
     hello: 'Hola, Andrea',
     pick: 'Elige un servicio',
@@ -31,15 +32,15 @@ const messages = {
     towMeta: 'Lote 05503318 · Código 0071',
     towWhen: 'Lun 30 nov · 2:00 p. m.',
     detTitle: 'Detailing Premium · Toyota RAV4',
-    detMeta: 'Black Six Doral',
+    detMeta: 'Black Seat Doral',
     detWhen: 'Vie 27 nov · 10:00 a. m.',
     track: 'Ver reserva',
     cancel: 'Cancelar',
   },
   en: {
-    mapLabel: 'Map with the Black Six centers in the Miami area and the coverage zone',
+    mapLabel: 'Map with the Black Seat centers in the Miami area and the coverage zone',
     search: 'Search centers and services',
-    center: 'Black Six Doral',
+    center: 'Black Seat Doral',
     centerMeta: '2.1 mi · Open until 7 PM',
     hello: 'Hi, Andrea',
     pick: 'Choose a service',
@@ -52,7 +53,7 @@ const messages = {
     towMeta: 'Lot 05503318 · Code 0071',
     towWhen: 'Mon Nov 30 · 2:00 PM',
     detTitle: 'Premium Detailing · Toyota RAV4',
-    detMeta: 'Black Six Doral',
+    detMeta: 'Black Seat Doral',
     detWhen: 'Fri Nov 27 · 10:00 AM',
     track: 'View booking',
     cancel: 'Cancel',
@@ -87,7 +88,7 @@ export function MapPreview() {
       </Box>
       <Box sx={{ position: 'absolute', left: 16, right: 16, top: 470, p: 3, display: 'flex', gap: 4, borderRadius: `${radius.lg}px`, backgroundColor: bs.surface.raised, boxShadow: bs.elevation.e2 }}>
         <Box sx={{ width: 96, flexShrink: 0 }}>
-          <Media alt="" ratio="1:1" radius="md" unit="detailing" topStart={<MediaRating value={4.9} />} />
+          <Media src={centerPhoto['c-doral']} alt="" ratio="1:1" radius="md" unit="detailing" topStart={<MediaRating value={4.9} />} />
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 1 }}>
           <Typography variant="h3">{t.center}</Typography>
@@ -118,7 +119,7 @@ export function UnitsPreview() {
         {businessUnits.map((u) => (
           <Box key={u} sx={{ display: 'flex', gap: 4, p: 3, borderRadius: `${radius.lg}px`, border: `1px solid ${bs.border.subtle}`, backgroundColor: bs.surface.raised }}>
             <Box sx={{ width: 104, flexShrink: 0 }}>
-              <Media alt={t.unitAlt(unitMeta[u].name)} ratio="1:1" radius="md" unit={u} />
+              <Media src={unitPhoto[u]} alt={t.unitAlt(unitMeta[u].name)} ratio="1:1" radius="md" unit={u} />
             </Box>
             <Box sx={{ minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 1 }}>
               <Typography variant="h3">{unitMeta[u].name}</Typography>
@@ -145,7 +146,7 @@ function BookingMini({ unit, tag, tone, title, meta, code, when, total }: { unit
       </Box>
       <Box sx={{ display: 'flex', gap: 4 }}>
         <Box sx={{ width: 88, flexShrink: 0 }}>
-          <Media alt="" ratio="1:1" radius="md" unit={unit} />
+          <Media src={unitPhoto[unit]} alt="" ratio="1:1" radius="md" unit={unit} />
         </Box>
         <Box sx={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: 1, justifyContent: 'center' }}>
           <Typography variant="h4">{title}</Typography>

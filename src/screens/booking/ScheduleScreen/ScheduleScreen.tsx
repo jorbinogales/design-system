@@ -3,6 +3,7 @@ import ScheduleOutlined from '@mui/icons-material/ScheduleOutlined';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useMemo, useState } from 'react';
+import { useNav } from '../../../app/nav';
 import { AppointmentPicker, type AppointmentValue } from '../../../blacksix/AppointmentPicker/AppointmentPicker';
 import { formatDuration } from '../../../blacksix/shared/format';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
@@ -14,7 +15,9 @@ import { Card } from '../../../components/layout/Card/Card';
 import { SegmentedControl } from '../../../components/navigation/SegmentedControl/SegmentedControl';
 import { useLocale, useT } from '../../../i18n/locale';
 import { getDayState, getSlots, mockSlotDay } from '../../../mocks/availability';
-import { getCenter, getPackage } from '../../../mocks/catalog';
+import { unitMeta } from '../../../domain/units';
+import { centers, getPackage } from '../../../mocks/catalog';
+import { Select } from '../../../components/selection/Select/Select';
 import { bs } from '../../../theme/theme';
 import { TODAY } from '../data';
 import { BookingTopBar, ScreenBody, ScreenRoot } from '../ui';
@@ -24,9 +27,11 @@ const messages = {
     title: 'Agendar',
     type: 'Tipo de servicio',
     center: 'En el centro',
+    centerLabel: 'Centro',
     pickup: 'Recogida y entrega',
     centerHint: 'Llevas tu vehículo a nuestro centro y lo recoges al terminar.',
     pickupHint: 'Pasamos por tu vehículo y lo devolvemos al terminar. En el siguiente paso eliges la dirección.',
+    washHint: 'Vamos a tu dirección. En el siguiente paso eliges dónde.',
     when: 'Fecha y hora',
     duration: 'Duración estimada',
     note: 'Nota para el equipo',
@@ -40,9 +45,11 @@ const messages = {
     title: 'Schedule',
     type: 'Service type',
     center: 'At the center',
+    centerLabel: 'Center',
     pickup: 'Pickup and delivery',
     centerHint: 'You bring your vehicle to our center and collect it when we are done.',
     pickupHint: 'We pick up your vehicle and bring it back when done. You choose the address in the next step.',
+    washHint: 'We come to your address. You choose where in the next step.',
     when: 'Date and time',
     duration: 'Estimated duration',
     note: 'Note for the team',
@@ -67,8 +74,14 @@ export interface ScheduleScreenProps {
 export function ScheduleScreen({ empty = false, slotTaken = false }: ScheduleScreenProps) {
   const t = useT(messages);
   const locale = useLocale();
-  const pkg = getPackage('det-premium')!;
-  const center = getCenter('c-doral')!;
+  const nav = useNav();
+  const params = nav.route.params ?? {};
+  const unit = params.unit === 'personal-washing' ? 'personal-washing' : 'detailing';
+  const pkg = getPackage(params.packageId ?? (unit === 'detailing' ? 'det-premium' : 'wash-complete'))!;
+  // Defaults to the center picked on the service detail; changeable here.
+  const unitCenters = centers.filter((c) => c.units.includes(unit));
+  const [centerId, setCenterId] = useState((unitCenters.find((c) => c.id === params.centerId) ?? unitCenters[0]).id);
+  const center = unitCenters.find((c) => c.id === centerId)!;
   const [mode, setMode] = useState<Mode>('center');
   const [value, setValue] = useState<AppointmentValue>(empty ? { day: null, time: null } : { day: mockSlotDay, time: '10:00' });
   const [takenTime, setTakenTime] = useState<string | null>(slotTaken ? '10:00' : null);
@@ -76,8 +89,8 @@ export function ScheduleScreen({ empty = false, slotTaken = false }: ScheduleScr
 
   const slots = useMemo(() => {
     if (!value.day) return [];
-    return getSlots(value.day, 'detailing').map((s) => (s.value === takenTime ? { ...s, status: 'taken' as const } : s));
-  }, [value.day, takenTime]);
+    return getSlots(value.day, unit).map((s) => (s.value === takenTime ? { ...s, status: 'taken' as const } : s));
+  }, [value.day, takenTime, unit]);
 
   const lost = Boolean(value.time) && value.time === takenTime;
   const ready = Boolean(value.day && value.time) && !lost;
@@ -90,7 +103,7 @@ export function ScheduleScreen({ empty = false, slotTaken = false }: ScheduleScr
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 3 }}>
             <Box sx={{ minWidth: 0 }}>
               <Typography variant="label" component="p">
-                Detailing {pkg.name[locale]}
+                {unitMeta[unit].name} {pkg.name[locale]}
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, color: bs.text.secondary }}>
                 <ScheduleOutlined aria-hidden sx={{ fontSize: 18 }} />
@@ -104,28 +117,33 @@ export function ScheduleScreen({ empty = false, slotTaken = false }: ScheduleScr
         </Card>
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-          <Typography variant="h4" component="h2">
-            {t.type}
-          </Typography>
-          <SegmentedControl<Mode>
-            fullWidth
-            label={t.type}
-            value={mode}
-            onChange={setMode}
-            options={[
-              { value: 'center', label: t.center },
-              { value: 'pickup', label: t.pickup },
-            ]}
-          />
+          {unit === 'detailing' && (
+            <>
+              <Typography variant="h4" component="h2">
+                {t.type}
+              </Typography>
+              <SegmentedControl<Mode>
+                fullWidth
+                label={t.type}
+                value={mode}
+                onChange={setMode}
+                options={[
+                  { value: 'center', label: t.center },
+                  { value: 'pickup', label: t.pickup },
+                ]}
+              />
+            </>
+          )}
+          {unit === 'detailing' && mode === 'center' && (
+            <Select label={t.centerLabel} value={centerId} onChange={setCenterId} options={unitCenters.map((c) => ({ value: c.id, label: c.name }))} />
+          )}
           <Box sx={{ display: 'flex', gap: 2, color: bs.text.secondary }}>
             <PlaceOutlined aria-hidden sx={{ fontSize: 20, mt: 0.25 }} />
             <Typography variant="body2" component="p">
-              {mode === 'center' ? (
+              {unit === 'personal-washing' ? (
+                t.washHint
+              ) : mode === 'center' ? (
                 <>
-                  <Box component="span" sx={{ color: bs.text.primary, fontWeight: 600 }}>
-                    {center.name}
-                  </Box>
-                  {' · '}
                   {formatAddress(center.address)}. {t.centerHint}
                 </>
               ) : (
@@ -147,7 +165,7 @@ export function ScheduleScreen({ empty = false, slotTaken = false }: ScheduleScr
             }}
             start={TODAY}
             today={TODAY}
-            getDayState={(d) => getDayState(d, 'detailing')}
+            getDayState={(d) => getDayState(d, unit)}
             slots={slots}
             durationMin={pkg.durationMin}
             showCalendar
@@ -162,7 +180,15 @@ export function ScheduleScreen({ empty = false, slotTaken = false }: ScheduleScr
             {lost ? t.takenHint : t.nextHint}
           </Typography>
         )}
-        <Button fullWidth disabled={!ready}>
+        <Button
+          fullWidth
+          disabled={!ready}
+          onClick={() => {
+            const chosen = { ...params, unit, centerId, packageId: pkg.id, mode: unit === 'detailing' ? mode : 'pickup', date: value.day!.format('YYYY-MM-DD'), time: value.time! };
+            // At the center there is no address to choose; Personal Washing and pickup/delivery go to the address step.
+            nav.go(chosen.mode === 'center' ? 'payment-method' : 'pickup-address', chosen);
+          }}
+        >
           {t.next}
         </Button>
       </BottomActionBar>

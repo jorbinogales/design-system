@@ -6,10 +6,11 @@ import { FilterChipGroup } from '../../../components/selection/FilterChip/Filter
 import { NoResultsState } from '../../../components/screen-states/StatePresets/StatePresets';
 import type { ServiceCategoryId } from '../../../domain/booking';
 import { unitMeta, type BusinessUnit } from '../../../domain/units';
+import { useNav } from '../../../app/nav';
 import { useLocale, useT } from '../../../i18n/locale';
 import { getCategoryName, servicePackages } from '../../../mocks/catalog';
 import { layout } from '../../../theme/tokens';
-import { centerListings, listingCenter } from '../data';
+import { centerListings, listingCenter, listingUnit } from '../data';
 import { CenterCard } from '../shared/CenterCard';
 import { PackageListItem } from '../shared/PackageListItem';
 import { useIdSet } from '../shared/useIdSet';
@@ -27,6 +28,7 @@ export interface CategoryScreenProps {
 /** Categoría (ej. Lavado exterior): packages of the category with a unit filter, then the centers that offer it. */
 export function CategoryScreen({ categoryId = 'exterior' }: CategoryScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const [unit, setUnit] = useState<BusinessUnit | 'all'>('all');
   const saved = useIdSet();
@@ -39,7 +41,7 @@ export function CategoryScreen({ categoryId = 'exterior' }: CategoryScreenProps)
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100%' }}>
-      <TopBar title={getCategoryName(categoryId, locale)} onBack={() => undefined} />
+      <TopBar title={getCategoryName(categoryId, locale)} onBack={nav.back} />
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6, pt: 4, pb: 8 }}>
         <Box sx={{ px: gutter }}>
           <FilterChipGroup
@@ -59,7 +61,7 @@ export function CategoryScreen({ categoryId = 'exterior' }: CategoryScreenProps)
             <Box component="ul" aria-label={t.packagesList} sx={{ listStyle: 'none', m: 0, p: 0, display: 'flex', flexDirection: 'column', gap: 3 }}>
               {packages.map((p) => (
                 <Box component="li" key={p.id}>
-                  <PackageListItem pkg={p} onOpen={() => undefined} />
+                  <PackageListItem pkg={p} onOpen={() => nav.go('service-detail', { unit: p.unit })} />
                 </Box>
               ))}
             </Box>
@@ -71,7 +73,7 @@ export function CategoryScreen({ categoryId = 'exterior' }: CategoryScreenProps)
           <Box component="ul" aria-label={t.centersList} sx={{ listStyle: 'none', m: 0, p: 0, display: 'flex', flexDirection: 'column', gap: 3 }}>
             {centers.map((l) => (
               <Box component="li" key={l.centerId}>
-                <CenterCard variant="row" listing={l} saved={saved.has(l.centerId)} onToggleSaved={() => saved.toggle(l.centerId)} onOpen={() => undefined} />
+                <CenterCard variant="row" listing={l} saved={saved.has(l.centerId)} onToggleSaved={() => saved.toggle(l.centerId)} onOpen={() => nav.go('service-detail', { unit: listingUnit(l) })} />
               </Box>
             ))}
           </Box>

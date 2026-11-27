@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
+import { useNav } from '../../../app/nav';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
 import { AmountBreakdown } from '../../../components/data-display/AmountBreakdown/AmountBreakdown';
@@ -25,7 +26,7 @@ const messages = {
     total: 'Total a pagar',
     method: 'Método de pago',
     pay: (v: string) => `Pagar ${v}`,
-    note: 'El pago lo procesa nuestro proveedor de pagos. Black Six no ve ni guarda el número completo de tu tarjeta.',
+    note: 'El pago lo procesa nuestro proveedor de pagos. Black Seat no ve ni guarda el número completo de tu tarjeta.',
     done: 'Pago recibido. Actualizando tu saldo…',
     failedTitle: 'No pudimos procesar el pago',
     failedBody: 'No se te cobró nada. Prueba con otro método.',
@@ -38,7 +39,7 @@ const messages = {
     total: 'Total to pay',
     method: 'Payment method',
     pay: (v: string) => `Pay ${v}`,
-    note: 'The payment is processed by our payment provider. Black Six never sees or stores your full card number.',
+    note: 'The payment is processed by our payment provider. Black Seat never sees or stores your full card number.',
     done: 'Payment received. Updating your balance…',
     failedTitle: 'We could not process the payment',
     failedBody: 'You were not charged. Try another method.',
@@ -53,8 +54,10 @@ export interface TopUpWalletScreenProps {
   declined?: boolean;
 }
 
-function Content({ amount = 50, submitting = false, declined = false }: TopUpWalletScreenProps) {
+function Content({ amount: amountProp, submitting = false, declined = false }: TopUpWalletScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
+  const amount = amountProp ?? (Number(nav.route.params?.amount) || 50);
   const locale = useLocale();
   const toast = useToast();
   const options = useMethodOptions(false);
@@ -68,12 +71,13 @@ function Content({ amount = 50, submitting = false, declined = false }: TopUpWal
     timer.current = window.setTimeout(() => {
       setBusy(false);
       toast.show({ message: t.done, severity: 'success' });
+      nav.reset('top-up-success', { amount: String(amount) });
     }, 1400);
   };
 
   return (
     <ScreenRoot>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
       <ScreenBody gap={6} sx={{ flex: 1 }}>
         {declined && (
           <InlineAlert severity="error" title={t.failedTitle}>

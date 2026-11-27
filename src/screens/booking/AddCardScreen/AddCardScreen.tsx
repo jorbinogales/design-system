@@ -3,6 +3,7 @@ import LockOutlined from '@mui/icons-material/LockOutlined';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useNav } from '../../../app/nav';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
 import { Checkbox } from '../../../components/selection/Checkbox/Checkbox';
@@ -26,7 +27,7 @@ const messages = {
     expiresValue: 'MM/AA',
     secureLabel: 'Campos de tarjeta seguros del proveedor de pagos',
     secureTitle: 'Datos de la tarjeta',
-    secureBody: 'El proveedor de pagos muestra y procesa estos campos en su propio contenedor seguro. Black Six nunca ve ni guarda el número de tarjeta.',
+    secureBody: 'El proveedor de pagos muestra y procesa estos campos en su propio contenedor seguro. Black Seat nunca ve ni guarda el número de tarjeta.',
     secureMount: 'Contenedor seguro del proveedor de pagos',
     number: 'Número de tarjeta',
     expiry: 'Vencimiento',
@@ -47,7 +48,7 @@ const messages = {
     expiresValue: 'MM/YY',
     secureLabel: 'Secure card fields from the payment provider',
     secureTitle: 'Card details',
-    secureBody: 'The payment provider shows and processes these fields in its own secure container. Black Six never sees or stores the card number.',
+    secureBody: 'The payment provider shows and processes these fields in its own secure container. Black Seat never sees or stores the card number.',
     secureMount: 'Payment provider secure container',
     number: 'Card number',
     expiry: 'Expiry',
@@ -159,6 +160,7 @@ export interface AddCardScreenProps {
 function Content({ saving = false }: AddCardScreenProps) {
   const t = useT(messages);
   const toast = useToast();
+  const nav = useNav();
   const [makeDefault, setMakeDefault] = useState(true);
   return (
     <ScreenRoot>
@@ -170,7 +172,10 @@ function Content({ saving = false }: AddCardScreenProps) {
         <Checkbox label={t.makeDefault} checked={makeDefault} onChange={(e) => setMakeDefault(e.target.checked)} />
       </ScreenBody>
       <BottomActionBar>
-        <Button fullWidth loading={saving} startIcon={<LockOutlined />} onClick={() => toast.show({ message: t.saved, severity: 'success' })}>
+        <Button fullWidth loading={saving} startIcon={<LockOutlined />} onClick={() => {
+            toast.show({ message: t.saved, severity: 'success' });
+            nav.back();
+          }}>
           {t.save}
         </Button>
       </BottomActionBar>

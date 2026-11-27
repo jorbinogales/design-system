@@ -3,6 +3,7 @@ import PaymentsOutlined from '@mui/icons-material/PaymentsOutlined';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useNav } from '../../../app/nav';
 import { formatDateShort } from '../../../blacksix/shared/format';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
@@ -91,6 +92,7 @@ export interface CancelBookingScreenProps {
 
 function Content({ booking = getBookingDetail('BS-24118'), initialReason = null, initialDetail = '', confirmOpen = false }: CancelBookingScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const toast = useToast();
   const b = booking;
@@ -106,7 +108,7 @@ function Content({ booking = getBookingDetail('BS-24118'), initialReason = null,
 
   return (
     <ScreenRoot>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', gap: 6, px: `${layout.gutter.mobile}px`, pt: 3, pb: 6, flex: 1 }}>
         <Card variant="filled">
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
@@ -163,7 +165,7 @@ function Content({ booking = getBookingDetail('BS-24118'), initialReason = null,
           <Button variant="destructive" fullWidth disabled={!ready} onClick={() => setOpen(true)}>
             {t.cancel}
           </Button>
-          <Button variant="quiet" fullWidth>
+          <Button variant="quiet" fullWidth onClick={nav.back}>
             {t.keep}
           </Button>
         </Box>
@@ -176,6 +178,7 @@ function Content({ booking = getBookingDetail('BS-24118'), initialReason = null,
         onConfirm={() => {
           setOpen(false);
           toast.show({ message: t.done(b.id), severity: 'success' });
+          nav.reset('cancelled-bookings');
         }}
         variant="destructive"
         title={t.dialogTitle(b.id)}

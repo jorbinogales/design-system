@@ -7,6 +7,7 @@ import { EmailField } from '../../../components/fields/EmailField/EmailField';
 import { PasswordField } from '../../../components/fields/PasswordField/PasswordField';
 import { TextField } from '../../../components/fields/TextField/TextField';
 import { Checkbox } from '../../../components/selection/Checkbox/Checkbox';
+import { useNav } from '../../../app/nav';
 import { useT } from '../../../i18n/locale';
 import { bs } from '../../../theme/theme';
 import { AuthHeading, isEmail, ScreenBody, ScreenRoot, SocialSignIn } from '../shared/AccessParts';
@@ -14,9 +15,7 @@ import { AuthHeading, isEmail, ScreenBody, ScreenRoot, SocialSignIn } from '../s
 const messages = {
   es: {
     title: 'Crea tu cuenta',
-    subtitle: 'Reserva Detailing, Towing y Personal Washing desde un solo lugar.',
     name: 'Nombre completo',
-    namePlaceholder: 'Andrea Salcedo',
     password: 'Contraseña',
     passwordHint: 'Mínimo 8 caracteres.',
     terms: 'Acepto los',
@@ -34,9 +33,7 @@ const messages = {
   },
   en: {
     title: 'Create your account',
-    subtitle: 'Book Detailing, Towing and Personal Washing in one place.',
     name: 'Full name',
-    namePlaceholder: 'Andrea Salcedo',
     password: 'Password',
     passwordHint: 'At least 8 characters.',
     terms: 'I accept the',
@@ -67,6 +64,7 @@ export interface SignUpScreenProps {
 /** Create account: name, email, password, terms, social sign-up. */
 export function SignUpScreen({ defaultName = '', defaultEmail = '', defaultPassword = '', defaultAccepted = false, initialSubmitted = false, loading = false, onSignIn }: SignUpScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const [name, setName] = useState(defaultName);
   const [email, setEmail] = useState(defaultEmail);
   const [password, setPassword] = useState(defaultPassword);
@@ -83,21 +81,30 @@ export function SignUpScreen({ defaultName = '', defaultEmail = '', defaultPassw
     terms: submitted && !accepted ? t.termsRequired : undefined,
   };
 
+  // No separate terms screen yet: both links open the privacy policy. Stop the click reaching the checkbox label.
+  const legal = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    nav.go('privacy-policy');
+  };
+
   const submit = (e: FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
     if (!name.trim() || !isEmail(email) || password.length < 8 || !accepted) return;
     setBusy(true);
-    timer.current = window.setTimeout(() => setBusy(false), 1200);
+    timer.current = window.setTimeout(() => {
+      setBusy(false);
+      nav.go('verify-code');
+    }, 1200);
   };
 
   return (
     <ScreenRoot>
       <ScreenBody noTopBar sx={{ gap: 7 }}>
-        <AuthHeading title={t.title} subtitle={t.subtitle} />
+        <AuthHeading title={t.title} />
         <Box component="form" noValidate onSubmit={submit} sx={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-          <TextField label={t.name} value={name} onChange={(e) => setName(e.target.value)} error={errors.name} placeholder={t.namePlaceholder} autoComplete="name" />
-          <EmailField value={email} onChange={(e) => setEmail(e.target.value)} error={errors.email} placeholder="nombre@correo.com" />
+          <TextField label={t.name} value={name} onChange={(e) => setName(e.target.value)} error={errors.name} autoComplete="name" />
+          <EmailField value={email} onChange={(e) => setEmail(e.target.value)} error={errors.email} />
           <PasswordField label={t.password} purpose="new" value={password} onChange={(e) => setPassword(e.target.value)} error={errors.password} helperText={t.passwordHint} />
           <Checkbox
             checked={accepted}
@@ -105,7 +112,7 @@ export function SignUpScreen({ defaultName = '', defaultEmail = '', defaultPassw
             error={errors.terms}
             label={
               <>
-                {t.terms} <Link size="sm">{t.termsLink}</Link> {t.and} <Link size="sm">{t.privacyLink}</Link>
+                {t.terms} <Link size="sm" onClick={legal}>{t.termsLink}</Link> {t.and} <Link size="sm" onClick={legal}>{t.privacyLink}</Link>
               </>
             }
           />
@@ -113,10 +120,10 @@ export function SignUpScreen({ defaultName = '', defaultEmail = '', defaultPassw
             {t.submit}
           </Button>
         </Box>
-        <SocialSignIn verb={t.verb} />
+        <SocialSignIn verb={t.verb} onSelect={() => nav.go('complete-profile')} />
         <Typography variant="body2" sx={{ textAlign: 'center', color: bs.text.secondary, mt: 'auto' }}>
           {t.haveAccount}{' '}
-          <Link size="sm" onClick={onSignIn}>
+          <Link size="sm" onClick={onSignIn ?? (() => nav.go('sign-in'))}>
             {t.signIn}
           </Link>
         </Typography>

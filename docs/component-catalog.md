@@ -176,7 +176,7 @@ Rules and conventions: `DESIGN.md`. Each phase appends its section here after in
 - `RowMenu/RowMenu` `{ items: RowMenuItem[], label (required), size?: 'sm'|'md' }`; `RowMenuItem = { id, label, icon?, onClick, destructive?, disabled?, dividerBefore? }`.
 - `DataTable/todayAgendaExample.tsx` (story data, not a component): `agendaRows`, `filterAgenda`, `useAgendaColumns`, `useAgendaRowActions`, `AgendaMobileCard` (placeholder for the operator job card), `AgendaDetailDrawer`, `TodayAgenda`.
 
-## Phase 3A — Black Six components, domain types and mocks
+## Phase 3A — Black Seat components, domain types and mocks
 
 ### Domain — `domain/booking.ts`
 - Types: `Localized`, `ServiceCategory`, `ServicePackage`, `ServiceOffering`, `OpeningHours`, `Center`, `Customer`, `Vehicle`,

@@ -1,18 +1,20 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useNav } from '../../../app/nav';
 import { BookingSummary, type SummaryField } from '../../../blacksix/BookingSummary/BookingSummary';
+import { Price } from '../../../components/data-display/Price/Price';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
 import { AmountBreakdown } from '../../../components/data-display/AmountBreakdown/AmountBreakdown';
 import { TextField } from '../../../components/fields/TextField/TextField';
 import { FieldMessage } from '../../../components/feedback/FieldMessage/FieldMessage';
 import { ToastProvider, useToast } from '../../../components/feedback/Toast/Toast';
+import type { BusinessUnit } from '../../../domain/units';
 import { formatMoney } from '../../../i18n/format';
 import { useLocale, useT } from '../../../i18n/locale';
-import { getBookingDetail } from '../../../mocks/bookings';
 import { bs } from '../../../theme/theme';
-import { FLOW_BOOKING_ID } from '../data';
+import { FLOW_BOOKING_ID, flowBooking } from '../data';
 import { BookingTopBar, ScreenBody, ScreenRoot } from '../ui';
 
 const PROMO_CODE = 'BIENVENIDA';
@@ -22,7 +24,6 @@ const messages = {
   es: {
     title: 'Resumen',
     promo: 'Código promocional',
-    promoHelp: 'Opcional. Prueba con BIENVENIDA.',
     apply: 'Aplicar',
     remove: 'Quitar',
     applied: (amount: string) => `Cupón ${PROMO_CODE} aplicado: ${amount} menos.`,
@@ -47,7 +48,6 @@ const messages = {
   en: {
     title: 'Summary',
     promo: 'Promo code',
-    promoHelp: 'Optional. Try BIENVENIDA.',
     apply: 'Apply',
     remove: 'Remove',
     applied: (amount: string) => `Coupon ${PROMO_CODE} applied: ${amount} off.`,
@@ -72,17 +72,25 @@ const messages = {
 };
 
 export interface ReviewSummaryScreenProps {
-  /** `BS-24117` (Detailing Premium) or `BS-24120` (Towing, with auction data). */
+  /** `BS-24117` (Detailing Premium) or `BS-24120` (Towing, with auction data). In the app the route params decide instead. */
   bookingId?: string;
   /** Start with the BIENVENIDA coupon already applied. */
   couponApplied?: boolean;
 }
 
+/** Step each "Cambiar" link of the summary goes back to. Towing has no package, vehicle or schedule step: its day lives in the auction form. */
+const editStep = (field: SummaryField, unit: BusinessUnit) => {
+  if (unit === 'towing') return field === 'payment' ? 'payment-method' : 'auction-pickup';
+  return { service: 'choose-package', vehicle: 'select-vehicle', schedule: 'schedule', location: 'pickup-address', auction: 'auction-pickup', payment: 'payment-method' }[field];
+};
+
 function Content({ bookingId = FLOW_BOOKING_ID, couponApplied = true }: ReviewSummaryScreenProps) {
   const t = useT(messages);
   const locale = useLocale();
   const toast = useToast();
-  const booking = getBookingDetail(bookingId);
+  const nav = useNav();
+  const params = nav.route.params ?? {};
+  const booking = flowBooking({ unit: bookingId === 'BS-24120' ? 'towing' : 'detailing', ...params });
   const [applied, setApplied] = useState(couponApplied);
   const [code, setCode] = useState(couponApplied ? PROMO_CODE : '');
   const [error, setError] = useState(false);
@@ -107,15 +115,11 @@ function Content({ bookingId = FLOW_BOOKING_ID, couponApplied = true }: ReviewSu
     setError(false);
   };
 
-  const method = booking.paymentMethod;
-  const payNote =
-    method.kind === 'zelle' ? t.payZelle : method.kind === 'cash' ? t.payCash : t.payOnline(formatMoney(total, locale), method.detail?.[locale] ?? method.label[locale]);
-
   return (
     <ScreenRoot>
       <BookingTopBar title={t.title} step={3} />
       <ScreenBody gap={6} sx={{ flex: 1 }}>
-        <BookingSummary booking={booking} hideAmounts onEdit={(field) => toast.show({ message: t.edit[field] })} />
+        <BookingSummary booking={booking} hideAmounts onEdit={(field) => (nav.route.name ? nav.go(editStep(field, booking.unit), params) : toast.show({ message: t.edit[field] }))} />
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <TextField
@@ -128,7 +132,6 @@ function Content({ bookingId = FLOW_BOOKING_ID, couponApplied = true }: ReviewSu
               setError(false);
             }}
             error={error ? t.invalid : undefined}
-            helperText={error ? undefined : t.promoHelp}
             autoComplete="off"
             slotProps={{ htmlInput: { autoCapitalize: 'characters', spellCheck: false } }}
             endAdornment={
@@ -143,7 +146,7 @@ function Content({ bookingId = FLOW_BOOKING_ID, couponApplied = true }: ReviewSu
               )
             }
           />
-          {applied && <FieldMessage tone="success">{t.applied(formatMoney(PROMO_AMOUNT, locale))}</FieldMessage>}
+          {applied && <FieldMessage tone="hint" live>{t.applied(formatMoney(PROMO_AMOUNT, locale))}</FieldMessage>}
         </Box>
 
         <AmountBreakdown
@@ -153,15 +156,22 @@ function Content({ bookingId = FLOW_BOOKING_ID, couponApplied = true }: ReviewSu
           note={booking.package.priceFrom ? t.priceFrom(formatMoney(booking.package.price, locale)) : undefined}
         />
       </ScreenBody>
-      <BottomActionBar>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '100%' }}>
-          <Typography variant="caption" component="p" sx={{ color: bs.text.secondary, textAlign: 'center' }}>
-            {payNote}
-          </Typography>
-          <Button fullWidth onClick={() => toast.show({ message: t.confirmed(booking.id), severity: 'success' })}>
+      <BottomActionBar
+        summary={
+          <Box>
+            <Typography variant="caption" sx={{ color: bs.text.secondary, display: 'block' }}>
+              {t.total}
+            </Typography>
+            <Price amount={total} size="lg" />
+          </Box>
+        }
+      >
+        <Button onClick={() => {
+              toast.show({ message: t.confirmed(booking.id), severity: 'success' });
+              nav.reset('booking-confirmed', params);
+            }}>
             {t.confirm}
           </Button>
-        </Box>
       </BottomActionBar>
     </ScreenRoot>
   );

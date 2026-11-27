@@ -14,10 +14,10 @@ export const Predeterminado: Story = {};
 
 export const ConError: Story = {
   name: 'Con error',
-  args: { defaultName: '', defaultPhone: '305555', initialSubmitted: true },
+  args: { defaultPhone: '305555', initialSubmitted: true },
 };
 
 export const ConFoto: Story = {
   name: 'Opciones de foto',
-  args: { defaultName: 'Andrea Salcedo', defaultPhone: '3055550188', initialSheetOpen: true },
+  args: { defaultPhone: '3055550188', initialSheetOpen: true },
 };

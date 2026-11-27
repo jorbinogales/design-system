@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Card } from '../../../components/layout/Card/Card';
 import { TopBar } from '../../../components/navigation/TopBar/TopBar';
+import { useNav } from '../../../app/nav';
 import { useLocale, useT } from '../../../i18n/locale';
 import { serviceCategories, servicePackages } from '../../../mocks/catalog';
 import { bs } from '../../../theme/theme';
@@ -16,10 +17,12 @@ const messages = {
 /** Categorías (Inicio, "Ver todo" de Servicios): two-column grid of categories with the number of packages. */
 export function CategoriesScreen({ onOpen }: { onOpen?: (id: string) => void }) {
   const t = useT(messages);
+  const nav = useNav();
+  const open = onOpen ?? ((id: string) => nav.go('category', { categoryId: id }));
   const locale = useLocale();
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100%' }}>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
       <Box sx={{ flex: 1, px: `${layout.gutter.mobile}px`, pt: 4, pb: 8, display: 'flex', flexDirection: 'column', gap: 5 }}>
         <Typography variant="body1" sx={{ color: bs.text.secondary }}>
           {t.intro}
@@ -30,7 +33,7 @@ export function CategoriesScreen({ onOpen }: { onOpen?: (id: string) => void }) 
             const n = servicePackages.filter((p) => p.categories.includes(c.id)).length;
             return (
               <Box component="li" key={c.id}>
-                <Card onClick={() => onOpen?.(c.id)} label={c.name[locale]}>
+                <Card onClick={() => open(c.id)} label={c.name[locale]}>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'flex-start' }}>
                     <Box sx={{ display: 'grid', placeItems: 'center', width: 52, height: 52, borderRadius: '50%', backgroundColor: bs.surface.subtle, border: `1px solid ${bs.border.subtle}` }}>
                       <Icon sx={{ fontSize: 28 }} />

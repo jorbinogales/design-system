@@ -9,17 +9,18 @@ import { Tag } from '../../../components/data-display/Tag/Tag';
 import { TextField } from '../../../components/fields/TextField/TextField';
 import { BottomNav } from '../../../components/navigation/BottomNav/BottomNav';
 import { PersonalWashingIcon } from '../../../icons/PersonalWashingIcon';
+import { useNav } from '../../../app/nav';
 import { useT } from '../../../i18n/locale';
 import { bs } from '../../../theme/theme';
 import { layout, radius, zLayer } from '../../../theme/tokens';
-import { centerListings, listingCenter } from '../data';
+import { centerListings, listingCenter, listingUnit } from '../data';
 import { Carousel } from '../shared/Carousel';
 import { CenterCard } from '../shared/CenterCard';
 import { useIdSet } from '../shared/useIdSet';
 
 const messages = {
   es: {
-    map: 'Mapa de centros Black Six cerca de Doral, FL, con la zona de cobertura de Personal Washing',
+    map: 'Mapa de centros Black Seat cerca de Doral, FL, con la zona de cobertura de Personal Washing',
     search: 'Buscar',
     placeholder: 'Buscar servicios o centros',
     filters: 'Filtros',
@@ -28,7 +29,7 @@ const messages = {
     cards: 'Centros en el mapa',
   },
   en: {
-    map: 'Map of Black Six centers near Doral, FL, with the Personal Washing coverage area',
+    map: 'Map of Black Seat centers near Doral, FL, with the Personal Washing coverage area',
     search: 'Search',
     placeholder: 'Search services or centers',
     filters: 'Filters',
@@ -43,7 +44,8 @@ export function ExploreScreen({ defaultSelectedId = 'c-doral' }: { defaultSelect
   const t = useT(messages);
   const [query, setQuery] = useState('');
   const [selectedId, setSelectedId] = useState<string | null>(defaultSelectedId);
-  const [nav, setNav] = useState('explore');
+  const nav = useNav();
+  const [tab, setTab] = useState('explore');
   const saved = useIdSet();
 
   const pins: MapPin[] = centerListings.map((l) => ({ id: l.centerId, kind: 'service', x: l.pin.x, y: l.pin.y, label: listingCenter(l).name }));
@@ -80,12 +82,13 @@ export function ExploreScreen({ defaultSelectedId = 'c-doral' }: { defaultSelect
               placeholder={t.placeholder}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => nav.go('search')}
               clearable
               onClear={() => setQuery('')}
               startIcon={<SearchRounded />}
             />
           </Box>
-          <IconButton variant="accent" size="lg" label={t.filters} icon={<TuneRounded />} sx={{ borderRadius: `${radius.md}px`, flexShrink: 0 }} />
+          <IconButton variant="accent" size="lg" label={t.filters} icon={<TuneRounded />} onClick={() => nav.go('filter')} sx={{ borderRadius: `${radius.md}px`, flexShrink: 0 }} />
         </Box>
         <Tag tone="inverse" icon={<PersonalWashingIcon />} label={t.coverage} />
       </Box>
@@ -99,13 +102,13 @@ export function ExploreScreen({ defaultSelectedId = 'c-doral' }: { defaultSelect
         <Carousel label={t.cards} gap={3}>
           {centerListings.map((l) => (
             <Box key={l.centerId} id={`explore-card-${l.centerId}`} sx={{ width: 272 }}>
-              <CenterCard listing={l} photoRatio="16:9" selected={selectedId === l.centerId} saved={saved.has(l.centerId)} onToggleSaved={() => saved.toggle(l.centerId)} onOpen={() => select(l.centerId)} />
+              <CenterCard listing={l} photoRatio="16:9" selected={selectedId === l.centerId} saved={saved.has(l.centerId)} onToggleSaved={() => saved.toggle(l.centerId)} onOpen={() => nav.go('service-detail', { unit: listingUnit(l), centerId: l.centerId })} />
             </Box>
           ))}
         </Carousel>
       </Box>
 
-      <BottomNav side="client" value={nav} onChange={setNav} />
+      <BottomNav side="client" value={tab} onChange={setTab} />
     </Box>
   );
 }

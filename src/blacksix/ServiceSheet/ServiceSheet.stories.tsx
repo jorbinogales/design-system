@@ -33,7 +33,7 @@ function Sheet({ unit, action }: { unit: BusinessUnit; action?: 'inline' | 'none
 }
 
 const meta = {
-  title: 'Black Six/Ficha de servicio',
+  title: 'Black Seat/Ficha de servicio',
   component: ServiceSheet,
   parameters: {
     docs: {
@@ -47,7 +47,7 @@ const meta = {
           responsive: ['Una columna a 390 px con 20 px de margen; en escritorio se centra con ancho de lectura.', 'El pie pasa a dos líneas si el precio y la acción no caben.'],
           a11y: ['Cada bloque es una sección con encabezado; las listas son listas reales.', '“No incluye” usa icono de cierre y texto secundario: el significado no depende del color.', 'La imagen tiene texto alternativo.'],
           content: [['Elegir horario', 'Choose a time'], ['Cerrado', 'Closed'], ['Qué no incluye', 'What is not included']],
-          example: '**Ejemplo de negocio**: Detailing en el centro Black Six Doral, Towing con recogida en subasta y Personal Washing a domicilio.',
+          example: '**Ejemplo de negocio**: Detailing en el centro Black Seat Doral, Towing con recogida en subasta y Personal Washing a domicilio.',
         }),
       },
     },

@@ -1,5 +1,5 @@
 /**
- * Shared Black Six catalog mock: units, categories, packages, services, centers, auction yards and
+ * Shared Black Seat catalog mock: units, categories, packages, services, centers, auction yards and
  * payment methods. Miami-area, USD. Screens import from here instead of inventing data.
  */
 import dayjs from 'dayjs';
@@ -177,7 +177,7 @@ export const serviceOfferings: ServiceOffering[] = [
   {
     id: 'svc-detailing',
     unit: 'detailing',
-    name: { es: 'Detailing en centro Black Six', en: 'Detailing at a Black Six center' },
+    name: { es: 'Detailing en centro', en: 'Detailing at the center' },
     description: {
       es: 'Tu auto entra a una de nuestras bahías con luz controlada y sale con la pintura limpia, protegida y el interior como nuevo. Trabajamos con productos profesionales y cada paquete termina con una revisión de calidad.',
       en: 'Your car goes into one of our controlled-light bays and comes out with clean, protected paint and a like-new interior. We use professional products and every package ends with a quality check.',
@@ -241,7 +241,7 @@ export const getServiceOffering = (unit: BusinessUnit) => serviceOfferings.find(
 export const centers: Center[] = [
   {
     id: 'c-doral',
-    name: 'Black Six Doral',
+    name: 'Black Seat Doral',
     address: { line1: '8890 NW 26th St', city: 'Doral', state: 'FL', zip: '33172', reference: 'Nave 3, portón gris' },
     phone: '(305) 555-0142',
     hours: [monSat('08:00–18:00'), closedSun],
@@ -249,7 +249,7 @@ export const centers: Center[] = [
   },
   {
     id: 'c-brickell',
-    name: 'Black Six Brickell',
+    name: 'Black Seat Brickell',
     address: { line1: '1250 SW 1st Ave', line2: 'Level P2', city: 'Miami', state: 'FL', zip: '33130' },
     phone: '(305) 555-0177',
     hours: [monSat('09:00–19:00'), closedSun],
@@ -257,7 +257,7 @@ export const centers: Center[] = [
   },
   {
     id: 'c-hialeah',
-    name: 'Black Six Hialeah',
+    name: 'Black Seat Hialeah',
     address: { line1: '1850 W 4th Ave', city: 'Hialeah', state: 'FL', zip: '33010' },
     phone: '(305) 555-0119',
     hours: [monSat('08:00–17:00'), closedSun],
@@ -265,7 +265,7 @@ export const centers: Center[] = [
   },
   {
     id: 'c-lauderdale',
-    name: 'Black Six Fort Lauderdale',
+    name: 'Black Seat Fort Lauderdale',
     address: { line1: '2200 NW 9th Ave', city: 'Fort Lauderdale', state: 'FL', zip: '33311', reference: 'Entrada por la calle lateral' },
     phone: '(954) 555-0108',
     hours: [monFri('07:00–17:00'), closedSun],
@@ -306,7 +306,7 @@ export const paymentMethods: PaymentMethod[] = [
     id: 'pm-zelle',
     kind: 'zelle',
     label: { es: 'Zelle', en: 'Zelle' },
-    description: { es: 'Envía el pago a Black Six antes del servicio. La reserva queda con pago pendiente hasta recibirlo.', en: 'Send the payment to Black Six before the service. The booking stays payment pending until it arrives.' },
+    description: { es: 'Envía el pago a Black Seat antes del servicio. La reserva queda con pago pendiente hasta recibirlo.', en: 'Send the payment to Black Seat before the service. The booking stays payment pending until it arrives.' },
     online: false,
   },
   {

@@ -13,10 +13,12 @@ import VideocamOutlined from '@mui/icons-material/VideocamOutlined';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
+import { useNav } from '../../../app/nav';
 import { IconButton } from '../../../components/actions/IconButton/IconButton';
 import { Card } from '../../../components/layout/Card/Card';
 import { ListGroup, ListRow } from '../../../components/layout/ListRow/ListRow';
 import { Media } from '../../../components/layout/Media/Media';
+import { chatPhoto } from '../../../mocks/photos';
 import { TextField } from '../../../components/fields/TextField/TextField';
 import { TopBar } from '../../../components/navigation/TopBar/TopBar';
 import { BottomSheet } from '../../../components/overlays/BottomSheet/BottomSheet';
@@ -170,7 +172,7 @@ function Bubble({ message, personName }: { message: ThreadMessage; personName: s
         }}
       >
         {message.kind === 'text' && <Typography variant="body1">{message.text[locale]}</Typography>}
-        {message.kind === 'photo' && <Media alt={message.alt[locale]} ratio="4:3" radius="md" unit="towing" />}
+        {message.kind === 'photo' && <Media src={chatPhoto} alt={message.alt[locale]} ratio="4:3" radius="md" unit="towing" />}
         {message.kind === 'voice' && <VoiceBubble duration={message.duration} />}
       </Box>
       <MessageMeta time={message.time[locale]} mine={mine} read={message.read} />
@@ -193,6 +195,8 @@ export interface ConversationScreenProps {
 export function ConversationScreen({ conversationId = 'mateo', initialSheetOpen = false, defaultDraft = '', onBack, onCall, onVideo }: ConversationScreenProps) {
   const t = useT(messages);
   const locale = useLocale();
+  const nav = useNav();
+  const inApp = Boolean(nav.route.name);
   const conversation = conversations.find((c) => c.id === conversationId) ?? conversations[0];
   const [thread, setThread] = useState<ThreadMessage[]>(mateoThread);
   const [draft, setDraft] = useState(defaultDraft);
@@ -233,7 +237,7 @@ export function ConversationScreen({ conversationId = 'mateo', initialSheetOpen 
       <TopBar
         tone="inverse"
         align="start"
-        onBack={onBack}
+        onBack={onBack ?? (inApp ? nav.back : undefined)}
         leading={
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, minWidth: 0 }}>
             <ConversationAvatar conversation={conversation} size="md" showPresence={false} />
@@ -252,15 +256,15 @@ export function ConversationScreen({ conversationId = 'mateo', initialSheetOpen 
         }
         actions={
           <>
-            <IconButton label={t.call} icon={<PhoneOutlined />} variant="filled" onClick={onCall} />
-            <IconButton label={t.video} icon={<VideocamOutlined />} variant="filled" onClick={onVideo} />
+            <IconButton label={t.call} icon={<PhoneOutlined />} variant="filled" onClick={onCall ?? (() => nav.go('voice-call', { conversationId: conversation.id }))} />
+            <IconButton label={t.video} icon={<VideocamOutlined />} variant="filled" onClick={onVideo ?? (() => nav.go('video-call', { conversationId: conversation.id }))} />
           </>
         }
       />
 
       {booking && BookingIcon && (
         <Box sx={{ px: `${layout.gutter.mobile}px`, pt: 3 }}>
-          <Card variant="filled" density="compact" onClick={() => undefined} label={t.viewBooking(booking.code)}>
+          <Card variant="filled" density="compact" onClick={() => nav.go('track-order', { bookingId: booking.code })} label={t.viewBooking(booking.code)}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
               <Box aria-hidden sx={{ width: 40, height: 40, borderRadius: `${radius.md}px`, display: 'grid', placeItems: 'center', flexShrink: 0, backgroundColor: bs.surface.raised, boxShadow: bs.elevation.e1 }}>
                 <BookingIcon />

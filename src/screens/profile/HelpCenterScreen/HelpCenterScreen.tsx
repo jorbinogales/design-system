@@ -8,6 +8,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
 import { useState, type ReactNode } from 'react';
+import { useNav } from '../../../app/nav';
 import { SearchField } from '../../../components/fields/SearchField/SearchField';
 import { ToastProvider, useToast } from '../../../components/feedback/Toast/Toast';
 import { ListGroup, ListRow } from '../../../components/layout/ListRow/ListRow';
@@ -140,10 +141,11 @@ function Contact() {
 
 function Content({ initialTab = 'faq', initialQuery }: HelpCenterScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const [tab, setTab] = useState<TabValue>(initialTab);
   return (
     <ScreenRoot>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         <Box sx={{ px: `${layout.gutter.mobile}px` }}>
           <Tabs

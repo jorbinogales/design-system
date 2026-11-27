@@ -11,7 +11,7 @@ const name = (id?: string) => (id ? getProfessional(id)?.name : undefined);
 const towing = getJob('BS-24102')!;
 
 const meta = {
-  title: 'Black Six/Tarjeta de trabajo del operador',
+  title: 'Black Seat/Tarjeta de trabajo del operador',
   component: OperatorJobCard,
   parameters: {
     docs: {

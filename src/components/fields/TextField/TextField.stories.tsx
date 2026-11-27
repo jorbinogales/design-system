@@ -63,7 +63,7 @@ function StatesDemo() {
         <TextField label={t.auction} value="Copart Miami North" readOnly />
       </Specimen>
       <Specimen label={l.disabled} direction="column" align="stretch">
-        <TextField label={t.company} value="Black Six LLC" disabled />
+        <TextField label={t.company} value="Black Seat LLC" disabled />
       </Specimen>
       <Specimen label={`${l.withIcon} · md`} direction="column" align="stretch">
         <TextField label={t.model} placeholder={t.modelPh} startIcon={<DirectionsCarOutlined />} size="md" />
@@ -84,7 +84,7 @@ const meta = {
     docs: {
       description: {
         component: componentDocs({
-          purpose: 'Captura texto corto. Es la base de todos los campos de Black Six: Correo, Teléfono, Búsqueda, Contraseña, Código y Texto largo son configuraciones de este componente.',
+          purpose: 'Captura texto corto. Es la base de todos los campos de Black Seat: Correo, Teléfono, Búsqueda, Contraseña, Código y Texto largo son configuraciones de este componente.',
           anatomy: ['**Etiqueta** encima (siempre visible salvo `hideLabel`) + marca de requerido `*` u “(opcional)”', '**Campo** gris suave: icono o prefijo (opcional), valor/placeholder, adorno final (opcional), botón **Borrar** (opcional)', '**Ayuda** o **mensaje de error** con icono'],
           props: [
             '`error`: `true` marca el campo; un texto además sustituye la ayuda y se anuncia (`role="alert"`).',

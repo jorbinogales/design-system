@@ -7,7 +7,7 @@ la suposición para cambiarla en un solo lugar.
 
 | Tema | Suposición actual | Dónde |
 |---|---|---|
-| ¿Elegir método de pago confirma la cita? ¿Black Six cobra dentro de la PWA? | Tarjeta y Apple Pay se cobran en línea al confirmar; Zelle y efectivo confirman la cita con el pago pendiente. | `src/mocks/catalog.ts` (`paymentMethods`), `src/blacksix/PaymentPanel`, pantallas `Reserva/07` y `09` |
+| ¿Elegir método de pago confirma la cita? ¿Black Seat cobra dentro de la PWA? | Tarjeta y Apple Pay se cobran en línea al confirmar; Zelle y efectivo confirman la cita con el pago pendiente. | `src/mocks/catalog.ts` (`paymentMethods`), `src/blacksix/PaymentPanel`, pantallas `Reserva/07` y `09` |
 | Estados exactos de reserva, asignación y pago | Los del brief: 5 de reserva, 2 de asignación, 4 de pago. | `src/domain/status.ts` |
 | Política de cancelación y reembolso | Más de 24 h: reembolso completo; menos de 24 h: 20 %; reembolso en 3 a 5 días hábiles. | `src/screens/profile/data.ts` (FAQ), `src/screens/bookings/CancelBookingScreen` |
 | Cupón de bienvenida | `BIENVENIDA` aplica un descuento en el resumen. | `src/mocks/bookings.ts`, `Reserva/09` |
@@ -31,7 +31,7 @@ la suposición para cambiarla en un solo lugar.
   las fotos van en `public/` y se pasan por `src` / `photoSrc` (añadir `staticDirs: ['../public']`
   en `.storybook/main.ts` con el primer archivo).
 - **Textos legales.** La política de privacidad, las condiciones de cancelación y los datos de
-  contacto (`blacksixmiami.com`, teléfonos `555-01xx`) son contenido de ejemplo para revisión legal.
+  contacto (`blackseatmiami.com`, teléfonos `555-01xx`) son contenido de ejemplo para revisión legal.
 - **Copy de marketing.** Titulares de bienvenida y onboarding son un primer borrador ES/EN.
 
 ## Pendientes técnicos menores

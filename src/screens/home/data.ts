@@ -5,7 +5,7 @@ import type { Locale } from '../../i18n/locale';
 import { offers } from '../../mocks/bookings';
 import { centers, getCenter, getPackagesForUnit, serviceCategories, servicePackages } from '../../mocks/catalog';
 
-/** Extra listing data of a Black Six center for Home, Explorar and Búsqueda (the shared mock has no rating or distance). */
+/** Extra listing data of a Black Seat center for Home, Explorar and Búsqueda (the shared mock has no rating or distance). */
 export interface CenterListing {
   centerId: string;
   /** 0-5. */

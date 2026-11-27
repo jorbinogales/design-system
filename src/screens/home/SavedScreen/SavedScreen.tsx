@@ -11,6 +11,8 @@ import { NoItemsState, NoResultsState } from '../../../components/screen-states/
 import { FilterChipGroup } from '../../../components/selection/FilterChip/FilterChip';
 import { SkeletonGroup, SkeletonListRow } from '../../../components/feedback/Skeleton/Skeleton';
 import { businessUnits, unitMeta, type BusinessUnit } from '../../../domain/units';
+import { centerPhoto, packagePhoto } from '../../../mocks/photos';
+import { useNav } from '../../../app/nav';
 import { useLocale, useT } from '../../../i18n/locale';
 import { servicePackages } from '../../../mocks/catalog';
 import { bs } from '../../../theme/theme';
@@ -79,6 +81,7 @@ function SavedContent({ defaultCenters = ['c-doral', 'c-brickell'], defaultPacka
   const t = useT(messages);
   const locale = useLocale();
   const toast = useToast();
+  const nav = useNav();
   const [centers, setCenters] = useState(defaultCenters);
   const [packages, setPackages] = useState(defaultPackages);
   const [unit, setUnit] = useState<BusinessUnit | 'all'>('all');
@@ -93,11 +96,11 @@ function SavedContent({ defaultCenters = ['c-doral', 'c-brickell'], defaultPacka
     ? removing.kind === 'center'
       ? (() => {
           const l = centerListings.find((x) => x.centerId === removing.id)!;
-          return { name: listingCenter(l).name, detail: listingCenter(l).units.map((u) => unitMeta[u].name).join(' · '), unit: listingUnit(l) };
+          return { name: listingCenter(l).name, detail: listingCenter(l).units.map((u) => unitMeta[u].name).join(' · '), unit: listingUnit(l), photo: centerPhoto[l.centerId] };
         })()
       : (() => {
           const p = servicePackages.find((x) => x.id === removing.id)!;
-          return { name: `${unitMeta[p.unit].name} · ${p.name[locale]}`, detail: p.tagline[locale], unit: p.unit };
+          return { name: `${unitMeta[p.unit].name} · ${p.name[locale]}`, detail: p.tagline[locale], unit: p.unit, photo: packagePhoto[p.id] };
         })()
     : null;
 
@@ -116,7 +119,7 @@ function SavedContent({ defaultCenters = ['c-doral', 'c-brickell'], defaultPacka
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100%' }}>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
 
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 5, pt: 4, pb: 8 }}>
         {loading ? (
@@ -126,7 +129,7 @@ function SavedContent({ defaultCenters = ['c-doral', 'c-brickell'], defaultPacka
             ))}
           </SkeletonGroup>
         ) : total === 0 ? (
-          <NoItemsState title={t.emptyTitle} description={t.emptyBody} primaryAction={<Button variant="secondary" size="md" fullWidth>{t.emptyAction}</Button>} />
+          <NoItemsState title={t.emptyTitle} description={t.emptyBody} primaryAction={<Button variant="secondary" size="md" fullWidth onClick={() => nav.reset('explore')}>{t.emptyAction}</Button>} />
         ) : (
           <>
             <Box sx={{ px: gutter }}>
@@ -149,7 +152,7 @@ function SavedContent({ defaultCenters = ['c-doral', 'c-brickell'], defaultPacka
                     <Box component="ul" aria-label={t.centersList} sx={{ listStyle: 'none', m: 0, p: 0, display: 'flex', flexDirection: 'column', gap: 3 }}>
                       {visibleCenters.map((l) => (
                         <Box component="li" key={l.centerId}>
-                          <CenterCard variant="row" listing={l} saved onToggleSaved={() => setRemoving({ kind: 'center', id: l.centerId })} onOpen={() => undefined} />
+                          <CenterCard variant="row" listing={l} saved onToggleSaved={() => setRemoving({ kind: 'center', id: l.centerId })} onOpen={() => nav.go('service-detail', { unit: listingUnit(l), centerId: l.centerId })} />
                         </Box>
                       ))}
                     </Box>
@@ -161,7 +164,7 @@ function SavedContent({ defaultCenters = ['c-doral', 'c-brickell'], defaultPacka
                     <Box component="ul" aria-label={t.packagesList} sx={{ listStyle: 'none', m: 0, p: 0, display: 'flex', flexDirection: 'column', gap: 3 }}>
                       {visiblePackages.map((p) => (
                         <Box component="li" key={p.id}>
-                          <PackageListItem pkg={p} saved onToggleSaved={() => setRemoving({ kind: 'package', id: p.id })} onOpen={() => undefined} />
+                          <PackageListItem pkg={p} saved onToggleSaved={() => setRemoving({ kind: 'package', id: p.id })} onOpen={() => nav.go('service-detail', { unit: p.unit })} />
                         </Box>
                       ))}
                     </Box>
@@ -193,7 +196,7 @@ function SavedContent({ defaultCenters = ['c-doral', 'c-brickell'], defaultPacka
         {target && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 4, p: 3, borderRadius: 3, backgroundColor: bs.surface.subtle }}>
             <Box sx={{ width: 64, flexShrink: 0 }}>
-              <Media alt={t.alt(target.name)} ratio="1:1" radius="md" unit={target.unit} />
+              <Media src={target.photo} alt={t.alt(target.name)} ratio="1:1" radius="md" unit={target.unit} />
             </Box>
             <Box sx={{ minWidth: 0 }}>
               <Typography variant="h4" component="p">

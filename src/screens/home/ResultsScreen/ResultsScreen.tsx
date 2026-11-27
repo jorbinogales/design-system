@@ -8,9 +8,10 @@ import { Dropdown } from '../../../components/overlays/Dropdown/Dropdown';
 import { ErrorState, NoResultsState } from '../../../components/screen-states/StatePresets/StatePresets';
 import { FilterChipGroup } from '../../../components/selection/FilterChip/FilterChip';
 import { unitMeta } from '../../../domain/units';
+import { useNav } from '../../../app/nav';
 import { useLocale, useT } from '../../../i18n/locale';
 import { layout } from '../../../theme/tokens';
-import { countActiveFilters, defaultFilters, filteredFromPrice, searchCenters, type SearchFilters, type SortKey } from '../data';
+import { countActiveFilters, defaultFilters, filteredFromPrice, listingUnit, searchCenters, type SearchFilters, type SortKey } from '../data';
 import { CenterCard } from '../shared/CenterCard';
 import { useIdSet } from '../shared/useIdSet';
 
@@ -55,6 +56,7 @@ export interface ResultsScreenProps {
 /** Resultados: search with filter button, unit chips, "N resultados" with sort and the center list. */
 export function ResultsScreen({ defaultQuery, defaultFilters: initialFilters = defaultFilters, loading = false, error = false, onOpenFilters }: ResultsScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const [query, setQuery] = useState(defaultQuery ?? t.defaultQuery);
   const [filters, setFilters] = useState<SearchFilters>(initialFilters);
@@ -69,8 +71,8 @@ export function ResultsScreen({ defaultQuery, defaultFilters: initialFilters = d
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100%' }}>
-      <TopBar title={t.title} onBack={() => undefined}>
-        <SearchField label={t.field} hideLabel value={query} onChange={(e) => setQuery(e.target.value)} onClear={() => setQuery('')} onFilterClick={onOpenFilters ?? (() => undefined)} activeFilters={countActiveFilters(filters)} />
+      <TopBar title={t.title} onBack={nav.back}>
+        <SearchField label={t.field} hideLabel value={query} onChange={(e) => setQuery(e.target.value)} onClear={() => setQuery('')} onFilterClick={onOpenFilters ?? (() => nav.go('filter'))} activeFilters={countActiveFilters(filters)} />
       </TopBar>
 
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 4, pt: 4, pb: 8 }}>
@@ -111,7 +113,7 @@ export function ResultsScreen({ defaultQuery, defaultFilters: initialFilters = d
             <Box component="ul" aria-label={t.list} sx={{ m: 0, p: 0, px: gutter, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 3 }}>
               {results.map((l) => (
                 <Box component="li" key={l.centerId}>
-                  <CenterCard variant="row" listing={l} fromPrice={filteredFromPrice(l.centerId, filters)} saved={saved.has(l.centerId)} onToggleSaved={() => saved.toggle(l.centerId)} onOpen={() => undefined} />
+                  <CenterCard variant="row" listing={l} fromPrice={filteredFromPrice(l.centerId, filters)} saved={saved.has(l.centerId)} onToggleSaved={() => saved.toggle(l.centerId)} onOpen={() => nav.go('service-detail', { unit: filters.unit !== 'all' ? filters.unit : listingUnit(l), centerId: l.centerId })} />
                 </Box>
               ))}
             </Box>

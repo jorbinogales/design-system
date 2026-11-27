@@ -79,7 +79,7 @@ export const reviewedRatings: Record<string, number> = { 'BS-24055': 5 };
 export const refundOf = (b: BookingDetail): { kind: 'refunded'; amount: number } | { kind: 'none' } =>
   b.payment.status === 'refunded' ? { kind: 'refunded', amount: b.total } : { kind: 'none' };
 
-const SYSTEM = { name: 'Black Six', role: 'system' } as const;
+const SYSTEM = { name: 'Black Seat', role: 'system' } as const;
 const towingBase = getBookingDetail('BS-24120');
 const towingHistoryExtra: StatusChange[] = [
   { id: 'BS-24120-b-confirmed', dimension: 'booking', status: 'confirmed', at: '2026-11-27T10:50', by: SYSTEM },
@@ -103,3 +103,7 @@ export const towingAssigned: BookingDetail = {
 /** Cancellation reasons offered to the customer. */
 export const cancelReasons = ['no-need', 'reschedule', 'price', 'other-service', 'mistake', 'other'] as const;
 export type CancelReason = (typeof cancelReasons)[number];
+
+/** Any booking of the customer by id (the derived history ones are not in the mock store). */
+export const findBooking = (id?: string): BookingDetail | undefined =>
+  id ? [...activeBookings, ...completedBookings, ...cancelledBookings].find((b) => b.id === id) : undefined;

@@ -10,15 +10,17 @@ import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState, type SyntheticEvent } from 'react';
 import { IconButton } from '../../../components/actions/IconButton/IconButton';
 import { Media } from '../../../components/layout/Media/Media';
+import { demoPoster, demoVideoSrc } from '../../../mocks/photos';
 import { TopBar } from '../../../components/navigation/TopBar/TopBar';
+import { useNav } from '../../../app/nav';
 import { useLocale, useT } from '../../../i18n/locale';
 import { getCenter } from '../../../mocks/catalog';
 import { InverseSurface } from '../../../theme/SchemeScope';
 import { bs } from '../../../theme/theme';
-import { layout, radius, transition } from '../../../theme/tokens';
+import { duration as duration_, easing, layout, radius, transition } from '../../../theme/tokens';
 import { Carousel } from '../../home/shared/Carousel';
 import { demoVideos, formatClock, serviceCenterId, serviceUnit } from '../data';
 
@@ -66,44 +68,99 @@ export interface DemoVideoScreenProps {
 }
 
 /** Video demo: dark player mock with play/pause, seek bar, skip and sound controls, and a rail of more videos. Position advances while playing. */
-export function DemoVideoScreen({ defaultPlaying = true, defaultPosition = 42 }: DemoVideoScreenProps) {
+export function DemoVideoScreen({ defaultPlaying = true, defaultPosition = 0 }: DemoVideoScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const center = getCenter(serviceCenterId)!;
   const [videoId, setVideoId] = useState(demoVideos[0].id);
   const [playing, setPlaying] = useState(defaultPlaying);
   const [muted, setMuted] = useState(false);
   const [pos, setPos] = useState(defaultPosition);
+  const [duration, setDuration] = useState(0);
+  const [ended, setEnded] = useState(false);
+  // Center control shows while paused; while playing it fades out and a tap on the video brings it back briefly.
+  const [controlsVisible, setControlsVisible] = useState(true);
+  const ref = useRef<HTMLVideoElement>(null);
   const video = demoVideos.find((v) => v.id === videoId)!;
+  const total = duration || video.seconds;
 
   useEffect(() => {
-    if (!playing) return;
-    const id = window.setInterval(() => setPos((p) => Math.min(p + 1, video.seconds)), 1000);
-    return () => window.clearInterval(id);
-  }, [playing, video.seconds]);
+    const el = ref.current;
+    if (!el) return;
+    if (playing) el.play().catch(() => setPlaying(false));
+    else el.pause();
+  }, [playing, videoId]);
 
-  const ended = pos >= video.seconds;
-  const toggle = () => {
-    if (ended) setPos(0);
-    setPlaying(ended ? true : !playing);
+  useEffect(() => {
+    if (!playing || !controlsVisible) return;
+    const id = window.setTimeout(() => setControlsVisible(false), 1500);
+    return () => window.clearTimeout(id);
+  }, [playing, controlsVisible]);
+
+  const seekTo = (v: number) => {
+    if (ref.current) ref.current.currentTime = v;
+    setPos(v);
+    setEnded(false);
   };
-  const seek = (delta: number) => setPos((p) => Math.max(0, Math.min(video.seconds, p + delta)));
+  const toggle = () => {
+    if (ended) seekTo(0);
+    setPlaying(ended ? true : !playing);
+    setControlsVisible(true);
+  };
+  const seek = (delta: number) => seekTo(Math.max(0, Math.min(total, pos + delta)));
   const pick = (id: string) => {
     setVideoId(id);
     setPos(0);
+    setDuration(0);
+    setEnded(false);
     setPlaying(true);
+    setControlsVisible(true);
   };
+  const showPause = playing && !ended;
 
   return (
     <InverseSurface sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100%' }}>
-      <TopBar tone="inverse" title={t.title} subtitle={`${center.name}`} onBack={() => undefined} actions={<IconButton label={t.share} icon={<ShareOutlined />} variant="filled" />} />
+      <TopBar tone="inverse" title={t.title} subtitle={`${center.name}`} onBack={nav.back} actions={<IconButton label={t.share} icon={<ShareOutlined />} variant="filled" />} />
 
       <Box role="group" aria-label={t.player(video.title[locale])} sx={{ position: 'relative' }}>
-        <Media alt={t.thumb(video.title[locale])} ratio="16:9" radius="none" unit={serviceUnit} scrim>
-          <Box sx={{ height: '100%', display: 'grid', placeItems: 'center' }}>
-            <IconButton variant="raised" size="lg" label={playing && !ended ? t.pause : t.play} icon={playing && !ended ? <PauseRounded fontSize="large" /> : <PlayArrowRounded fontSize="large" />} onClick={toggle} sx={{ width: 64, height: 64 }} />
+        <Box sx={{ position: 'relative', aspectRatio: '16 / 9', backgroundColor: bs.surface.inverse }} onClick={() => setControlsVisible(true)}>
+          <Box
+            component="video"
+            key={video.id}
+            ref={ref}
+            src={demoVideoSrc[video.id]}
+            poster={demoPoster[video.id]}
+            muted={muted}
+            playsInline
+            preload="metadata"
+            aria-label={t.thumb(video.title[locale])}
+            onLoadedMetadata={(e: SyntheticEvent<HTMLVideoElement>) => {
+              setDuration(e.currentTarget.duration);
+              if (pos > 0 && pos < e.currentTarget.duration) e.currentTarget.currentTime = pos;
+            }}
+            onTimeUpdate={(e: SyntheticEvent<HTMLVideoElement>) => setPos(e.currentTarget.currentTime)}
+            onEnded={() => {
+              setEnded(true);
+              setPlaying(false);
+              setControlsVisible(true);
+            }}
+            sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
+          <Box
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              display: 'grid',
+              placeItems: 'center',
+              opacity: controlsVisible || !showPause ? 1 : 0,
+              transition: `opacity ${duration_.slow}ms ${easing.standard}`,
+              pointerEvents: controlsVisible || !showPause ? 'auto' : 'none',
+            }}
+          >
+            <IconButton variant="raised" size="lg" label={showPause ? t.pause : t.play} icon={showPause ? <PauseRounded fontSize="large" /> : <PlayArrowRounded fontSize="large" />} onClick={(e) => { e.stopPropagation(); toggle(); }} sx={{ width: 64, height: 64 }} />
           </Box>
-        </Media>
+        </Box>
       </Box>
 
       <Box sx={{ px: `${layout.gutter.mobile}px`, pt: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -113,26 +170,26 @@ export function DemoVideoScreen({ defaultPlaying = true, defaultPosition = 42 }:
         <Slider
           size="small"
           min={0}
-          max={video.seconds}
-          value={pos}
-          onChange={(_, v) => setPos(v as number)}
+          max={total}
+          value={Math.min(pos, total)}
+          onChange={(_, v) => seekTo(v as number)}
           getAriaLabel={() => t.seek}
-          getAriaValueText={(v) => `${formatClock(v)} / ${formatClock(video.seconds)}`}
+          getAriaValueText={(v) => `${formatClock(v)} / ${formatClock(total)}`}
           sx={{ mt: 1 }}
         />
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: -2 }}>
           <Typography variant="caption" sx={{ color: bs.text.secondary, fontVariantNumeric: 'tabular-nums' }}>
-            {formatClock(pos)}
+            {formatClock(Math.floor(pos))}
           </Typography>
           <Typography variant="caption" sx={{ color: bs.text.secondary, fontVariantNumeric: 'tabular-nums' }}>
-            {formatClock(video.seconds)}
+            {formatClock(Math.round(total))}
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <IconButton variant="plain" label={muted ? t.unmute : t.mute} pressed={muted} icon={muted ? <VolumeOffRounded /> : <VolumeUpRounded />} onClick={() => setMuted((m) => !m)} />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
             <IconButton variant="plain" label={t.back10} icon={<Replay10Rounded />} onClick={() => seek(-10)} />
-            <IconButton variant="filled" size="lg" label={playing && !ended ? t.pause : t.play} icon={playing && !ended ? <PauseRounded /> : <PlayArrowRounded />} onClick={toggle} />
+            <IconButton variant="filled" size="lg" label={showPause ? t.pause : t.play} icon={showPause ? <PauseRounded /> : <PlayArrowRounded />} onClick={toggle} />
             <IconButton variant="plain" label={t.fwd10} icon={<Forward10Rounded />} onClick={() => seek(10)} />
           </Box>
           <IconButton variant="plain" label={t.fullscreen} icon={<FullscreenRounded />} />
@@ -168,6 +225,7 @@ export function DemoVideoScreen({ defaultPlaying = true, defaultPosition = 42 }:
                 }}
               >
                 <Media
+                  src={demoPoster[v.id]}
                   alt=""
                   ratio="16:9"
                   radius="md"

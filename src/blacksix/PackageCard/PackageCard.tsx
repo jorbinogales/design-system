@@ -34,7 +34,9 @@ export function PackageCard({ pkg, selected = false, onSelect, headingLevel = 3 
   const t = useT(messages);
   const locale = useLocale();
   const name = pkg.name[locale];
+  // The whole card picks the package by pointer; the button stays the keyboard/screen-reader target.
   return (
+    <Box onClick={() => onSelect?.(pkg.id)} sx={{ cursor: onSelect ? 'pointer' : undefined, WebkitTapHighlightColor: 'transparent' }}>
     <Card selected={selected} component="article" variant="outlined">
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
         <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 3 }}>
@@ -74,7 +76,7 @@ export function PackageCard({ pkg, selected = false, onSelect, headingLevel = 3 
           </Typography>
         </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 3, flexWrap: 'wrap' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 3 }}>
           <Price amount={pkg.price} size="lg" from={pkg.priceFrom} />
           <Button
             variant="secondary"
@@ -82,12 +84,13 @@ export function PackageCard({ pkg, selected = false, onSelect, headingLevel = 3 
             aria-pressed={selected}
             aria-label={`${selected ? t.chosen : t.choose}: ${name}`}
             startIcon={selected ? <CheckRounded /> : undefined}
-            onClick={() => onSelect?.(pkg.id)}
+            sx={{ flexShrink: 0, whiteSpace: 'nowrap' }}
           >
             {selected ? t.chosen : t.choose}
           </Button>
         </Box>
       </Box>
     </Card>
+    </Box>
   );
 }

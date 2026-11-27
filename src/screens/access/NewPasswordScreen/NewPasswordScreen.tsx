@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Button } from '../../../components/actions/Button/Button';
 import { PasswordField } from '../../../components/fields/PasswordField/PasswordField';
 import { TopBar } from '../../../components/navigation/TopBar/TopBar';
+import { useNav } from '../../../app/nav';
 import { useT } from '../../../i18n/locale';
 import { bs } from '../../../theme/theme';
 import { AuthHeading, ScreenBody, ScreenRoot } from '../shared/AccessParts';
@@ -50,6 +51,7 @@ export interface NewPasswordScreenProps {
 /** New password: two fields, live requirement list (icon + text), disabled until valid. */
 export function NewPasswordScreen({ defaultPassword = '', defaultConfirm = '', initialSubmitted = false, loading = false, onBack }: NewPasswordScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const [password, setPassword] = useState(defaultPassword);
   const [confirm, setConfirm] = useState(defaultConfirm);
   const [submitted, setSubmitted] = useState(initialSubmitted);
@@ -66,12 +68,15 @@ export function NewPasswordScreen({ defaultPassword = '', defaultConfirm = '', i
     setSubmitted(true);
     if (!valid || confirm !== password) return;
     setBusy(true);
-    timer.current = window.setTimeout(() => setBusy(false), 1200);
+    timer.current = window.setTimeout(() => {
+      setBusy(false);
+      nav.reset('sign-in');
+    }, 1200);
   };
 
   return (
     <ScreenRoot>
-      <TopBar onBack={onBack} />
+      <TopBar onBack={onBack ?? nav.back} />
       <ScreenBody sx={{ gap: 7 }}>
         <AuthHeading title={t.title} subtitle={t.subtitle} />
         <Box component="form" noValidate onSubmit={submit} sx={{ display: 'flex', flexDirection: 'column', gap: 5, flex: 1 }}>

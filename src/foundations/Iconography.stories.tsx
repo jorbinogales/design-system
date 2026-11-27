@@ -29,7 +29,7 @@ import { FoundationPage, FoundationSection } from './foundationKit';
 const m = {
   es: {
     title: 'Iconografía',
-    intro: 'Iconos propios de Black Six para unidades y categorías: rejilla de 24 px, trazo de 1,75, extremos y uniones redondeados, siempre en currentColor (src/icons, creados con createStrokeIcon). Para la interfaz genérica, @mui/icons-material: variantes Outlined en reposo y Rounded rellenas para el estado activo. Nunca emojis.',
+    intro: 'Iconos propios de Black Seat para unidades y categorías: rejilla de 24 px, trazo de 1,75, extremos y uniones redondeados, siempre en currentColor (src/icons, creados con createStrokeIcon). Para la interfaz genérica, @mui/icons-material: variantes Outlined en reposo y Rounded rellenas para el estado activo. Nunca emojis.',
     units: 'Unidades de negocio',
     categories: 'Categorías de servicio',
     ui: 'Interfaz (MUI)',
@@ -38,7 +38,7 @@ const m = {
   },
   en: {
     title: 'Iconography',
-    intro: 'Black Six icons for units and categories: 24px grid, 1.75 stroke, round caps and joins, always currentColor (src/icons, built with createStrokeIcon). For generic UI, @mui/icons-material: Outlined variants at rest and filled Rounded for the active state. Never emojis.',
+    intro: 'Black Seat icons for units and categories: 24px grid, 1.75 stroke, round caps and joins, always currentColor (src/icons, built with createStrokeIcon). For generic UI, @mui/icons-material: Outlined variants at rest and filled Rounded for the active state. Never emojis.',
     units: 'Business units',
     categories: 'Service categories',
     ui: 'Interface (MUI)',

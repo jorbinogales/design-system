@@ -34,7 +34,7 @@ interface AppProvidersProps {
 }
 
 /**
- * Everything a Black Six tree needs: theme (per locale), CSS baseline, color mode,
+ * Everything a Black Seat tree needs: theme (per locale), CSS baseline, color mode,
  * date-picker localization (dayjs) and the ES/EN locale context.
  */
 export function AppProviders({ mode = 'system', locale = 'es', children }: AppProvidersProps) {

@@ -3,7 +3,7 @@ import CloseRounded from '@mui/icons-material/CloseRounded';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
 import { IconButton } from '../../../components/actions/IconButton/IconButton';
@@ -13,8 +13,10 @@ import { Card } from '../../../components/layout/Card/Card';
 import { Media } from '../../../components/layout/Media/Media';
 import { TopBar } from '../../../components/navigation/TopBar/TopBar';
 import { unitMeta } from '../../../domain/units';
+import { useNav } from '../../../app/nav';
 import { useT } from '../../../i18n/locale';
 import { getCenter } from '../../../mocks/catalog';
+import { reviewPhotos, unitPhoto } from '../../../mocks/photos';
 import { bs } from '../../../theme/theme';
 import { layout, radius, transition } from '../../../theme/tokens';
 import { serviceCenterId, serviceUnit } from '../data';
@@ -74,6 +76,9 @@ export interface WriteReviewScreenProps {
 function Content({ defaultRating = 0, defaultText = '', defaultPhotos = 0 }: WriteReviewScreenProps) {
   const t = useT(messages);
   const toast = useToast();
+  const nav = useNav();
+  const timer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(timer.current), []);
   const center = getCenter(serviceCenterId)!;
   const [rating, setRating] = useState(defaultRating);
   const [text, setText] = useState(defaultText);
@@ -83,21 +88,22 @@ function Content({ defaultRating = 0, defaultText = '', defaultPhotos = 0 }: Wri
 
   const send = () => {
     setStatus('sending');
-    window.setTimeout(() => {
+    timer.current = window.setTimeout(() => {
       setStatus('sent');
       toast.show({ message: t.thanks, severity: 'success' });
+      timer.current = window.setTimeout(nav.back, 1200);
     }, 900);
   };
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100%' }}>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
 
       <Box sx={{ flex: 1, px: gutter, pt: 4, pb: 8, display: 'flex', flexDirection: 'column', gap: 6 }}>
         <Card variant="filled">
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
             <Box sx={{ width: 64, flexShrink: 0 }}>
-              <Media alt="" ratio="1:1" radius="md" unit={serviceUnit} />
+              <Media src={unitPhoto[serviceUnit]} alt="" ratio="1:1" radius="md" unit={serviceUnit} />
             </Box>
             <Box sx={{ minWidth: 0 }}>
               <Typography variant="caption" sx={{ color: bs.text.secondary }}>
@@ -137,7 +143,7 @@ function Content({ defaultRating = 0, defaultText = '', defaultPhotos = 0 }: Wri
           <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 3 }}>
             {Array.from({ length: photos }, (_, i) => (
               <Box key={i} sx={{ position: 'relative' }}>
-                <Media alt={t.photoAlt(i + 1)} ratio="1:1" radius="md" unit={serviceUnit} />
+                <Media src={reviewPhotos[i % reviewPhotos.length]} alt={t.photoAlt(i + 1)} ratio="1:1" radius="md" unit={serviceUnit} />
                 <Box sx={{ position: 'absolute', top: -10, right: -10 }}>
                   <IconButton variant="raised" size="sm" label={t.removePhoto(i + 1)} icon={<CloseRounded fontSize="small" />} onClick={() => setPhotos((n) => n - 1)} sx={{ width: 28, height: 28 }} />
                 </Box>

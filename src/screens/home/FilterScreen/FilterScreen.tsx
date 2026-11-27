@@ -9,6 +9,7 @@ import { RadioGroup } from '../../../components/selection/Radio/Radio';
 import { FilterChipGroup } from '../../../components/selection/FilterChip/FilterChip';
 import { unitMeta } from '../../../domain/units';
 import { formatMoney } from '../../../i18n/format';
+import { useNav } from '../../../app/nav';
 import { useLocale, useT } from '../../../i18n/locale';
 import { serviceCategories } from '../../../mocks/catalog';
 import { layout } from '../../../theme/tokens';
@@ -68,6 +69,7 @@ export interface FilterScreenProps {
 /** Filtro: unit, service chips, price range (MUI Slider), minimum rating and sort. Restablecer / Aplicar in the bottom bar. */
 export function FilterScreen({ defaultValue = defaultFilters }: FilterScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const [f, setF] = useState<SearchFilters>(defaultValue);
   const matches = searchCenters('', f, locale).length;
@@ -75,7 +77,7 @@ export function FilterScreen({ defaultValue = defaultFilters }: FilterScreenProp
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100%' }}>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
 
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 7, px: `${layout.gutter.mobile}px`, pt: 4, pb: 8 }}>
         <Group title={t.unit}>
@@ -149,7 +151,7 @@ export function FilterScreen({ defaultValue = defaultFilters }: FilterScreenProp
           <Button variant="secondary" size="lg" fullWidth onClick={() => setF(defaultFilters)}>
             {t.reset}
           </Button>
-          <Button variant="primary" size="lg" fullWidth disabled={matches === 0} aria-label={matches === 0 ? t.applyNone : undefined}>
+          <Button variant="primary" size="lg" fullWidth disabled={matches === 0} aria-label={matches === 0 ? t.applyNone : undefined} onClick={() => nav.go('results')}>
             {t.apply(matches)}
           </Button>
         </Box>

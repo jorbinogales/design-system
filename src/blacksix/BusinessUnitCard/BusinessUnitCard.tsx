@@ -3,11 +3,10 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { unitMeta, type BusinessUnit } from '../../domain/units';
 import { useLocale, useT } from '../../i18n/locale';
-import { unitIcon } from '../../icons/unitIcon';
 import { Price } from '../../components/data-display/Price/Price';
-import { Tag } from '../../components/data-display/Tag/Tag';
 import { Card } from '../../components/layout/Card/Card';
 import { Media } from '../../components/layout/Media/Media';
+import { unitPhoto } from '../../mocks/photos';
 import { bs } from '../../theme/theme';
 
 export interface BusinessUnitCardProps {
@@ -37,14 +36,13 @@ const messages = {
 };
 
 /**
- * One of the three Black Six units. The name is always real text (not only the photo or the icon),
+ * One of the three Black Seat units. The name is always real text (not only the photo or the icon),
  * so Detailing, Towing and Personal Washing are told apart without color or imagery.
  */
 export function BusinessUnitCard({ unit, variant = 'hero', photoSrc, fromPrice, selected = false, onSelect, href }: BusinessUnitCardProps) {
   const t = useT(messages);
   const locale = useLocale();
   const meta = unitMeta[unit];
-  const Icon = unitIcon[unit];
   const interactive = Boolean(onSelect || href);
   const handle = onSelect ? () => onSelect(unit) : undefined;
 
@@ -53,7 +51,7 @@ export function BusinessUnitCard({ unit, variant = 'hero', photoSrc, fromPrice, 
       <Card href={href} onClick={handle} label={interactive ? meta.name : undefined} selected={selected} density="comfortable" component="article">
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           <Box sx={{ width: 76, flexShrink: 0 }}>
-            <Media src={photoSrc} alt={t.alt(meta.name)} ratio="1:1" radius="md" unit={unit} />
+            <Media src={photoSrc ?? unitPhoto[unit]} alt={t.alt(meta.name)} ratio="1:1" radius="md" unit={unit} />
           </Box>
           <Box sx={{ minWidth: 0, flex: 1 }}>
             <Typography variant="h4" component="h3">
@@ -76,15 +74,13 @@ export function BusinessUnitCard({ unit, variant = 'hero', photoSrc, fromPrice, 
 
   return (
     <Card href={href} onClick={handle} label={interactive ? meta.name : undefined} selected={selected} flush component="article">
-      <Media src={photoSrc} alt={t.alt(meta.name)} ratio="3:2" radius="none" unit={unit} topStart={<Tag tone="inverse" size="sm" label={t.place[unit]} />} />
+      <Media src={photoSrc ?? unitPhoto[unit]} alt={t.alt(meta.name)} ratio="3:2" radius="none" unit={unit} />
       <Box sx={{ p: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Icon aria-hidden sx={{ fontSize: 24 }} />
-          <Typography variant="h3" component="h3">
-            {meta.name}
-          </Typography>
-        </Box>
-        <Typography variant="body2" sx={{ color: bs.text.secondary }}>
+        <Typography variant="h3" component="h3">
+          {meta.name}
+        </Typography>
+        {/* Fixed two-line box so every card has the same height whatever the copy length. */}
+        <Typography variant="body2" sx={{ color: bs.text.secondary, lineHeight: '1.5em', height: '3em', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
           {meta.summary[locale]}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 3, mt: 1 }}>

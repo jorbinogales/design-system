@@ -3,6 +3,7 @@ import MyLocationRounded from '@mui/icons-material/MyLocationRounded';
 import PhoneOutlined from '@mui/icons-material/PhoneOutlined';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { useNav } from '../../../app/nav';
 import { ProfessionalCard } from '../../../blacksix/ProfessionalCard/ProfessionalCard';
 import { addMinutes } from '../../../blacksix/shared/format';
 import { Button } from '../../../components/actions/Button/Button';
@@ -16,6 +17,7 @@ import type { BookingDetail } from '../../../domain/booking';
 import { useLocale, useT } from '../../../i18n/locale';
 import { getBookingDetail } from '../../../mocks/bookings';
 import { getCenter } from '../../../mocks/catalog';
+import { conversations } from '../../messages/data';
 import { bs } from '../../../theme/theme';
 import { layout, radius, typeScale } from '../../../theme/tokens';
 import { ScreenRoot } from '../../profile/ui';
@@ -65,7 +67,10 @@ export interface LiveLocationScreenProps {
 export function LiveLocationScreen({ booking = getBookingDetail('BS-24118'), etaMin = 12 }: LiveLocationScreenProps) {
   const t = useT(messages);
   const locale = useLocale();
+  const nav = useNav();
   const b = booking;
+  // The professional's thread (mock conversations exist for Mateo and Andrés); anyone else goes to support.
+  const conversationId = conversations.find((c) => c.id === b.assignee?.id.replace('pro-', ''))?.id ?? 'soporte';
   const towing = b.unit === 'towing' && b.auction && b.yard;
   const base = getCenter(b.assignee?.centerId ?? 'c-doral')!;
   const delivery = b.address ?? base.address;
@@ -97,7 +102,7 @@ export function LiveLocationScreen({ booking = getBookingDetail('BS-24118'), eta
       <MapCanvas label={t.map(origin.name, t.yourAddress)} ratio={1.2} rounded={false} seed={towing ? 19 : 13} route={route} pins={pins} pinLabels="none" eta={{ label: t.etaChip(etaMin) }}>
         <Box sx={{ position: 'absolute', inset: 0 }}>
           <Box sx={{ position: 'absolute', top: `calc(${layout.safeAreaTop} + 8px)`, left: `${layout.gutter.mobile}px`, right: `${layout.gutter.mobile}px`, display: 'flex', alignItems: 'center', gap: 3 }}>
-            <BackButton variant="raised" onClick={() => undefined} />
+            <BackButton variant="raised" />
             <Typography component="h1" sx={{ ...typeScale.label, px: 4, py: 2, borderRadius: `${radius.pill}px`, backgroundColor: bs.surface.raised, boxShadow: bs.elevation.e2 }}>
               {t.title}
             </Typography>
@@ -138,12 +143,12 @@ export function LiveLocationScreen({ booking = getBookingDetail('BS-24118'), eta
         <ProfessionalCard professional={b.assignee} unit={b.unit} baseLabel={base.name} />
         <Box sx={{ display: 'flex', gap: 3 }}>
           <Box sx={{ flex: 1 }}>
-            <Button variant="secondary" size="md" fullWidth startIcon={<ChatBubbleOutlineRounded />}>
+            <Button variant="secondary" size="md" fullWidth startIcon={<ChatBubbleOutlineRounded />} onClick={() => nav.go('conversation', { conversationId })}>
               {t.chat}
             </Button>
           </Box>
           <Box sx={{ flex: 1 }}>
-            <Button variant="secondary" size="md" fullWidth startIcon={<PhoneOutlined />}>
+            <Button variant="secondary" size="md" fullWidth startIcon={<PhoneOutlined />} onClick={() => nav.go('voice-call', { conversationId })}>
               {t.call}
             </Button>
           </Box>

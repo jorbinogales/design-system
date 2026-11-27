@@ -9,8 +9,10 @@ import VolumeUpRounded from '@mui/icons-material/VolumeUpRounded';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useNav } from '../../../app/nav';
 import { Tag } from '../../../components/data-display/Tag/Tag';
 import { Media } from '../../../components/layout/Media/Media';
+import { callFeedPhoto } from '../../../mocks/photos';
 import { TowingIcon } from '../../../icons/TowingIcon';
 import { useLocale, useT } from '../../../i18n/locale';
 import { SchemeScope } from '../../../theme/SchemeScope';
@@ -59,6 +61,7 @@ export interface VideoCallScreenProps {
 export function VideoCallScreen({ conversationId = 'mateo', initialSeconds = 128, initialMuted = false, initialCameraOff = false, onEnd, onChat }: VideoCallScreenProps) {
   const t = useT(messages);
   const locale = useLocale();
+  const nav = useNav();
   const c = conversations.find((x) => x.id === conversationId) ?? conversations[0];
   const seconds = useCallTimer(initialSeconds);
   const [speaker, setSpeaker] = useState(true);
@@ -68,7 +71,7 @@ export function VideoCallScreen({ conversationId = 'mateo', initialSeconds = 128
   return (
     <SchemeScope scheme="dark" sx={{ flex: 1, minHeight: '100%', position: 'relative', display: 'flex', flexDirection: 'column', overflow: 'hidden', backgroundColor: bs.surface.canvas }}>
       <Box sx={{ position: 'absolute', inset: 0, '& > *': { aspectRatio: 'auto !important', height: '100%' } }}>
-        <Media alt={t.feed(c.name)} radius="none" unit="towing" scrim />
+        <Media src={callFeedPhoto} alt={t.feed(c.name)} radius="none" unit="towing" scrim />
       </Box>
 
       <Box sx={{ position: 'relative', zIndex: 1, pt: `calc(${layout.safeAreaTop} + 12px)`, px: `${layout.gutter.mobile}px`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 3 }}>
@@ -100,14 +103,14 @@ export function VideoCallScreen({ conversationId = 'mateo', initialSeconds = 128
 
       <CallControls
         endLabel={t.end}
-        onEnd={onEnd}
+        onEnd={onEnd ?? nav.back}
         left={[
           { id: 'speaker', label: t.speaker, icon: <VolumeUpRounded />, activeIcon: <VolumeOffRounded />, pressed: !speaker, onToggle: () => setSpeaker((s) => !s) },
           { id: 'mute', label: t.mute, icon: <MicNoneRounded />, activeIcon: <MicOffRounded />, pressed: muted, onToggle: () => setMuted((m) => !m) },
         ]}
         right={[
           { id: 'camera', label: t.camera, icon: <VideocamOutlined />, activeIcon: <VideocamOffOutlined />, pressed: cameraOff, onToggle: () => setCameraOff((v) => !v) },
-          { id: 'chat', label: t.chat, icon: <ChatBubbleOutlineRounded />, onToggle: onChat },
+          { id: 'chat', label: t.chat, icon: <ChatBubbleOutlineRounded />, onToggle: onChat ?? (() => nav.go('conversation', { conversationId: c.id })) },
         ]}
       />
     </SchemeScope>

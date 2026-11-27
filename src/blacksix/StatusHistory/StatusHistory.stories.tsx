@@ -10,7 +10,7 @@ const done = getBooking('BS-24108')!;
 const upcoming = getBooking('BS-24117')!;
 
 const meta = {
-  title: 'Black Six/Historial de estados',
+  title: 'Black Seat/Historial de estados',
   component: StatusHistory,
   parameters: {
     docs: {
@@ -23,7 +23,7 @@ const meta = {
           tokens: [['Punto', 'status.<tono>.bg · fg · border'], ['Línea', 'border.subtle'], ['Pendiente', 'surface.canvas · border.strong (punteado)'], ['Texto secundario', 'text.secondary']],
           responsive: ['Una columna en cualquier ancho; las líneas largas (fecha + responsable) se envuelven.', 'En escritorio se coloca en el panel de detalle de la orden.'],
           a11y: ['Lista ordenada con nombre; el paso actual lleva `aria-current="step"`.', 'Cada estado va con icono y texto; el punto es decorativo.', 'La fecha usa `<time dateTime>`.'],
-          content: [['Confirmada · por Black Six', 'Confirmed · by Black Six'], ['Pendiente de asignación', 'Awaiting assignment'], ['Cancelada por el cliente con más de 24 h.', 'Cancelled by the customer more than 24 h ahead.']],
+          content: [['Confirmada · por Black Seat', 'Confirmed · by Black Seat'], ['Pendiente de asignación', 'Awaiting assignment'], ['Cancelada por el cliente con más de 24 h.', 'Cancelled by the customer more than 24 h ahead.']],
           example: '**Ejemplo de negocio**: reserva BS-24108 (Detailing completado hoy) vista por el operador, y BS-24117 con los pasos pendientes para el cliente.',
         }),
       },

@@ -1,6 +1,7 @@
 import PlaceOutlined from '@mui/icons-material/PlaceOutlined';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { useNav } from '../../../app/nav';
 import { StatusHistory } from '../../../blacksix/StatusHistory/StatusHistory';
 import { formatDateLong, formatDuration } from '../../../blacksix/shared/format';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
@@ -76,6 +77,7 @@ export interface TrackOrderScreenProps {
 /** Seguimiento (s66): order header with the three statuses, StatusHistory for the customer, order details and "Ver ubicación en vivo". */
 export function TrackOrderScreen({ booking = getBookingDetail('BS-24118') }: TrackOrderScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const b = booking;
   const where = b.center ? `${b.center.name} · ${formatAddress(b.center.address)}` : b.address ? formatAddress(b.address) : '';
@@ -84,7 +86,7 @@ export function TrackOrderScreen({ booking = getBookingDetail('BS-24118') }: Tra
 
   return (
     <ScreenRoot>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', gap: 6, px: `${layout.gutter.mobile}px`, pt: 3, pb: 6, flex: 1 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           <Box>
@@ -136,7 +138,7 @@ export function TrackOrderScreen({ booking = getBookingDetail('BS-24118') }: Tra
               {t.liveWait}
             </Typography>
           )}
-          <Button fullWidth disabled={!canTrack} startIcon={<PlaceOutlined />}>
+          <Button fullWidth disabled={!canTrack} startIcon={<PlaceOutlined />} onClick={() => nav.go('live-location', { bookingId: b.id })}>
             {t.live}
           </Button>
         </Box>

@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import { useState } from 'react';
+import { useNav } from '../../../app/nav';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
 import { TextField } from '../../../components/fields/TextField/TextField';
@@ -83,6 +84,7 @@ function Content({ showErrors = false }: AddVehicleScreenProps) {
   const t = useT(messages);
   const locale = useLocale();
   const toast = useToast();
+  const nav = useNav();
   const [form, setForm] = useState<VehicleForm>(empty);
   const [submitted, setSubmitted] = useState(showErrors);
   const set = (patch: Partial<VehicleForm>) => setForm((f) => ({ ...f, ...patch }));
@@ -100,7 +102,10 @@ function Content({ showErrors = false }: AddVehicleScreenProps) {
 
   const save = () => {
     setSubmitted(true);
-    if (!invalid) toast.show({ message: t.saved, severity: 'success' });
+    if (!invalid) {
+      toast.show({ message: t.saved, severity: 'success' });
+      nav.back();
+    }
   };
 
   return (

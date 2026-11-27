@@ -23,8 +23,8 @@ export const demoUser = { name: 'Andrea Salcedo', email: 'andrea.salcedo@example
 
 /** Service centers drawn on the onboarding map (percent coordinates). */
 export const centerPins = [
-  { id: 'doral', kind: 'service' as const, x: 30, y: 28, label: 'Black Six Doral' },
-  { id: 'brickell', kind: 'service' as const, x: 66, y: 40, label: 'Black Six Brickell' },
-  { id: 'hialeah', kind: 'service' as const, x: 22, y: 58, label: 'Black Six Hialeah' },
-  { id: 'beach', kind: 'service' as const, x: 74, y: 22, label: 'Black Six Miami Beach' },
+  { id: 'doral', kind: 'service' as const, x: 30, y: 28, label: 'Black Seat Doral' },
+  { id: 'brickell', kind: 'service' as const, x: 66, y: 40, label: 'Black Seat Brickell' },
+  { id: 'hialeah', kind: 'service' as const, x: 22, y: 58, label: 'Black Seat Hialeah' },
+  { id: 'beach', kind: 'service' as const, x: 74, y: 22, label: 'Black Seat Miami Beach' },
 ];

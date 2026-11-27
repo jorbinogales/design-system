@@ -4,19 +4,18 @@ import PersonSearchOutlined from '@mui/icons-material/PersonSearchOutlined';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { formatDateLong } from '../../../blacksix/shared/format';
+import { useNav } from '../../../app/nav';
 import { Button } from '../../../components/actions/Button/Button';
 import { formatAddress } from '../../../components/address/LocationCard/LocationCard';
 import { formatSlotTime } from '../../../components/date-time/TimeSlot/TimeSlot';
 import { IdentifierBlock } from '../../../components/data-display/IdentifierBlock/IdentifierBlock';
-import { StatusBadge } from '../../../components/data-display/StatusBadge/StatusBadge';
 import { KeyValue, KeyValueList } from '../../../components/layout/KeyValue/KeyValue';
 import { ListGroup, ListRow } from '../../../components/layout/ListRow/ListRow';
 import { SuccessState } from '../../../components/screen-states/SuccessState/SuccessState';
 import { useLocale, useT } from '../../../i18n/locale';
-import { getBookingDetail } from '../../../mocks/bookings';
 import { vehicleName } from '../../../mocks/people';
 import { layout } from '../../../theme/tokens';
-import { FLOW_BOOKING_ID } from '../data';
+import { FLOW_BOOKING_ID, flowBooking } from '../data';
 import { IconBubble, ScreenRoot } from '../ui';
 
 const messages = {
@@ -91,7 +90,9 @@ export interface BookingConfirmedScreenProps {
 export function BookingConfirmedScreen({ bookingId = FLOW_BOOKING_ID }: BookingConfirmedScreenProps) {
   const t = useT(messages);
   const locale = useLocale();
-  const b = getBookingDetail(bookingId);
+  const nav = useNav();
+  const params = nav.route.params ?? {};
+  const b = flowBooking({ unit: bookingId === 'BS-24120' ? 'towing' : 'detailing', ...params });
   const service = `${b.package.name[locale]}`;
   const date = formatDateLong(b.date, locale);
   const time = formatSlotTime(b.time, locale);
@@ -104,20 +105,19 @@ export function BookingConfirmedScreen({ bookingId = FLOW_BOOKING_ID }: BookingC
       <SuccessState
         title={confirmed ? t.title : t.titlePending}
         description={(confirmed ? t.body : t.bodyPending)(`${unitName} ${service}`, date, time)}
-        primaryAction={<Button fullWidth>{t.receipt}</Button>}
+        primaryAction={
+          <Button fullWidth onClick={() => nav.go('receipt', { bookingId: b.id })}>
+            {t.receipt}
+          </Button>
+        }
         secondaryAction={
-          <Button variant="quiet" fullWidth>
+          <Button variant="quiet" fullWidth onClick={() => nav.reset('bookings')}>
             {t.bookings}
           </Button>
         }
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 5, textAlign: 'left', width: '100%' }}>
           <IdentifierBlock label={t.id} value={b.id} copyable />
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'center' }}>
-            <StatusBadge dimension="booking" status={b.status} />
-            <StatusBadge dimension="assignment" status={b.assignment.status} />
-            <StatusBadge dimension="payment" status={b.payment.status} />
-          </Box>
           <KeyValueList>
             <KeyValue label={t.vehicle} value={vehicleName(b.vehicle)} />
             <KeyValue label={t.when} value={`${date} · ${time}`} />

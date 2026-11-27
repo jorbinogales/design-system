@@ -8,7 +8,7 @@ import { NextAppointmentCard } from './NextAppointmentCard';
 const next = getBookingDetail('BS-24117');
 
 const meta = {
-  title: 'Black Six/Tarjeta de próxima cita',
+  title: 'Black Seat/Tarjeta de próxima cita',
   component: NextAppointmentCard,
   parameters: {
     docs: {
@@ -22,7 +22,7 @@ const meta = {
           responsive: ['Una columna en 390 px; la acción baja de línea si el identificador y el botón no caben.', 'En escritorio se usa en una lista de dos columnas.'],
           a11y: ['La acción lleva el id y el servicio en su nombre accesible.', 'El bloque de fecha es decorativo (`aria-hidden`); la fecha completa está en texto.', 'Los estados son texto + icono.'],
           content: [['Ver reserva', 'View booking'], ['Pendiente de asignación', 'Awaiting assignment'], ['Confirmada · Pago pendiente', 'Confirmed · Payment pending']],
-          example: '**Ejemplo de negocio**: BS-24117 (Detailing Premium, viernes 27 de noviembre a las 10:00 en Black Six Doral) y el resto de reservas de Andrea en Towing y Personal Washing.',
+          example: '**Ejemplo de negocio**: BS-24117 (Detailing Premium, viernes 27 de noviembre a las 10:00 en Black Seat Doral) y el resto de reservas de Andrea en Towing y Personal Washing.',
         }),
       },
     },

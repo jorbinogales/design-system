@@ -17,7 +17,7 @@ export interface BlackSixMarkProps {
 }
 
 /**
- * PROVISIONAL logo mark until the official Black Six logo is supplied: a geometric
+ * PROVISIONAL logo mark until the official Black Seat logo is supplied: a geometric
  * numeral six on a soft square tile. Drawn as strokes so it never depends on a font.
  */
 export function BlackSixMark({ size = 40, variant = 'orange', title }: BlackSixMarkProps) {

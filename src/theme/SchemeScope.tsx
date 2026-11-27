@@ -26,7 +26,7 @@ interface SchemeScopeProps extends Omit<BoxProps, 'children'> {
 }
 
 /**
- * Forces every Black Six token inside to one color scheme. Works because MUI emits the
+ * Forces every Black Seat token inside to one color scheme. Works because MUI emits the
  * scheme variables on `.light` / `.dark` class selectors, and `bs.*` are CSS variables.
  */
 export function SchemeScope({ scheme, asPage = false, children, className, sx, ...rest }: SchemeScopeProps) {

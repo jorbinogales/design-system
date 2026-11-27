@@ -8,11 +8,11 @@ import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import { useState, type ReactNode } from 'react';
 import { Link } from '../../../components/actions/Link/Link';
-import { Tag } from '../../../components/data-display/Tag/Tag';
 import { SkeletonGroup, SkeletonListRow } from '../../../components/feedback/Skeleton/Skeleton';
 import { TopBar } from '../../../components/navigation/TopBar/TopBar';
 import { NoItemsState } from '../../../components/screen-states/StatePresets/StatePresets';
 import { TowTruckIcon } from '../../../icons/TowTruckIcon';
+import { useNav } from '../../../app/nav';
 import { useLocale, useT } from '../../../i18n/locale';
 import { visuallyHidden } from '../../../theme/a11y';
 import { bs } from '../../../theme/theme';
@@ -23,7 +23,6 @@ import { notificationItems, type NotificationItem, type NotificationKind } from 
 const messages = {
   es: {
     title: 'Notificaciones',
-    newCount: (n: number) => (n === 1 ? '1 nueva' : `${n} nuevas`),
     today: 'Hoy',
     yesterday: 'Ayer',
     markAll: 'Marcar todo como leído',
@@ -34,7 +33,6 @@ const messages = {
   },
   en: {
     title: 'Notifications',
-    newCount: (n: number) => `${n} new`,
     today: 'Today',
     yesterday: 'Yesterday',
     markAll: 'Mark all as read',
@@ -54,17 +52,32 @@ const kindIcon: Record<NotificationKind, ReactNode> = {
   promo: <LocalOfferOutlined />,
 };
 
+/** Where each kind of alert leads (mock booking ids of the demo customer). */
+const target: Record<NotificationKind, [string, Record<string, string>?]> = {
+  'booking-confirmed': ['track-order', { bookingId: 'BS-24117' }],
+  'operator-assigned': ['track-order', { bookingId: 'BS-24118' }],
+  'auction-pickup': ['track-order', { bookingId: 'BS-24120' }],
+  payment: ['receipt', { bookingId: 'BS-24118' }],
+  reminder: ['track-order', { bookingId: 'BS-24117' }],
+  promo: ['for-you'],
+};
+
 export interface NotificationsScreenProps {
   state?: 'default' | 'empty' | 'loading';
 }
 
 function Row({ item, onRead }: { item: NotificationItem; onRead: () => void }) {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   return (
     <Box component="li" sx={{ listStyle: 'none' }}>
       <ButtonBase
-        onClick={onRead}
+        onClick={() => {
+          onRead();
+          const [route, params] = target[item.kind];
+          nav.go(route, params);
+        }}
         sx={{
           display: 'flex',
           alignItems: 'flex-start',
@@ -108,6 +121,7 @@ function Row({ item, onRead }: { item: NotificationItem; onRead: () => void }) {
 /** Notificaciones (s44 + s45): grouped Hoy / Ayer, unread = bold title + dot + hidden text, "Marcar todo como leído". */
 export function NotificationsScreen({ state = 'default' }: NotificationsScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const [readIds, setReadIds] = useState<string[]>([]);
   const items = state === 'default' ? notificationItems.map((n) => (readIds.includes(n.id) ? { ...n, unread: false } : n)) : [];
   const unreadCount = items.filter((n) => n.unread).length;
@@ -160,11 +174,7 @@ export function NotificationsScreen({ state = 'default' }: NotificationsScreenPr
 
   return (
     <ScreenRoot>
-      <TopBar
-        title={t.title}
-        onBack={() => undefined}
-        actions={unreadCount > 0 ? <Tag tone="brand" label={t.newCount(unreadCount)} /> : undefined}
-      />
+      <TopBar title={t.title} onBack={nav.back} />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1, pb: 6 }}>
         {body}
       </Box>

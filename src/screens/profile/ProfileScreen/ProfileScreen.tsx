@@ -10,6 +10,8 @@ import PersonOutlineRounded from '@mui/icons-material/PersonOutlineRounded';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
+import { useNav } from '../../../app/nav';
+import { useSettings } from '../../../app/settings';
 import { Button } from '../../../components/actions/Button/Button';
 import { InitialsAvatar } from '../../../components/data-display/InitialsAvatar/InitialsAvatar';
 import { ToastProvider, useToast } from '../../../components/feedback/Toast/Toast';
@@ -90,7 +92,13 @@ function ProfileContent({ signOutOpen, onLocaleChange }: ProfileScreenProps & { 
   const t = useT(messages);
   const locale = useLocale();
   const toast = useToast();
-  const [appearance, setAppearance] = useState<AppearanceMode>('system');
+  const nav = useNav();
+  const settings = useSettings();
+  // In the app the selectors drive the app-level settings; in Storybook they stay local to the screen.
+  const inApp = Boolean(nav.route.name);
+  const [localAppearance, setLocalAppearance] = useState<AppearanceMode>('system');
+  const appearance = inApp ? settings.mode : localAppearance;
+  const setAppearance = inApp ? settings.setMode : setLocalAppearance;
   const [sheet, setSheet] = useState(Boolean(signOutOpen));
   const icon = { color: 'inherit' } as const;
 
@@ -110,11 +118,11 @@ function ProfileContent({ signOutOpen, onLocaleChange }: ProfileScreenProps & { 
 
         <GroupLabel>{t.account}</GroupLabel>
         <ListGroup label={t.account}>
-          <ListRow leading={<PersonOutlineRounded sx={icon} />} title={t.yourProfile} onClick={() => undefined} />
-          <ListRow leading={<LocationOnOutlined sx={icon} />} title={t.addresses} onClick={() => undefined} />
-          <ListRow leading={<CreditCardOutlined sx={icon} />} title={t.payments} onClick={() => undefined} />
-          <ListRow leading={<EventNoteOutlined sx={icon} />} title={t.bookings} onClick={() => undefined} />
-          <ListRow leading={<AccountBalanceWalletOutlined sx={icon} />} title={t.wallet} trailing={formatMoney(walletBalance, locale)} onClick={() => undefined} />
+          <ListRow leading={<PersonOutlineRounded sx={icon} />} title={t.yourProfile} onClick={() => nav.go('your-profile')} />
+          <ListRow leading={<LocationOnOutlined sx={icon} />} title={t.addresses} onClick={() => nav.go('addresses')} />
+          <ListRow leading={<CreditCardOutlined sx={icon} />} title={t.payments} onClick={() => nav.go('payment-methods')} />
+          <ListRow leading={<EventNoteOutlined sx={icon} />} title={t.bookings} onClick={() => nav.reset('bookings')} />
+          <ListRow leading={<AccountBalanceWalletOutlined sx={icon} />} title={t.wallet} trailing={formatMoney(walletBalance, locale)} onClick={() => nav.go('wallet')} />
         </ListGroup>
 
         <GroupLabel>{t.prefs}</GroupLabel>
@@ -135,9 +143,9 @@ function ProfileContent({ signOutOpen, onLocaleChange }: ProfileScreenProps & { 
 
         <GroupLabel>{t.support}</GroupLabel>
         <ListGroup label={t.support}>
-          <ListRow leading={<HelpOutlineRounded sx={icon} />} title={t.help} onClick={() => undefined} />
-          <ListRow leading={<LockOutlined sx={icon} />} title={t.privacy} onClick={() => undefined} />
-          <ListRow leading={<PersonAddAltOutlined sx={icon} />} title={t.invite} onClick={() => undefined} />
+          <ListRow leading={<HelpOutlineRounded sx={icon} />} title={t.help} onClick={() => nav.go('help-center')} />
+          <ListRow leading={<LockOutlined sx={icon} />} title={t.privacy} onClick={() => nav.go('privacy-policy')} />
+          <ListRow leading={<PersonAddAltOutlined sx={icon} />} title={t.invite} onClick={() => nav.go('invite-friends')} />
           <ListRow leading={<LogoutRounded sx={icon} />} title={t.logout} destructive divider={false} onClick={() => setSheet(true)} />
         </ListGroup>
         <Box sx={{ height: 16 }} />
@@ -153,7 +161,7 @@ function ProfileContent({ signOutOpen, onLocaleChange }: ProfileScreenProps & { 
         disablePortal
         actions={
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
-            <Button variant="destructive" fullWidth onClick={() => { setSheet(false); toast.show({ message: t.done, severity: 'neutral' }); }}>
+            <Button variant="destructive" fullWidth onClick={() => { setSheet(false); toast.show({ message: t.done, severity: 'neutral' }); nav.reset('welcome'); }}>
               {t.confirm}
             </Button>
             <Button variant="quiet" fullWidth onClick={() => setSheet(false)}>
@@ -170,8 +178,14 @@ function ProfileContent({ signOutOpen, onLocaleChange }: ProfileScreenProps & { 
 export function ProfileScreen({ signOutOpen }: ProfileScreenProps) {
   // The language selector flips the whole screen locally; it also follows the Storybook toolbar.
   const global = useLocale();
-  const [locale, setLocale] = useState<Locale>(global);
-  useEffect(() => setLocale(global), [global]);
+  const nav = useNav();
+  const settings = useSettings();
+  const [local, setLocal] = useState<Locale>(global);
+  useEffect(() => setLocal(global), [global]);
+  // In the app the language is the app-level setting (already provided by AppProviders), so the whole app flips.
+  const inApp = Boolean(nav.route.name);
+  const locale = inApp ? global : local;
+  const setLocale = inApp ? settings.setLocale : setLocal;
   return (
     <LocaleProvider locale={locale}>
       <ToastProvider offsetBottom={80}>

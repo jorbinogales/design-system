@@ -42,7 +42,7 @@ function BrandPage() {
         <Box sx={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'flex-end' }}>
           {(['orange', 'inverse', 'glyph'] as const).map((v) => (
             <Box key={v} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-              <BlackSixMark size={72} variant={v} title="Black Six" />
+              <BlackSixMark size={72} variant={v} title="Black Seat" />
               <Typography variant="caption" sx={{ color: bs.text.secondary }}>
                 {t.variants[v]}
               </Typography>

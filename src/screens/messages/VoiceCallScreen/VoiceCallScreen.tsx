@@ -7,6 +7,7 @@ import VolumeUpRounded from '@mui/icons-material/VolumeUpRounded';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useNav } from '../../../app/nav';
 import { BlackSixMark } from '../../../brand/BlackSixMark';
 import { Tag } from '../../../components/data-display/Tag/Tag';
 import { initialsOf } from '../../../components/data-display/InitialsAvatar/InitialsAvatar';
@@ -36,6 +37,7 @@ export interface VoiceCallScreenProps {
 export function VoiceCallScreen({ conversationId = 'mateo', initialSeconds = 72, initialMuted = false, onEnd, onVideo, onChat }: VoiceCallScreenProps) {
   const t = useT(messages);
   const locale = useLocale();
+  const nav = useNav();
   const c = conversations.find((x) => x.id === conversationId) ?? conversations[0];
   const seconds = useCallTimer(initialSeconds);
   const [speaker, setSpeaker] = useState(false);
@@ -95,14 +97,14 @@ export function VoiceCallScreen({ conversationId = 'mateo', initialSeconds = 72,
 
       <CallControls
         endLabel={t.end}
-        onEnd={onEnd}
+        onEnd={onEnd ?? nav.back}
         left={[
           { id: 'speaker', label: t.speaker, icon: <VolumeOffRounded />, activeIcon: <VolumeUpRounded />, pressed: speaker, onToggle: () => setSpeaker((s) => !s) },
           { id: 'mute', label: t.mute, icon: <MicNoneRounded />, activeIcon: <MicOffRounded />, pressed: muted, onToggle: () => setMuted((m) => !m) },
         ]}
         right={[
-          { id: 'video', label: t.video, icon: <VideocamOutlined />, onToggle: onVideo },
-          { id: 'chat', label: t.chat, icon: <ChatBubbleOutlineRounded />, onToggle: onChat },
+          { id: 'video', label: t.video, icon: <VideocamOutlined />, onToggle: onVideo ?? (() => nav.go('video-call', { conversationId: c.id })) },
+          { id: 'chat', label: t.chat, icon: <ChatBubbleOutlineRounded />, onToggle: onChat ?? (() => nav.go('conversation', { conversationId: c.id })) },
         ]}
       />
     </SchemeScope>

@@ -33,7 +33,7 @@ function Demo({ id, editable = true }: { id: string; editable?: boolean }) {
 }
 
 const meta = {
-  title: 'Black Six/Resumen de reserva',
+  title: 'Black Seat/Resumen de reserva',
   component: BookingSummary,
   parameters: {
     docs: {

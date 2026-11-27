@@ -83,7 +83,7 @@ const meta = {
     docs: {
       description: {
         component: componentDocs({
-          purpose: 'Vista mensual para elegir el **día del servicio**. Construido sobre el `DateCalendar` de MUI X con el tema de Black Six; cada día comunica su disponibilidad y solo se pueden elegir los disponibles.',
+          purpose: 'Vista mensual para elegir el **día del servicio**. Construido sobre el `DateCalendar` de MUI X con el tema de Black Seat; cada día comunica su disponibilidad y solo se pueden elegir los disponibles.',
           anatomy: ['**Encabezado** de mes con flechas', '**Cuadrícula** de días (6 semanas fijas para que no salte la altura)', '**Marca** dentro de cada día: punto, tachado con trama, guion o contorno discontinuo', '**Leyenda** de los estados (opcional, activa por defecto)'],
           props: ['`getDayState(día)` devuelve `available`, `full`, `closed` o `none`; todo lo que no sea `available` queda deshabilitado.', '`onMonthChange` + `loading`: carga la disponibilidad del mes nuevo y muestra el esqueleto mientras tanto.', '`minDate` / `maxDate` deshabilitan por rango (por ejemplo, días pasados).'],
           states: [

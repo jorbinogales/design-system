@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useNav } from '../../../app/nav';
 import { Button } from '../../../components/actions/Button/Button';
 import { IconButton } from '../../../components/actions/IconButton/IconButton';
 import { Counter } from '../../../components/data-display/Counter/Counter';
@@ -129,7 +130,9 @@ export function ChatsScreen({ conversations = allConversations, loading = false,
   const locale = useLocale();
   const [query, setQuery] = useState(defaultQuery);
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
-  const [nav, setNav] = useState('chat');
+  const nav = useNav();
+  const [navTab, setNavTab] = useState('chat');
+  const open = onOpen ?? ((id: string) => nav.go('conversation', { conversationId: id }));
 
   const unreadTotal = conversations.reduce((n, c) => n + c.unread, 0);
   const q = query.trim().toLocaleLowerCase();
@@ -186,13 +189,13 @@ export function ChatsScreen({ conversations = allConversations, loading = false,
         ) : (
           <Box component="ul" aria-label={t.list} sx={{ m: 0, p: 0 }}>
             {visible.map((c) => (
-              <ConversationRow key={c.id} conversation={c} onOpen={onOpen} />
+              <ConversationRow key={c.id} conversation={c} onOpen={open} />
             ))}
           </Box>
         )}
       </Box>
 
-      <BottomNav side="client" value={nav} onChange={setNav} badges={{ chat: unreadTotal }} />
+      <BottomNav side="client" value={navTab} onChange={setNavTab} badges={{ chat: unreadTotal }} />
     </Box>
   );
 }

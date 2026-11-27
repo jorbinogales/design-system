@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { useNav } from '../../../app/nav';
 import { TopBar } from '../../../components/navigation/TopBar/TopBar';
 import { useLocale, useT } from '../../../i18n/locale';
 import { bs } from '../../../theme/theme';
@@ -10,12 +11,12 @@ const messages = {
   es: {
     title: 'Política de privacidad',
     intro:
-      'En Black Six cuidamos tus datos igual que cuidamos tu vehículo. Esta política explica qué información recopilamos cuando usas la app para reservar Detailing, Towing o Personal Washing, para qué la usamos y qué decisiones puedes tomar.',
+      'En Black Seat cuidamos tus datos igual que cuidamos tu vehículo. Esta política explica qué información recopilamos cuando usas la app para reservar Detailing, Towing o Personal Washing, para qué la usamos y qué decisiones puedes tomar.',
   },
   en: {
     title: 'Privacy policy',
     intro:
-      'At Black Six we look after your data the way we look after your vehicle. This policy explains what information we collect when you use the app to book Detailing, Towing or Personal Washing, what we use it for and the choices you have.',
+      'At Black Seat we look after your data the way we look after your vehicle. This policy explains what information we collect when you use the app to book Detailing, Towing or Personal Washing, what we use it for and the choices you have.',
   },
 };
 
@@ -25,10 +26,11 @@ const messages = {
  */
 export function PrivacyPolicyScreen() {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   return (
     <ScreenRoot>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
       <ScreenBody gap={6} sx={{ pb: 10 }}>
         <Box>
           <Typography variant="caption" component="p" sx={{ color: bs.text.secondary }}>

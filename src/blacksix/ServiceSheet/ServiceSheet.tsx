@@ -11,10 +11,13 @@ import { Price } from '../../components/data-display/Price/Price';
 import { Tag } from '../../components/data-display/Tag/Tag';
 import { KeyValue, KeyValueList } from '../../components/layout/KeyValue/KeyValue';
 import { Media } from '../../components/layout/Media/Media';
+import { unitPhoto } from '../../mocks/photos';
 import { bs } from '../../theme/theme';
 import { formatHoursRange } from '../shared/format';
 
 export interface ServiceSheetProps {
+  /** Name, category tags and description. Off where the screen already titles the service. */
+  intro?: boolean;
   service: ServiceOffering;
   /** Local photo. Without it Media draws the unit fallback. */
   photoSrc?: string;
@@ -24,7 +27,7 @@ export interface ServiceSheetProps {
   fromPrice: number;
   /** Category labels already localized ("Lavado exterior", "Pulido"). */
   categoryLabels?: string[];
-  /** Where it takes place, already localized ("En Black Six Doral, 8890 NW 26th St"). */
+  /** Where it takes place, already localized ("En Black Seat Doral, 8890 NW 26th St"). */
   placeLabel?: string;
   onChooseTime?: () => void;
   /** `inline` (default) renders price + action at the end; `none` when the screen supplies a BottomActionBar. */
@@ -50,14 +53,14 @@ const List = ({ items, icon: Icon, muted = false, label }: { items: string[]; ic
 );
 
 /** Service detail: image, description, scope (included / not included), opening hours, price and "Elegir horario". */
-export function ServiceSheet({ service, photoSrc, showPhoto = true, fromPrice, categoryLabels, placeLabel, onChooseTime, action = 'inline' }: ServiceSheetProps) {
+export function ServiceSheet({ service, photoSrc, showPhoto = true, fromPrice, categoryLabels, placeLabel, onChooseTime, action = 'inline', intro = true }: ServiceSheetProps) {
   const t = useT(messages);
   const locale = useLocale();
   const name = service.name[locale];
   return (
     <Box component="article" sx={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-      {showPhoto && <Media src={photoSrc} alt={t.alt(name)} ratio="4:3" radius="lg" unit={service.unit} topStart={<Tag tone="inverse" size="sm" label={unitMeta[service.unit].name} />} />}
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      {showPhoto && <Media src={photoSrc ?? unitPhoto[service.unit]} alt={t.alt(name)} ratio="4:3" radius="lg" unit={service.unit} topStart={<Tag tone="inverse" size="sm" label={unitMeta[service.unit].name} />} />}
+      {intro && <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         <Typography variant="h2" component="h2">
           {name}
         </Typography>
@@ -82,7 +85,7 @@ export function ServiceSheet({ service, photoSrc, showPhoto = true, fromPrice, c
             </Typography>
           </Box>
         )}
-      </Box>
+      </Box>}
 
       <Box component="section" aria-labelledby={`${service.id}-inc`} sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         <Typography variant="h4" component="h3" id={`${service.id}-inc`}>

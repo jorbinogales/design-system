@@ -1,5 +1,5 @@
 /**
- * MUI module augmentation for Black Six. Imported for its side effect by `theme.ts`.
+ * MUI module augmentation for Black Seat. Imported for its side effect by `theme.ts`.
  * - `palette.bs` carries the full token tree (`ColorScheme`) for each color scheme.
  * - CSS variables are always on, so `theme.vars` is typed as present.
  * - Custom Typography variants and Button variants.

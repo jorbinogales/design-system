@@ -25,7 +25,7 @@ import type { AssignmentStatus, BookingStatus, PaymentStatus } from '../domain/s
 import { auctionName, getCenter, getPackage, getPaymentMethod, getYard, mockTodayIso } from './catalog';
 import { getCustomer, getProfessional, getVehicle } from './people';
 
-const SYSTEM: StatusActor = { name: 'Black Six', role: 'system' };
+const SYSTEM: StatusActor = { name: 'Black Seat', role: 'system' };
 const SUPERVISOR: StatusActor = { name: 'Natalia Cruz', role: 'admin' };
 
 interface Seed {
@@ -226,6 +226,6 @@ export const galleryItems: GalleryItem[] = [
   { id: 'gal-2', unit: 'towing', caption: { es: 'Camioneta cargada en el patio de Copart Medley', en: 'Pickup truck loaded at Copart Medley' }, ratio: '4:3' },
   { id: 'gal-3', unit: 'personal-washing', caption: { es: 'Lavado a mano en un estacionamiento de Brickell', en: 'Hand wash in a Brickell parking lot' }, ratio: '1:1' },
   { id: 'gal-4', unit: 'detailing', caption: { es: 'Interior de cuero después del paquete Premium', en: 'Leather interior after the Premium package' }, ratio: '3:4' },
-  { id: 'gal-5', unit: 'detailing', caption: { es: 'Recubrimiento cerámico en un SUV gris', en: 'Ceramic coating on a gray SUV' }, ratio: '4:3' },
+  { id: 'gal-5', unit: 'detailing', caption: { es: 'Recubrimiento cerámico en un coupé negro', en: 'Ceramic coating on a black coupe' }, ratio: '4:3' },
   { id: 'gal-6', unit: 'towing', caption: { es: 'Entrega en Doral desde IAA Miami North', en: 'Delivery in Doral from IAA Miami North' }, ratio: '1:1' },
 ];

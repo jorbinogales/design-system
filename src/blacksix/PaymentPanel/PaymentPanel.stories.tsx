@@ -21,7 +21,7 @@ function Checkout({ initial = 'pm-card', status = 'pending' as const, reference 
 }
 
 const meta = {
-  title: 'Black Six/Método de pago y comprobante',
+  title: 'Black Seat/Método de pago y comprobante',
   component: PaymentPanel,
   parameters: {
     docs: {

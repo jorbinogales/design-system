@@ -10,7 +10,7 @@ import { PackageCard } from './PackageCard';
 const premium = getPackage('det-premium')!;
 
 const meta = {
-  title: 'Black Six/Tarjeta de paquete',
+  title: 'Black Seat/Tarjeta de paquete',
   component: PackageCard,
   parameters: {
     docs: {

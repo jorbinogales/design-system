@@ -1,5 +1,6 @@
 import Typography from '@mui/material/Typography';
 import type { ReactNode } from 'react';
+import { useNav } from '../../app/nav';
 import { StepProgress, useBookingSteps } from '../../components/feedback/StepProgress/StepProgress';
 import { TopBar } from '../../components/navigation/TopBar/TopBar';
 import { bs } from '../../theme/theme';
@@ -8,10 +9,11 @@ export { AddRow, IconBubble, ScreenBody, ScreenRoot, pick } from '../profile/ui'
 export type { L } from '../profile/ui';
 
 /** Top bar of the booking flow: back, title and the compact "Paso N de 5" progress (Vehículo → Confirmación). */
-export function BookingTopBar({ title, step, onBack = () => undefined, actions }: { title: ReactNode; step: 0 | 1 | 2 | 3 | 4; onBack?: () => void; actions?: ReactNode }) {
+export function BookingTopBar({ title, step, onBack, actions }: { title: ReactNode; step: 0 | 1 | 2 | 3 | 4; onBack?: () => void; actions?: ReactNode }) {
   const steps = useBookingSteps();
+  const nav = useNav();
   return (
-    <TopBar title={title} onBack={onBack} actions={actions}>
+    <TopBar title={title} onBack={onBack ?? nav.back} actions={actions}>
       <StepProgress steps={steps} current={step} variant="compact" />
     </TopBar>
   );

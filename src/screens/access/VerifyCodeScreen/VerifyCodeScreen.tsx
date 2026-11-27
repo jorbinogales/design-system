@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Button } from '../../../components/actions/Button/Button';
 import { Link } from '../../../components/actions/Link/Link';
 import { CodeField } from '../../../components/fields/CodeField/CodeField';
+import { useNav } from '../../../app/nav';
 import { useToast, ToastProvider } from '../../../components/feedback/Toast/Toast';
 import { TopBar } from '../../../components/navigation/TopBar/TopBar';
 import { useT } from '../../../i18n/locale';
@@ -55,6 +56,7 @@ export interface VerifyCodeScreenProps {
 function Content({ initialCode = '', initialInvalid = false, initialSeconds = 30, email = demoUser.email, onBack }: VerifyCodeScreenProps) {
   const t = useT(messages);
   const toast = useToast();
+  const nav = useNav();
   const [code, setCode] = useState(initialCode);
   const [invalid, setInvalid] = useState(initialInvalid);
   const [seconds, setSeconds] = useState(initialSeconds);
@@ -78,6 +80,7 @@ function Content({ initialCode = '', initialInvalid = false, initialSeconds = 30
     timer.current = window.setTimeout(() => {
       setBusy(false);
       if (code !== VALID_CODE) setInvalid(true);
+      else nav.go(nav.route.params?.next ?? 'complete-profile');
     }, 800);
   };
 
@@ -90,7 +93,7 @@ function Content({ initialCode = '', initialInvalid = false, initialSeconds = 30
 
   return (
     <ScreenRoot>
-      <TopBar onBack={onBack} />
+      <TopBar onBack={onBack ?? nav.back} />
       <ScreenBody sx={{ gap: 7 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <AuthHeading

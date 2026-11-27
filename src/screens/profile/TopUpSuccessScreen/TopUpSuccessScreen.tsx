@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box';
+import { useNav } from '../../../app/nav';
 import { Button } from '../../../components/actions/Button/Button';
 import { IdentifierBlock } from '../../../components/data-display/IdentifierBlock/IdentifierBlock';
 import { KeyValue, KeyValueList } from '../../../components/layout/KeyValue/KeyValue';
@@ -37,17 +38,23 @@ export interface TopUpSuccessScreenProps {
 }
 
 /** Recarga exitosa (s76): confirmation with reference, method and new balance. */
-export function TopUpSuccessScreen({ amount = 50 }: TopUpSuccessScreenProps) {
+export function TopUpSuccessScreen({ amount: amountProp }: TopUpSuccessScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
+  const amount = amountProp ?? (Number(nav.route.params?.amount) || 50);
   const locale = useLocale();
   return (
     <ScreenRoot sx={{ pt: `calc(${layout.safeAreaTop} + 24px)` }}>
       <SuccessState
         title={t.title}
         description={t.body(formatMoney(amount, locale))}
-        primaryAction={<Button fullWidth>{t.wallet}</Button>}
+        primaryAction={
+          <Button fullWidth onClick={() => nav.reset('wallet')}>
+            {t.wallet}
+          </Button>
+        }
         secondaryAction={
-          <Button variant="quiet" fullWidth>
+          <Button variant="quiet" fullWidth onClick={() => nav.reset('home')}>
             {t.home}
           </Button>
         }

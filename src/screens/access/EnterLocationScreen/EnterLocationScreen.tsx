@@ -5,6 +5,7 @@ import { Button } from '../../../components/actions/Button/Button';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { AddressSearch, type AddressSuggestion } from '../../../components/address/AddressSearch/AddressSearch';
 import { TopBar } from '../../../components/navigation/TopBar/TopBar';
+import { useNav } from '../../../app/nav';
 import { useT } from '../../../i18n/locale';
 import { bs } from '../../../theme/theme';
 import { layout } from '../../../theme/tokens';
@@ -35,6 +36,7 @@ export interface EnterLocationScreenProps {
 /** Enter location: AddressSearch with current-location row, results, no-results and manual entry. */
 export function EnterLocationScreen({ defaultQuery = '', loading = false, onBack, onManualEntry }: EnterLocationScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const [query, setQuery] = useState(defaultQuery);
   const [selected, setSelected] = useState<AddressSuggestion | null>(null);
   const [locating, setLocating] = useState(false);
@@ -51,7 +53,7 @@ export function EnterLocationScreen({ defaultQuery = '', loading = false, onBack
 
   return (
     <ScreenRoot>
-      <TopBar title={t.title} onBack={onBack} />
+      <TopBar title={t.title} onBack={onBack ?? nav.back} />
       <Box sx={{ flex: 1, px: `${layout.gutter.mobile}px`, pt: 2, pb: 6 }}>
         <AddressSearch
           value={query}
@@ -81,7 +83,9 @@ export function EnterLocationScreen({ defaultQuery = '', loading = false, onBack
                 {selected.primary}, {selected.secondary}
               </Typography>
             </Box>
-            <Button fullWidth>{t.confirm}</Button>
+            <Button fullWidth onClick={() => (nav.route.params?.from === 'home' ? nav.back() : nav.go('notification-permission'))}>
+              {t.confirm}
+            </Button>
           </Box>
         </BottomActionBar>
       )}

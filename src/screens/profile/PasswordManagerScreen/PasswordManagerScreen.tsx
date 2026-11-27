@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
+import { useNav } from '../../../app/nav';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
 import { PasswordField } from '../../../components/fields/PasswordField/PasswordField';
@@ -51,6 +52,7 @@ export interface PasswordManagerScreenProps {
 
 function Content({ initial, submitted: startSubmitted = false }: PasswordManagerScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const toast = useToast();
   const formId = useId();
   const [v, setV] = useState<Values>({ current: '', next: '', confirm: '', ...initial });
@@ -84,7 +86,7 @@ function Content({ initial, submitted: startSubmitted = false }: PasswordManager
 
   return (
     <ScreenRoot>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
       <ScreenBody gap={6} sx={{ flex: 1 }}>
         <Box component="form" id={formId} noValidate onSubmit={submit} sx={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
           <PasswordField label={t.current} purpose="current" value={v.current} onChange={set('current')} error={submitted ? errors.current : undefined} required />

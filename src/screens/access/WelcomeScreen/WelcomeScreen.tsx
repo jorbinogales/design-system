@@ -3,9 +3,10 @@ import Typography from '@mui/material/Typography';
 import { Wordmark } from '../../../brand/Wordmark';
 import { Button } from '../../../components/actions/Button/Button';
 import { Link } from '../../../components/actions/Link/Link';
-import { Tag } from '../../../components/data-display/Tag/Tag';
 import { Media } from '../../../components/layout/Media/Media';
+import { welcomePhoto } from '../../../mocks/photos';
 import { unitMeta, type BusinessUnit } from '../../../domain/units';
+import { useNav } from '../../../app/nav';
 import { useT } from '../../../i18n/locale';
 import { bs } from '../../../theme/theme';
 import { layout } from '../../../theme/tokens';
@@ -35,7 +36,7 @@ function Tile({ unit }: { unit: BusinessUnit }) {
   const t = useT(messages);
   return (
     <Box sx={{ height: '100%', minHeight: 0, '& > *': { aspectRatio: 'auto !important', height: '100%' } }}>
-      <Media alt={t.alt(unitMeta[unit].name)} unit={unit} radius="xl" bottomStart={<Tag label={unitMeta[unit].name} tone="inverse" size="sm" />} />
+      <Media src={welcomePhoto[unit]} alt={t.alt(unitMeta[unit].name)} unit={unit} radius="xl" />
     </Box>
   );
 }
@@ -48,6 +49,7 @@ export interface WelcomeScreenProps {
 /** Welcome: photo collage of the three units, one headline, one primary action. */
 export function WelcomeScreen({ onStart, onSignIn }: WelcomeScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   return (
     <ScreenRoot sx={{ pt: `calc(${layout.safeAreaTop} + 16px)` }}>
       <Box sx={{ px: `${layout.gutter.mobile}px` }}>
@@ -80,12 +82,12 @@ export function WelcomeScreen({ onStart, onSignIn }: WelcomeScreenProps) {
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <Button fullWidth onClick={onStart}>
+          <Button fullWidth onClick={onStart ?? (() => nav.go('onboarding'))}>
             {t.start}
           </Button>
           <Typography variant="body2" sx={{ textAlign: 'center', color: bs.text.secondary }}>
             {t.haveAccount}{' '}
-            <Link size="sm" onClick={onSignIn}>
+            <Link size="sm" onClick={onSignIn ?? (() => nav.go('sign-in'))}>
               {t.signIn}
             </Link>
           </Typography>

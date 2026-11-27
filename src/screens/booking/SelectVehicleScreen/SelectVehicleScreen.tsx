@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useNav } from '../../../app/nav';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
 import { Tag } from '../../../components/data-display/Tag/Tag';
@@ -43,6 +44,8 @@ export interface SelectVehicleScreenProps {
 export function SelectVehicleScreen({ initialId }: SelectVehicleScreenProps) {
   const t = useT(messages);
   const locale = useLocale();
+  const nav = useNav();
+  const params = nav.route.params ?? {};
   const [selected, setSelected] = useState<string | null>(initialId === undefined ? myVehicles[0].id : initialId);
   const Icon = unitIcon.detailing;
   return (
@@ -75,10 +78,10 @@ export function SelectVehicleScreen({ initialId }: SelectVehicleScreenProps) {
             {t.noneYet}
           </Typography>
         )}
-        <AddRow label={t.add} />
+        <AddRow label={t.add} onClick={() => nav.go('add-vehicle', params)} />
       </ScreenBody>
       <BottomActionBar>
-        <Button fullWidth disabled={!selected}>
+        <Button fullWidth disabled={!selected} onClick={() => selected && nav.go('choose-package', { ...params, vehicleId: selected })}>
           {t.next}
         </Button>
       </BottomActionBar>

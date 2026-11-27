@@ -16,7 +16,8 @@ import Badge from '@mui/material/Badge';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Box from '@mui/material/Box';
-import type { ReactNode } from 'react';
+import { useContext, type ReactNode } from 'react';
+import { ShellNavContext, useNav } from '../../../app/nav';
 import { useT } from '../../../i18n/locale';
 import { bs } from '../../../theme/theme';
 import { layout, radius, transition, zLayer } from '../../../theme/tokens';
@@ -91,14 +92,19 @@ export interface BottomNavProps {
   badges?: Record<string, boolean | number>;
   value: string;
   onChange?: (value: string) => void;
+  /** The app shell's persistent instance (stays put while screens animate). */
+  shell?: boolean;
   position?: 'sticky' | 'fixed' | 'static';
 }
 
 /** Mobile bottom navigation with an orange-tinted active pill and safe-area padding. */
-export function BottomNav({ side = 'client', destinations, badges, value, onChange, position = 'sticky' }: BottomNavProps) {
+export function BottomNav({ side = 'client', destinations, badges, value, onChange, position = 'sticky', shell = false }: BottomNavProps) {
   const t = useT(messages);
+  const nav = useNav();
+  const shellOwnsNav = useContext(ShellNavContext);
   const preset = useNavDestinations(side);
   const items = (destinations ?? preset).map((d) => ({ ...d, badge: badges?.[d.value] ?? d.badge }));
+  if (shellOwnsNav && !shell) return null;
   return (
     <Box
       component="nav"
@@ -112,7 +118,10 @@ export function BottomNav({ side = 'client', destinations, badges, value, onChan
         pb: layout.safeAreaBottom,
       }}
     >
-      <BottomNavigation showLabels value={value} onChange={(_, next: string) => onChange?.(next)} sx={{ maxWidth: layout.maxWidth.mobile, mx: 'auto' }}>
+      <BottomNavigation showLabels value={value} onChange={(_, next: string) => {
+        onChange?.(next);
+        if (next !== value) nav.reset(next);
+      }} sx={{ maxWidth: layout.maxWidth.mobile, mx: 'auto' }}>
         {items.map((d) => {
           const selected = d.value === value;
           const glyph = selected ? (d.activeIcon ?? d.icon) : d.icon;
@@ -132,6 +141,7 @@ export function BottomNav({ side = 'client', destinations, badges, value, onChan
                     height: 30,
                     borderRadius: `${radius.pill}px`,
                     backgroundColor: selected ? bs.selection.bg : 'transparent',
+                    color: selected ? bs.brand.primary : 'inherit',
                     transition: transition('background-color'),
                   }}
                 >

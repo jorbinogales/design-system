@@ -1,7 +1,13 @@
+import ConfirmationNumberOutlined from '@mui/icons-material/ConfirmationNumberOutlined';
+import DirectionsCarOutlined from '@mui/icons-material/DirectionsCarOutlined';
 import DownloadOutlined from '@mui/icons-material/DownloadOutlined';
+import EventOutlined from '@mui/icons-material/EventOutlined';
+import PlaceOutlined from '@mui/icons-material/PlaceOutlined';
+import ScheduleOutlined from '@mui/icons-material/ScheduleOutlined';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useMemo } from 'react';
+import { useNav } from '../../../app/nav';
 import { PaymentPanel } from '../../../blacksix/PaymentPanel/PaymentPanel';
 import { formatDateTime, formatDuration } from '../../../blacksix/shared/format';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
@@ -11,6 +17,7 @@ import { KeyValue, KeyValueList } from '../../../components/layout/KeyValue/KeyV
 import { TopBar } from '../../../components/navigation/TopBar/TopBar';
 import { useLocale, useT } from '../../../i18n/locale';
 import { getBookingDetail, getReceipt } from '../../../mocks/bookings';
+import { findBooking } from '../../bookings/data';
 import { paymentMethods } from '../../../mocks/catalog';
 import { vehicleName } from '../../../mocks/people';
 import { SchemeScope } from '../../../theme/SchemeScope';
@@ -90,14 +97,15 @@ export interface ReceiptScreenProps {
 /** Recibo electrónico (s37): barcode, booking data and PaymentPanel in receipt mode, with "Descargar recibo". */
 export function ReceiptScreen({ bookingId = 'BS-24090' }: ReceiptScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
-  const b = getBookingDetail(bookingId);
+  const b = findBooking(bookingId) ?? getBookingDetail(bookingId);
   const receipt = getReceipt(bookingId);
   const reference = receipt?.reference ?? b.payment.reference;
   const place = b.center ? `${b.center.name} · ${formatAddress(b.center.address)}` : b.address ? formatAddress(b.address) : '';
   return (
     <ScreenRoot>
-      <TopBar title={t.title} onBack={() => undefined} />
+      <TopBar title={t.title} onBack={nav.back} />
       <ScreenBody gap={6} sx={{ flex: 1 }}>
         {reference ? (
           <Barcode code={reference} />
@@ -106,12 +114,12 @@ export function ReceiptScreen({ bookingId = 'BS-24090' }: ReceiptScreenProps) {
             {t.pendingBarcode}
           </Typography>
         )}
-        <KeyValueList>
-          <KeyValue label={t.booking} value={b.id} tabular />
-          <KeyValue label={t.bookingDate} value={formatDateTime(`${b.date}T${b.time}`, locale)} tabular />
-          <KeyValue label={t.vehicle} value={`${vehicleName(b.vehicle)} · ${b.vehicle.plate}`} />
-          <KeyValue label={t.duration} value={formatDuration(b.package.durationMin)} />
-          <KeyValue label={t.place} value={place} />
+        <KeyValueList aligned>
+          <KeyValue icon={<ConfirmationNumberOutlined />} label={t.booking} value={b.id} tabular />
+          <KeyValue icon={<EventOutlined />} label={t.bookingDate} value={formatDateTime(`${b.date}T${b.time}`, locale)} tabular />
+          <KeyValue icon={<DirectionsCarOutlined />} label={t.vehicle} value={`${vehicleName(b.vehicle)} · ${b.vehicle.plate}`} />
+          <KeyValue icon={<ScheduleOutlined />} label={t.duration} value={formatDuration(b.package.durationMin)} />
+          <KeyValue icon={<PlaceOutlined />} label={t.place} value={place} />
         </KeyValueList>
         <PaymentPanel
           mode="receipt"

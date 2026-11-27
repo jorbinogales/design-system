@@ -1,3 +1,5 @@
+import CreditCardOutlined from '@mui/icons-material/CreditCardOutlined';
+import ReceiptLongOutlined from '@mui/icons-material/ReceiptLongOutlined';
 import LockOutlined from '@mui/icons-material/LockOutlined';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -8,7 +10,6 @@ import { useLocale, useT } from '../../i18n/locale';
 import { AmountBreakdown } from '../../components/data-display/AmountBreakdown/AmountBreakdown';
 import { IdentifierBlock } from '../../components/data-display/IdentifierBlock/IdentifierBlock';
 import { StatusBadge } from '../../components/data-display/StatusBadge/StatusBadge';
-import { InlineAlert } from '../../components/feedback/InlineAlert/InlineAlert';
 import { KeyValue, KeyValueList } from '../../components/layout/KeyValue/KeyValue';
 import { RadioGroup } from '../../components/selection/Radio/Radio';
 import { bs } from '../../theme/theme';
@@ -40,7 +41,7 @@ const messages = {
   es: {
     method: 'Método de pago',
     secureTitle: 'Datos de la tarjeta',
-    secureBody: 'Estos campos los muestra y procesa el proveedor de pagos. Black Six nunca ve ni guarda el número de tarjeta.',
+    secureBody: 'Estos campos los muestra y procesa el proveedor de pagos. Black Seat nunca ve ni guarda el número de tarjeta.',
     secureLabel: 'Campos de tarjeta seguros del proveedor de pagos',
     cardNumber: 'Número de tarjeta',
     expiry: 'Vencimiento',
@@ -60,7 +61,7 @@ const messages = {
   en: {
     method: 'Payment method',
     secureTitle: 'Card details',
-    secureBody: 'These fields are shown and processed by the payment provider. Black Six never sees or stores your card number.',
+    secureBody: 'These fields are shown and processed by the payment provider. Black Seat never sees or stores your card number.',
     secureLabel: "Secure card fields from the payment provider",
     cardNumber: 'Card number',
     expiry: 'Expiry',
@@ -108,9 +109,9 @@ export function PaymentPanel({ methods, value, onChange, lines, total, status, r
           <StatusBadge dimension="payment" status={status} />
         </Box>
         {reference ? <IdentifierBlock label={t.reference} value={reference} size="lg" /> : <Typography variant="body2" sx={{ color: bs.text.secondary }}>{t.pendingRef}</Typography>}
-        <KeyValueList>
-          {selected && <KeyValue label={t.paidWith} value={`${selected.label[locale]}${selected.detail ? ` · ${selected.detail[locale]}` : ''}`} />}
-          {issuedAt && <KeyValue label={t.issued} value={formatDateTime(issuedAt, locale)} tabular />}
+        <KeyValueList aligned>
+          {selected && <KeyValue icon={<CreditCardOutlined />} label={t.paidWith} value={`${selected.label[locale]}${selected.detail ? ` · ${selected.detail[locale]}` : ''}`} />}
+          {issuedAt && <KeyValue icon={<ReceiptLongOutlined />} label={t.issued} value={formatDateTime(issuedAt, locale)} tabular />}
         </KeyValueList>
         {breakdown}
       </Box>
@@ -123,7 +124,7 @@ export function PaymentPanel({ methods, value, onChange, lines, total, status, r
         label={t.method}
         value={value}
         onChange={(id) => onChange?.(id)}
-        options={methods.map((m) => ({ value: m.id, label: m.detail ? `${m.label[locale]} · ${m.detail[locale]}` : m.label[locale], description: m.description[locale] }))}
+        options={methods.map((m) => ({ value: m.id, label: m.detail ? `${m.label[locale]} · ${m.detail[locale]}` : m.label[locale] }))}
       />
 
       {selected?.kind === 'card' && (
@@ -153,21 +154,11 @@ export function PaymentPanel({ methods, value, onChange, lines, total, status, r
         </Box>
       )}
 
-      {selected?.kind === 'apple-pay' && (
-        <InlineAlert severity="info">{selected.description[locale]}</InlineAlert>
-      )}
-      {selected && !selected.online && (
-        <InlineAlert severity="info" title={t.offlineTitle}>
-          {selected.kind === 'zelle' ? t.offlineZelle : t.offlineCash}
-        </InlineAlert>
-      )}
-
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 3, flexWrap: 'wrap' }}>
           <Typography variant="h4" component="h3">
             {t.amount}
           </Typography>
-          <StatusBadge dimension="payment" status={status} />
         </Box>
         {breakdown}
         {reference && <IdentifierBlock label={t.reference} value={reference} variant="inline" />}

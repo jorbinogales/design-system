@@ -11,6 +11,7 @@ import { formatSlotTime } from '../../../components/date-time/TimeSlot/TimeSlot'
 import { Price } from '../../../components/data-display/Price/Price';
 import { Card } from '../../../components/layout/Card/Card';
 import { Media, MediaBookmark, MediaRating, type MediaRatio } from '../../../components/layout/Media/Media';
+import { centerPhoto } from '../../../mocks/photos';
 import { unitMeta } from '../../../domain/units';
 import { intlLocale } from '../../../i18n/format';
 import { useLocale, useT } from '../../../i18n/locale';
@@ -57,7 +58,7 @@ export interface CenterCardProps {
 const meta = { display: 'inline-flex', alignItems: 'center', gap: 1, color: bs.text.secondary, minWidth: 0 } as const;
 
 /**
- * A Black Six center as a photo card with rating, distance, drive time and a bookmark. The name is the one
+ * A Black Seat center as a photo card with rating, distance, drive time and a bookmark. The name is the one
  * link (stretched over the card), so the bookmark button is not nested inside another button.
  */
 export function CenterCard({ listing, saved, onToggleSaved, variant = 'card', selected = false, onOpen, photoRatio = '3:2', fromPrice }: CenterCardProps) {
@@ -105,7 +106,7 @@ export function CenterCard({ listing, saved, onToggleSaved, variant = 'card', se
     return (
       <Card component="article" selected={selected}>
         <Box sx={{ display: 'grid', gridTemplateColumns: '88px minmax(0, 1fr) auto', columnGap: 3, alignItems: 'start' }}>
-          <Media alt={t.alt(center.name)} ratio="1:1" radius="md" unit={unit} />
+          <Media src={centerPhoto[center.id]} alt={t.alt(center.name)} ratio="1:1" radius="md" unit={unit} />
           <Box sx={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: 1 }}>
             {title}
             <Box role="img" aria-label={t.rated(rating, listing.reviews)} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -140,6 +141,7 @@ export function CenterCard({ listing, saved, onToggleSaved, variant = 'card', se
     <Card component="article" flush selected={selected}>
       <Box sx={{ position: 'relative', zIndex: 2, pointerEvents: 'none', '& button': { pointerEvents: 'auto' } }}>
         <Media
+          src={centerPhoto[center.id]}
           alt={t.alt(center.name)}
           ratio={photoRatio}
           radius="none"

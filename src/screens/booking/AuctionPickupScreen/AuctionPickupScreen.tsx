@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import { AuctionPickupForm, validateAuctionPickup, type AuctionPickupValue } from '../../../blacksix/AuctionPickupForm/AuctionPickupForm';
+import { useNav } from '../../../app/nav';
+import { AuctionPickupForm, emptyAuctionPickup, validateAuctionPickup, type AuctionPickupValue } from '../../../blacksix/AuctionPickupForm/AuctionPickupForm';
 import { BottomActionBar } from '../../../components/actions/BottomActionBar/BottomActionBar';
 import { Button } from '../../../components/actions/Button/Button';
 import { InlineAlert } from '../../../components/feedback/InlineAlert/InlineAlert';
@@ -37,10 +38,14 @@ export interface AuctionPickupScreenProps {
 }
 
 /** Recogida en subasta (Towing): AuctionPickupForm with its own label for every identifier. Step 3 of 5 (Horario). */
-export function AuctionPickupScreen({ initial = filledPickup, showErrors = false }: AuctionPickupScreenProps) {
+export function AuctionPickupScreen({ initial, showErrors = false }: AuctionPickupScreenProps) {
   const t = useT(messages);
   const locale = useLocale();
-  const [value, setValue] = useState<AuctionPickupValue>(initial);
+  const nav = useNav();
+  // In the app the customer types their own lot and code; the stories start from the filled example.
+  const p = nav.route.params ?? {};
+  const fromRoute: AuctionPickupValue | undefined = p.lot ? { auction: p.auction === 'iaa' ? 'iaa' : 'copart', yardId: p.yardId ?? '', lot: p.lot, code: p.code ?? '', date: p.date ? dayjs(p.date) : null } : undefined;
+  const [value, setValue] = useState<AuctionPickupValue>(initial ?? fromRoute ?? (nav.route.name ? emptyAuctionPickup : filledPickup));
   const [submitted, setSubmitted] = useState(showErrors);
   const errors = submitted ? validateAuctionPickup(value, locale) : {};
   const hasErrors = Object.keys(errors).length > 0;
@@ -54,7 +59,23 @@ export function AuctionPickupScreen({ initial = filledPickup, showErrors = false
         <AuctionPickupForm value={value} onChange={setValue} yards={auctionYards} errors={errors} start={TODAY} today={TODAY} getDayState={(d) => getDayState(d, 'towing')} />
       </ScreenBody>
       <BottomActionBar>
-        <Button fullWidth onClick={() => setSubmitted(true)}>
+        <Button
+          fullWidth
+          onClick={() => {
+            setSubmitted(true);
+            if (Object.keys(validateAuctionPickup(value, locale)).length > 0) return;
+            // Towing picks its day inside the form, so the flow skips the Schedule step.
+            nav.go('payment-method', {
+              ...nav.route.params,
+              unit: 'towing',
+              auction: value.auction!,
+              yardId: value.yardId,
+              lot: value.lot,
+              code: value.code,
+              date: value.date!.format('YYYY-MM-DD'),
+            });
+          }}
+        >
           {t.next}
         </Button>
       </BottomActionBar>

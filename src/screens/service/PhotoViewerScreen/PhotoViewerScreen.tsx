@@ -10,6 +10,7 @@ import { IconButton } from '../../../components/actions/IconButton/IconButton';
 import { Media } from '../../../components/layout/Media/Media';
 import { TopBar } from '../../../components/navigation/TopBar/TopBar';
 import { formatNumber } from '../../../i18n/format';
+import { useNav } from '../../../app/nav';
 import { useLocale, useT } from '../../../i18n/locale';
 import { InverseSurface } from '../../../theme/SchemeScope';
 import { bs } from '../../../theme/theme';
@@ -42,6 +43,7 @@ const messages = {
 /** Galería (visor): full-screen photo with counter, previous/next, caption, thumbnail rail and close. Arrow keys also navigate. */
 export function PhotoViewerScreen({ defaultIndex = 0 }: { defaultIndex?: number }) {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const [index, setIndex] = useState(defaultIndex);
   const railRef = useRef<HTMLDivElement>(null);
@@ -67,7 +69,7 @@ export function PhotoViewerScreen({ defaultIndex = 0 }: { defaultIndex?: number 
         tone="inverse"
         leading={
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-            <IconButton label={t.close} icon={<CloseRounded />} variant="filled" onClick={() => undefined} />
+            <IconButton label={t.close} icon={<CloseRounded />} variant="filled" onClick={nav.back} />
             <Typography variant="h4" component="h1" aria-live="polite" aria-label={t.counter(index + 1, total)} sx={{ fontVariantNumeric: 'tabular-nums' }}>
               {formatNumber(index + 1, locale)} / {formatNumber(total, locale)}
             </Typography>
@@ -77,7 +79,7 @@ export function PhotoViewerScreen({ defaultIndex = 0 }: { defaultIndex?: number 
       />
 
       <Box role="group" aria-roledescription="carousel" aria-label={t.viewer} tabIndex={0} onKeyDown={onKey} sx={{ position: 'relative', flex: 1, minHeight: 300, mx: `${layout.gutter.mobile}px`, my: 3, borderRadius: `${radius.lg}px`, overflow: 'hidden', outlineOffset: 2 }}>
-        <Media alt={photo.caption[locale]} ratio="fill" radius="lg" unit={photo.unit} />
+        <Media src={photo.src} alt={photo.caption[locale]} ratio="fill" radius="lg" unit={photo.unit} />
         <Box sx={{ position: 'absolute', top: '50%', left: 8, transform: 'translateY(-50%)', zIndex: 3 }}>
           <IconButton variant="raised" label={t.prev} icon={<ChevronLeftRounded />} onClick={() => go(-1)} />
         </Box>
@@ -114,7 +116,7 @@ export function PhotoViewerScreen({ defaultIndex = 0 }: { defaultIndex?: number 
                 '&.Mui-focusVisible': { outline: `2px solid ${bs.focus.ring}`, outlineOffset: 2 },
               }}
             >
-              <Media alt="" ratio="1:1" radius="sm" unit={p.unit} />
+              <Media src={p.src} alt="" ratio="1:1" radius="sm" unit={p.unit} />
             </ButtonBase>
           );
         })}

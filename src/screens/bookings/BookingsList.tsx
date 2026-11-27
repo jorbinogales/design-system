@@ -1,11 +1,13 @@
 import Box from '@mui/material/Box';
 import { useState } from 'react';
+import { useNav } from '../../app/nav';
 import { Button } from '../../components/actions/Button/Button';
 import { SkeletonCard, SkeletonGroup } from '../../components/feedback/Skeleton/Skeleton';
 import { BottomNav } from '../../components/navigation/BottomNav/BottomNav';
 import { TabPanel, Tabs } from '../../components/navigation/Tabs/Tabs';
 import { TopBar } from '../../components/navigation/TopBar/TopBar';
 import { NoItemsState } from '../../components/screen-states/StatePresets/StatePresets';
+import type { BookingDetail } from '../../domain/booking';
 import { useT } from '../../i18n/locale';
 import { layout } from '../../theme/tokens';
 import { ScreenRoot } from '../profile/ui';
@@ -46,13 +48,21 @@ export interface BookingsListProps {
   state?: 'default' | 'loading' | 'empty';
 }
 
+const tabRoute: Record<BookingsTab, string> = { active: 'bookings', completed: 'completed-bookings', cancelled: 'cancelled-bookings' };
 const data = { active: activeBookings, completed: completedBookings, cancelled: cancelledBookings };
 
 /** Shared body of the three "Mis reservas" screens: top bar, status tabs, booking cards (or skeleton / empty state) and the client BottomNav. */
 export function BookingsList({ initialTab = 'active', state = 'default' }: BookingsListProps) {
   const t = useT(messages);
+  const nav = useNav();
+  const [navTab, setNavTab] = useState('bookings');
   const [tab, setTab] = useState<BookingsTab>(initialTab);
-  const [nav, setNav] = useState('bookings');
+  // Each tab is its own root route in the app, so Android back leaves the list instead of walking the tabs.
+  const changeTab = (next: BookingsTab) => {
+    setTab(next);
+    nav.reset(tabRoute[next]);
+  };
+  const rebook = (b: BookingDetail) => (b.unit === 'towing' ? nav.go('auction-pickup', { unit: 'towing' }) : nav.go('select-vehicle', { unit: b.unit }));
 
   const panel = (value: BookingsTab) => {
     if (state === 'loading') {
@@ -68,13 +78,22 @@ export function BookingsList({ initialTab = 'active', state = 'default' }: Booki
     }
     if (state === 'empty') {
       const e = t.empty[value];
-      return <NoItemsState layout="inline" title={e.title} description={e.body} primaryAction={'cta' in e ? <Button>{e.cta}</Button> : undefined} />;
+      return <NoItemsState layout="inline" title={e.title} description={e.body} primaryAction={'cta' in e ? <Button onClick={() => nav.go('explore')}>{e.cta}</Button> : undefined} />;
     }
     return (
       <Box component="ul" sx={{ listStyle: 'none', m: 0, p: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
         {data[value].map((b) => (
           <li key={b.id}>
-            <BookingCard booking={b} tab={value} rating={reviewedRatings[b.id]} />
+            <BookingCard
+              booking={b}
+              tab={value}
+              rating={reviewedRatings[b.id]}
+              onTrack={() => nav.go('track-order', { bookingId: b.id })}
+              onCancel={() => nav.go('cancel-booking', { bookingId: b.id })}
+              onReview={() => nav.go('write-review', { bookingId: b.id })}
+              onReceipt={() => nav.go('receipt', { bookingId: b.id })}
+              onRebook={() => rebook(b)}
+            />
           </li>
         ))}
       </Box>
@@ -89,7 +108,7 @@ export function BookingsList({ initialTab = 'active', state = 'default' }: Booki
           idPrefix="bookings"
           label={t.tabs}
           value={tab}
-          onChange={setTab}
+          onChange={changeTab}
           items={[
             { value: 'active', label: t.active, count: state === 'default' ? activeBookings.length : undefined },
             { value: 'completed', label: t.completed },
@@ -102,7 +121,7 @@ export function BookingsList({ initialTab = 'active', state = 'default' }: Booki
           </TabPanel>
         ))}
       </Box>
-      <BottomNav side="client" value={nav} onChange={setNav} />
+      <BottomNav side="client" value={navTab} onChange={setNavTab} />
     </ScreenRoot>
   );
 }

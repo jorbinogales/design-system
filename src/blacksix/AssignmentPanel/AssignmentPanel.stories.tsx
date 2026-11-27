@@ -44,7 +44,7 @@ function Demo({ jobId, preselect = null }: { jobId: string; preselect?: string |
 }
 
 const meta = {
-  title: 'Black Six/Panel de asignación',
+  title: 'Black Seat/Panel de asignación',
   component: AssignmentPanel,
   parameters: {
     layout: 'fullscreen',

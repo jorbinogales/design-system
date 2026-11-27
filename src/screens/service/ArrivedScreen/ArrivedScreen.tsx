@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import { Button } from '../../../components/actions/Button/Button';
 import { IdentifierBlock } from '../../../components/data-display/IdentifierBlock/IdentifierBlock';
 import { SuccessState } from '../../../components/screen-states/SuccessState/SuccessState';
+import { useNav } from '../../../app/nav';
 import { useT } from '../../../i18n/locale';
 import { getCenter } from '../../../mocks/catalog';
 import { layout } from '../../../theme/tokens';
@@ -27,6 +28,7 @@ const messages = {
 /** Has llegado: confirmation that the customer reached the center, with the booking code (BS-24117). */
 export function ArrivedScreen() {
   const t = useT(messages);
+  const nav = useNav();
   const center = getCenter(serviceCenterId)!;
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100%', pt: `calc(${layout.safeAreaTop} + 24px)` }}>
@@ -34,12 +36,12 @@ export function ArrivedScreen() {
         title={t.title}
         description={t.body(center.name)}
         primaryAction={
-          <Button variant="primary" size="lg" fullWidth>
+          <Button variant="primary" size="lg" fullWidth onClick={() => nav.go('track-order', { bookingId: 'BS-24117' })}>
             {t.primary}
           </Button>
         }
         secondaryAction={
-          <Button variant="quiet" size="lg" fullWidth>
+          <Button variant="quiet" size="lg" fullWidth onClick={() => nav.go('chat')}>
             {t.secondary}
           </Button>
         }

@@ -8,10 +8,12 @@ import { IconButton } from '../../../components/actions/IconButton/IconButton';
 import { SearchField } from '../../../components/fields/SearchField/SearchField';
 import { ListGroup, ListRow } from '../../../components/layout/ListRow/ListRow';
 import { Media } from '../../../components/layout/Media/Media';
+import { centerPhoto } from '../../../mocks/photos';
 import { SectionHeader } from '../../../components/layout/SectionHeader/SectionHeader';
 import { TopBar } from '../../../components/navigation/TopBar/TopBar';
 import { unitMeta } from '../../../domain/units';
 import { intlLocale } from '../../../i18n/format';
+import { useNav } from '../../../app/nav';
 import { useLocale, useT } from '../../../i18n/locale';
 import { bs } from '../../../theme/theme';
 import { layout, radius, transition } from '../../../theme/tokens';
@@ -54,6 +56,7 @@ export interface SearchScreenProps {
 /** Búsqueda: search field, recent searches (removable, clear all) and recently viewed centers. */
 export function SearchScreen({ noRecents = false }: SearchScreenProps) {
   const t = useT(messages);
+  const nav = useNav();
   const locale = useLocale();
   const [query, setQuery] = useState('');
   const [recents, setRecents] = useState(() => (noRecents ? [] : recentSearches.map((r, i) => ({ id: String(i), text: r }))));
@@ -64,8 +67,8 @@ export function SearchScreen({ noRecents = false }: SearchScreenProps) {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100%' }}>
-      <TopBar title={t.title} onBack={() => undefined}>
-        <SearchField label={t.field} hideLabel placeholder={t.placeholder} value={query} onChange={(e) => setQuery(e.target.value)} onClear={() => setQuery('')} />
+      <TopBar title={t.title} onBack={nav.back}>
+        <SearchField label={t.field} hideLabel placeholder={t.placeholder} value={query} onChange={(e) => setQuery(e.target.value)} onClear={() => setQuery('')} onSubmit={(v) => nav.go('results', { query: v })} />
       </TopBar>
 
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6, pt: 6, pb: 8 }}>
@@ -82,7 +85,7 @@ export function SearchScreen({ noRecents = false }: SearchScreenProps) {
               {visible.map((r) => (
                 <Box component="li" key={r.id} sx={{ listStyle: 'none', display: 'flex', alignItems: 'center', borderBottom: `1px solid ${bs.border.subtle}`, pr: 2 }}>
                   <ButtonBase
-                    onClick={() => setQuery(r.text[locale])}
+                    onClick={() => nav.go('results', { query: r.text[locale] })}
                     sx={{
                       flex: 1,
                       minWidth: 0,
@@ -126,10 +129,10 @@ export function SearchScreen({ noRecents = false }: SearchScreenProps) {
               return (
                 <ListRow
                   key={id}
-                  onClick={() => undefined}
+                  onClick={() => nav.go('service-detail', { unit: listingUnit(l), centerId: id })}
                   leading={
                     <Box sx={{ width: 56 }}>
-                      <Media alt={t.alt(c.name)} ratio="1:1" radius="md" unit={listingUnit(l)} />
+                      <Media src={centerPhoto[c.id]} alt={t.alt(c.name)} ratio="1:1" radius="md" unit={listingUnit(l)} />
                     </Box>
                   }
                   title={c.name}

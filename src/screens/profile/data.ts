@@ -26,7 +26,7 @@ export interface PaymentMethodData {
 export const paymentMethods: PaymentMethodData[] = [
   { id: 'visa-4242', kind: 'card', title: { es: 'Visa •••• 4242', en: 'Visa •••• 4242' }, description: { es: 'Vence 08/28', en: 'Expires 08/28' } },
   { id: 'mc-0937', kind: 'card', title: { es: 'Mastercard •••• 0937', en: 'Mastercard •••• 0937' }, description: { es: 'Vence 02/27', en: 'Expires 02/27' } },
-  { id: 'wallet', kind: 'wallet', title: { es: 'Wallet Black Six', en: 'Black Six Wallet' }, description: { es: 'Saldo disponible', en: 'Available balance' } },
+  { id: 'wallet', kind: 'wallet', title: { es: 'Wallet Black Seat', en: 'Black Seat Wallet' }, description: { es: 'Saldo disponible', en: 'Available balance' } },
   { id: 'apple-pay', kind: 'apple-pay', title: { es: 'Apple Pay', en: 'Apple Pay' }, description: { es: 'Con Face ID en este iPhone', en: 'With Face ID on this iPhone' } },
   { id: 'google-pay', kind: 'google-pay', title: { es: 'Google Pay', en: 'Google Pay' }, description: { es: 'Con tu cuenta de Google', en: 'With your Google account' } },
 ];
@@ -160,8 +160,8 @@ export const faqItems: FaqItem[] = [
     category: 'payments',
     q: { es: '¿Qué métodos de pago aceptan?', en: 'Which payment methods do you accept?' },
     a: {
-      es: 'Tarjetas Visa y Mastercard, Apple Pay, Google Pay y tu Wallet Black Six. Los datos de la tarjeta los procesa nuestro proveedor de pagos; Black Six nunca los guarda.',
-      en: 'Visa and Mastercard cards, Apple Pay, Google Pay and your Black Six Wallet. Card details are processed by our payment provider; Black Six never stores them.',
+      es: 'Tarjetas Visa y Mastercard, Apple Pay, Google Pay y tu Wallet Black Seat. Los datos de la tarjeta los procesa nuestro proveedor de pagos; Black Seat nunca los guarda.',
+      en: 'Visa and Mastercard cards, Apple Pay, Google Pay and your Black Seat Wallet. Card details are processed by our payment provider; Black Seat never stores them.',
     },
   },
   {
@@ -203,8 +203,8 @@ export interface ContactChannel {
 export const contactChannels: ContactChannel[] = [
   { id: 'phone', title: { es: 'Servicio al cliente', en: 'Customer service' }, value: '+1 (305) 555-0142', hint: { es: 'Lun a sáb, 8:00 a. m. a 7:00 p. m.', en: 'Mon to Sat, 8:00 AM to 7:00 PM' } },
   { id: 'whatsapp', title: { es: 'WhatsApp', en: 'WhatsApp' }, value: '+1 (305) 555-0143', hint: { es: 'Respondemos en menos de 15 minutos', en: 'We reply in under 15 minutes' } },
-  { id: 'web', title: { es: 'Sitio web', en: 'Website' }, value: 'blacksixmiami.com', hint: { es: 'Servicios, precios y zonas', en: 'Services, prices and areas' } },
-  { id: 'instagram', title: { es: 'Instagram', en: 'Instagram' }, value: '@blacksixmiami', hint: { es: 'Trabajos recientes y promociones', en: 'Recent work and promotions' } },
+  { id: 'web', title: { es: 'Sitio web', en: 'Website' }, value: 'blackseatmiami.com', hint: { es: 'Servicios, precios y zonas', en: 'Services, prices and areas' } },
+  { id: 'instagram', title: { es: 'Instagram', en: 'Instagram' }, value: '@blackseatmiami', hint: { es: 'Trabajos recientes y promociones', en: 'Recent work and promotions' } },
 ];
 
 // ---------------------------------------------------------------- privacy (sample content, needs legal review)
@@ -238,8 +238,8 @@ export const privacySections: PrivacySection[] = [
     title: { es: 'Cómo usamos tu información', en: 'How we use your information' },
     body: [
       {
-        es: 'Usamos tus datos para confirmar y realizar tus reservas, asignar a un operador, avisarte del estado de cada servicio, darte soporte y mejorar Black Six.',
-        en: 'We use your data to confirm and carry out your bookings, assign an operator, keep you updated on each service, give you support and improve Black Six.',
+        es: 'Usamos tus datos para confirmar y realizar tus reservas, asignar a un operador, avisarte del estado de cada servicio, darte soporte y mejorar Black Seat.',
+        en: 'We use your data to confirm and carry out your bookings, assign an operator, keep you updated on each service, give you support and improve Black Seat.',
       },
       {
         es: 'Solo te enviamos promociones si activaste esa opción, y puedes desactivarla cuando quieras desde Notificaciones.',
@@ -266,8 +266,8 @@ export const privacySections: PrivacySection[] = [
     title: { es: 'Pagos', en: 'Payments' },
     body: [
       {
-        es: 'Los pagos con tarjeta, Apple Pay y Google Pay los procesa un proveedor de pagos certificado. Black Six no almacena el número completo de tu tarjeta ni su código de seguridad; solo conserva los últimos cuatro dígitos y la fecha de vencimiento para que reconozcas el método.',
-        en: 'Card, Apple Pay and Google Pay payments are processed by a certified payment provider. Black Six does not store your full card number or security code; we only keep the last four digits and the expiry date so you can recognize the method.',
+        es: 'Los pagos con tarjeta, Apple Pay y Google Pay los procesa un proveedor de pagos certificado. Black Seat no almacena el número completo de tu tarjeta ni su código de seguridad; solo conserva los últimos cuatro dígitos y la fecha de vencimiento para que reconozcas el método.',
+        en: 'Card, Apple Pay and Google Pay payments are processed by a certified payment provider. Black Seat does not store your full card number or security code; we only keep the last four digits and the expiry date so you can recognize the method.',
       },
     ],
   },
@@ -296,8 +296,8 @@ export const privacySections: PrivacySection[] = [
     title: { es: 'Contacto', en: 'Contact' },
     body: [
       {
-        es: 'Si tienes preguntas sobre esta política escríbenos a privacidad@blacksixmiami.com o llama al +1 (305) 555-0142.',
-        en: 'If you have questions about this policy write to privacidad@blacksixmiami.com or call +1 (305) 555-0142.',
+        es: 'Si tienes preguntas sobre esta política escríbenos a privacidad@blackseatmiami.com o llama al +1 (305) 555-0142.',
+        en: 'If you have questions about this policy write to privacidad@blackseatmiami.com or call +1 (305) 555-0142.',
       },
     ],
   },

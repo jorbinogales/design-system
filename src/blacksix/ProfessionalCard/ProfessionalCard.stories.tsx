@@ -9,7 +9,7 @@ import { ProfessionalCard } from './ProfessionalCard';
 const luis = getProfessional('pro-luis')!;
 
 const meta = {
-  title: 'Black Six/Tarjeta de profesional',
+  title: 'Black Seat/Tarjeta de profesional',
   component: ProfessionalCard,
   parameters: {
     docs: {
@@ -23,7 +23,7 @@ const meta = {
           responsive: ['Ocupa el ancho del contenedor; nombre y función se envuelven sin cortarse.', 'Con textos en inglés el aviso de espera crece en altura, nunca se trunca.'],
           a11y: ['El grupo tiene nombre accesible “Profesional asignado: nombre, función”.', 'El estado va en la insignia con icono y texto, no solo en color.', 'La calificación tiene texto alternativo.'],
           content: [['Pendiente de asignación', 'Awaiting assignment'], ['Asignamos a tu detailer hasta 24 horas antes de la cita.', 'We assign your detailer up to 24 hours before the appointment.']],
-          example: '**Ejemplo de negocio**: Luis Herrera (detailer senior, Black Six Doral) y la misma reserva BS-24117 antes de asignarse.',
+          example: '**Ejemplo de negocio**: Luis Herrera (detailer senior, Black Seat Doral) y la misma reserva BS-24117 antes de asignarse.',
         }),
       },
     },
@@ -57,7 +57,7 @@ export const States: Story = {
           <ProfessionalCard unit="detailing" />
         </Specimen>
         <Specimen label={l.longText} direction="column" align="stretch">
-          <ProfessionalCard professional={getProfessional('pro-natalia')} baseLabel="Black Six Doral" />
+          <ProfessionalCard professional={getProfessional('pro-natalia')} baseLabel="Black Seat Doral" />
         </Specimen>
       </Showcase>
     );
@@ -75,7 +75,7 @@ export const BusinessExample: Story = {
           <ProfessionalCard unit="detailing" />
         </Specimen>
         <Specimen label={`${l.businessExample} · Towing`} direction="column" align="stretch">
-          <ProfessionalCard professional={getProfessional('pro-mateo')} unit="towing" baseLabel="Black Six Doral" />
+          <ProfessionalCard professional={getProfessional('pro-mateo')} unit="towing" baseLabel="Black Seat Doral" />
           <ProfessionalCard unit="towing" />
         </Specimen>
         <Specimen label={`${l.businessExample} · Personal Washing`} direction="column" align="stretch">

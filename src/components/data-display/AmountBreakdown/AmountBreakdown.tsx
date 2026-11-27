@@ -10,7 +10,7 @@ export interface BreakdownLine {
   label: ReactNode;
   /** Positive amount in major units. Discounts are given positive and `kind: 'discount'`. */
   amount: number;
-  /** `discount` renders "−$X" in success tone; `free` renders "Gratis / Free". */
+  /** `discount` renders "−$X" in muted gray; `free` renders "Gratis / Free". */
   kind?: 'charge' | 'discount' | 'free';
   /** Small secondary line under the label (e.g. "2 vehículos × $95.00"). */
   detail?: ReactNode;
@@ -56,7 +56,7 @@ export function AmountBreakdown({ lines, total, totalLabel, currency = 'USD', no
               <Box
                 component="dd"
                 aria-label={line.kind === 'discount' ? `${t.discount} ${formatMoney(line.amount, locale, currency)}` : undefined}
-                sx={{ ...text, m: 0, fontWeight: 600, fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', color: line.kind === 'discount' || line.kind === 'free' ? bs.status.success.fg : bs.text.primary }}
+                sx={{ ...text, m: 0, fontWeight: 600, fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', color: line.kind === 'discount' || line.kind === 'free' ? bs.text.secondary : bs.text.primary }}
               >
                 {value}
               </Box>
